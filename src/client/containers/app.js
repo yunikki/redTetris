@@ -19,9 +19,27 @@ function Makebord() {
         x++;
     }
 
-    return (
-        container
-    )
+    return (container)
+}
+
+
+function MakeNewPiece() {
+    var container = []
+    var key = 1
+    var x = 0;
+
+
+    while (x < 4) {
+        const y = 0;
+        while (y < 4) {
+            container.push(<div className="caseNewPiece" key={key} col={x} row={y}></div>)
+            y++;
+            key++;
+        }
+        x++;
+    }
+
+    return (container)
 }
 
 function Home() {
@@ -77,8 +95,20 @@ function Comp(props) {
 
 function Solo() {
     return (
-        <div id="bord">
-            <Makebord />
+        <div id="container-party-solo">
+            <div className="content">
+                <div id="bord">
+                    <Makebord />
+                </div>
+            </div>
+            <aside id="info-party-solo">
+                <div id="next-piece-container">
+                    <div id="solo-next-piece">
+                        <MakeNewPiece />
+                    </div>
+                </div>
+            </aside>
+
         </div>
     )
 }
