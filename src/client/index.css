@@ -144,16 +144,18 @@ body {
 }
 
 #container-party-solo {
-    display: block;
+    display: inline-flex;
+    flex-flow: row wrap;
+    text-align: center;
 
 }
 
-.content {
+.content-bord-solo {
     right: 5px;
 }
 
 #info-party-solo, .content {
-    display: inline-block;
+    display: block;
     height: 500px;
 }
 
@@ -168,4 +170,36 @@ body {
     display: flex;
     flex-wrap: wrap;
     padding: 0 50px 0;
+}
+
+#container-spectre-solo {
+    width: 300px;
+    height: 590px;
+    background-color: #505050;
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+.case-spectre-solo {
+    height: 20px;
+    width: 20px;
+}
+
+#bord_display {
+    left: 50px;
+    float: left;
+    margin: 0 50px;
+    transform: translate3d(0, 0, 0);
+}
+
+#spectre-border-container {
+    background-color: grey;
+    margin: 0 auto;
+    border: #18171b solid 1px;
+    width: 200px;
+    height: 500px;
+    margin-top: 50px;
+    display: flex;
+    flex-wrap: wrap;
 }
