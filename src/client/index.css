@@ -1,0 +1,138 @@
+body {
+    background-color: #808B96;
+    font-family: "comic sans ms";
+}
+
+h3 {
+    font-size: 1.75rem;
+    color: #FFFF;
+    margin: 20px
+}
+
+#app {
+    margin-top: 30px;
+    min-width: 700px
+}
+
+#menu {
+    display: block;
+
+}
+
+body {
+    text-align: center;
+    background-color: #494D50;
+    color: #7D8287;
+}
+
+
+#container-title {
+    height: 130px;
+    width: 260px;
+    margin: 60px auto 70px;
+
+}
+
+#title-img {
+    height: 200px;
+}
+
+#menu-panel {
+    background-color: #232527;
+    border-radius: 20px;
+    margin: 0 auto;
+    width: 700px;
+}
+
+#container-selec-quick {
+    padding: 10px;
+    display: block;
+    margin-bottom: 30px;
+    height: 100x;;
+}
+
+#button-1player, #button-2player {
+    display: inline-block;
+    vertical-align: top;
+    width: 200px;
+    padding: 14px 20px;
+    margin: 5px;
+    margin-top: 5px;
+}
+
+.btn {
+    border: none;
+    border-radius: 2px;
+    transition:  background-color .1s, opacity .5s;
+    margin: 5px;
+    color: #c2c3c4;
+    background-color: #1070c9;
+}
+
+
+.btn:hover {
+    opacity: 0.80;
+    cursor: pointer;
+}
+
+.btn:disabled, .btn[disabled]{
+    opacity: 0.5;
+    color: #9e9e9e;
+    cursor: default;
+}
+
+.input-creat {
+    background-color: rgba(0,0,0,.3);
+    width: 420px;
+    border: none;
+    border-radius: 5px;
+    margin: 5px;
+    color: #7D8287;
+}
+
+#button-start-room {
+    width: 430px;
+    margin: 10px 0 30px;
+}
+
+#search-party {
+    width: 580px;
+}
+
+
+#list-room {
+    background-color: #2D2F32;
+    border-radius: 20px;
+    margin: 0 auto;
+    width: 580px;
+}
+
+.name-list, .creat-list, .player-list {
+    display: inline-block;
+
+}
+
+.name-list {
+    width: 180px;
+}
+
+.creat-list {
+    width: 200px;
+}
+
+.player-list {
+    width: 180px;
+}
+
+#bord {
+    width: 500px;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 30px;
+}
+
+.caseBord {
+    width: 50px;
+    height: 50px;
+    border: solid;
+}
