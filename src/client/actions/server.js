@@ -4,3 +4,9 @@ export const ping = () => {
         type: 'server/ping'
     }
 }
+
+export const nextPiece = () => {
+    return {
+        type: 'server/nextPiece'
+    }
+}

@@ -42,7 +42,7 @@ let config = {
             chunkFilename: '[id].css',
         }),
         new HTMLPlug({
-            template: './public/index.html'
+            template: './index.html'
         }),
         new MiniCssExtractPlugin({
             filename: '[name].css',

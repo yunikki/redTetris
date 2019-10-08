@@ -7,7 +7,7 @@ const logerror = debug('tetris:error')
 const initApp = (app, params, cb) => {
     const { host, port } = params
     const handler = (req, res) => {
-        const file = req.url === '/bundle.js' ? '/../../build/bundle.js' : '/../../index.html'
+        const file = req.url === '/bundle.js' ? '/../../build/bundle.js' : '/../../../public/index.html'
         fs.readFile(__dirname + file, (err, data) => {
             if (err) {
                 logerror(err)
@@ -18,21 +18,20 @@ const initApp = (app, params, cb) => {
             res.end(data)
         })
     }
-
     app.on('request', handler)
 
     app.listen({ host, port }, () => {
-        loginfo(`tetris listen on ${params.url}`)
+        console.log(`tetris listen on ${params.url}`)
         cb()
     })
 }
 
 const initEngine = io => {
     io.on('connection', function (socket) {
-        loginfo("Socket connected: " + socket.id)
+        console.log("Socket connected: " + socket.id)
         socket.on('action', (action) => {
+            console.log(action.type)
             if (action.type === 'server/ping') {
-                console.log("test")
                 socket.emit('action', { type: 'pong' })
             }
         })
@@ -49,10 +48,9 @@ export function create(params) {
                 app.close(() => {
                     app.unref()
                 })
-                loginfo(`Engine stopped.`)
+                console.log(`Engine stopped.`)
                 cb()
             }
-
             initEngine(io)
             resolve({ stop })
         })

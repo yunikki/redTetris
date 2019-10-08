@@ -5,7 +5,6 @@ import { homedir } from 'os';
 
 
 
-
 function Makebord(c) {
     var container = []
     var key = 1

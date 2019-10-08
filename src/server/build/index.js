@@ -9,7 +9,7 @@ var logerror = debug_1.default('tetris:error'), loginfo = debug_1.default('tetri
 var initApp = function (app, params, cb) {
     var host = params.host, port = params.port;
     var handler = function (req, res) {
-        var file = req.url === '/bundle.js' ? '/../../build/bundle.js' : '/../../index.html';
+        var file = req.url === '/bundle.js' ? '/../../build/bundle.js' : '/../../../public/index.html';
         fs_1.default.readFile(__dirname + file, function (err, data) {
             if (err) {
                 logerror(err);
@@ -22,16 +22,16 @@ var initApp = function (app, params, cb) {
     };
     app.on('request', handler);
     app.listen({ host: host, port: port }, function () {
-        loginfo("tetris listen on " + params.url);
+        console.log("tetris listen on " + params.url);
         cb();
     });
 };
 var initEngine = function (io) {
     io.on('connection', function (socket) {
-        loginfo("Socket connected: " + socket.id);
+        console.log("Socket connected: " + socket.id);
         socket.on('action', function (action) {
+            console.log(action.type);
             if (action.type === 'server/ping') {
-                console.log("test");
                 socket.emit('action', { type: 'pong' });
             }
         });
@@ -47,7 +47,7 @@ function create(params) {
                 app.close(function () {
                     app.unref();
                 });
-                loginfo("Engine stopped.");
+                console.log("Engine stopped.");
                 cb();
             };
             initEngine(io);
