@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } from "react-router-dom";
 import { homedir } from 'os';
+import reducer from '../reducers'
 
 
 
@@ -61,6 +62,10 @@ function MakeNewPiece() {
     return (container)
 }
 
+function clickBtnTest() {
+    reducer.store.dispatch({ type: 'server/ping', data: 'Hello!' });
+}
+
 function Home() {
     return (
         <Router>
@@ -71,7 +76,7 @@ function Home() {
                 <div id="menu-panel">
                     <div id="container-selec-quick">
                         <p>Fast Game</p>
-                        <Link id="button-2player" className="btn" to="/solo">One Player</Link>
+                        <Link id="button-2player" className="btn" to="/solo" onClick={clickBtnTest}>One Player</Link>
                         <Link id="button-1player" className="btn" to="/solo">Two Players</Link>
                     </div>
                     <div id="creat-party">

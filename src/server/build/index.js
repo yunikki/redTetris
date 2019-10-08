@@ -9,7 +9,7 @@ var logerror = debug_1.default('tetris:error'), loginfo = debug_1.default('tetri
 var initApp = function (app, params, cb) {
     var host = params.host, port = params.port;
     var handler = function (req, res) {
-        var file = req.url === '/bundle.js' ? '/../../build/bundle.js' : '/../../../public/index.html';
+        var file = req.url === '/bundle.js' ? '/../../build/bundle.js' : '/../../../index.html';
         fs_1.default.readFile(__dirname + file, function (err, data) {
             if (err) {
                 logerror(err);

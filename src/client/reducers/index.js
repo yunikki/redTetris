@@ -1,2 +1,2 @@
-import alert from './alert'
+import alert from './reducer'
 export default alert
