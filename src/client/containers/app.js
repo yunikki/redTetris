@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } from "react-router-dom";
 import { homedir } from 'os';
 import reducer from '../reducers'
+import ReactDOM from 'react-dom';
 
 
 
@@ -67,7 +68,9 @@ function clickBtnTest() {
 }
 
 function chargeSolo() {
-
+    // var doc = document.getElementById("app");
+    // doc.innerHTML = ""
+    ReactDOM.render(Solo(), document.getElementById("app"))
 }
 
 function Home() {
@@ -81,7 +84,7 @@ function Home() {
                     <div id="container-selec-quick">
                         <p>Fast Game</p>
                         <Link id="button-2player" className="btn" to="/solo" onClick={clickBtnTest}>One Player</Link>
-                        <Link id="button-1player" className="btn" to="/solo" onclick={chargeSolo}>Two Players</Link>
+                        <Link id="button-1player" className="btn" to="/solo" onClick={chargeSolo}>Two Players</Link>
                     </div>
                     <div id="creat-party">
                         <p>Create Game</p>
