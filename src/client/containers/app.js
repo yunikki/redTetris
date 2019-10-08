@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } 
 import { homedir } from 'os';
 import reducer from '../reducers'
 import ReactDOM from 'react-dom';
+import { func } from 'prop-types';
 
 
 
@@ -73,6 +74,10 @@ function chargeSolo() {
     ReactDOM.render(Solo(), document.getElementById("app"))
 }
 
+function backMenu() {
+    ReactDOM.render(Home(), document.getElementById("app"));
+}
+
 function Home() {
     return (
         <Router>
@@ -126,6 +131,7 @@ function Comp(props) {
 
 function Solo() {
     return (
+        <Router>
         <div id="container-party-solo">
             <div className="content-bord-solo">
                 <div id="bord">
@@ -138,7 +144,7 @@ function Solo() {
                         <MakeNewPiece />
                     </div>
                 </div>
-                <p>your score :</p>
+                <p>Your Score :</p>
                 <img id="title-img" src="./assets/images/title.png"></img>
                 <div id="container-spectre-solo">
                     <div id="bord_display">
@@ -147,10 +153,11 @@ function Solo() {
                         </div>
                     </div>
                 </div>
-
+            <Link id="return-menu" className="btn" to="/" onClick={backMenu}>Back to Menu</Link>
             </aside>
 
         </div>
+        </Router>
     )
 }
 
