@@ -68,27 +68,27 @@ function Home() {
                 </div>
                 <div id="menu-panel">
                     <div id="container-selec-quick">
-                        <p>parti rapide</p>
-                        <Link id="button-2player" className="btn" to="/solo">tow payer</Link>
-                        <Link id="button-1player" className="btn" to="/solo">one payer</Link>
+                        <p>Fast Game</p>
+                        <Link id="button-2player" className="btn" to="/solo">One Player</Link>
+                        <Link id="button-1player" className="btn" to="/solo">Two Players</Link>
                     </div>
                     <div id="creat-party">
-                        <p>creat room</p>
-                        <input className="input-creat" id="your-name-creat-room" type="text" placeholder="your name" />
-                        <input className="input-creat" id="name-room-creat-room" type="text" placeholder="room name" />
+                        <p>Create Game</p>
+                        <input className="input-creat" id="your-name-creat-room" type="text" placeholder="Your Name" />
+                        <input className="input-creat" id="name-room-creat-room" type="text" placeholder="Room Name" />
                         <br></br>
-                        <div id="button-start-room" className="btn" disabled>creat-room</div>
+                        <div id="button-start-room" className="btn" disabled>Create Room</div>
                     </div>
 
 
                 </div>
-                <h3>join party !</h3>
+                <h3>Join Game!</h3>
                 <input className="input-creat" id="search-party" type="text" placeholder="search room" />
                 <div id="list-room">
                     <div id="list-room-line-first">
-                        <div className="name-list">name room</div>
-                        <div className="creat-list">cretor</div>
-                        <div className="player-list">player</div>
+                        <div className="name-list">Room name</div>
+                        <div className="creat-list">Creator</div>
+                        <div className="player-list">Players</div>
                     </div>
                 </div>
             </div>
