@@ -66,6 +66,10 @@ function clickBtnTest() {
     reducer.store.dispatch({ type: 'server/ping', data: 'Hello!' });
 }
 
+function chargeSolo() {
+
+}
+
 function Home() {
     return (
         <Router>
@@ -77,7 +81,7 @@ function Home() {
                     <div id="container-selec-quick">
                         <p>Fast Game</p>
                         <Link id="button-2player" className="btn" to="/solo" onClick={clickBtnTest}>One Player</Link>
-                        <Link id="button-1player" className="btn" to="/solo">Two Players</Link>
+                        <Link id="button-1player" className="btn" to="/solo" onclick={chargeSolo}>Two Players</Link>
                     </div>
                     <div id="creat-party">
                         <p>Create Game</p>
