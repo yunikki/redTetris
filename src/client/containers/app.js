@@ -3,6 +3,9 @@ import { connect } from 'react-redux'
 import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } from "react-router-dom";
 import { homedir } from 'os';
 
+
+
+
 function Makebord(c) {
     var container = []
     var key = 1
