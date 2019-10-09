@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var fs_1 = __importDefault(require("fs"));
 var debug_1 = __importDefault(require("debug"));
+var classPieces_1 = __importDefault(require("./pieces/classPieces"));
 var logerror = debug_1.default('tetris:error'), loginfo = debug_1.default('tetris:info');
 var initApp = function (app, params, cb) {
     var host = params.host, port = params.port;
@@ -33,6 +34,9 @@ var initEngine = function (io) {
             console.log(action.type);
             if (action.type === 'server/ping') {
                 socket.emit('action', { type: 'pong' });
+            }
+            if (action.type === 'server/piecesSolo') {
+                socket.emit('action', { type: 'newPiece', piece: classPieces_1.default.getPieces() });
             }
         });
     });

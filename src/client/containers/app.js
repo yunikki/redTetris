@@ -90,12 +90,10 @@ function MakeNewPiece() {
 }
 
 function clickBtnTest() {
-    reducer.store.dispatch({ type: 'server/ping', data: 'Hello!' });
+    reducer.store.dispatch({ type: 'server/piecesSolo', data: 'Hello!' });
 }
 
 function chargeSolo() {
-    // var doc = document.getElementById("app");
-    // doc.innerHTML = ""
     ReactDOM.render(Solo(), document.getElementById("app"))
 }
 
@@ -162,7 +160,7 @@ function Solo() {
 
     return (
         <Router>
-            <div id="container-party-solo">
+            <div id="container-party-solo" onLoad={console.log('bite')}>
                 <div className="content-bord-solo">
                     <div id="bord">
                         <Makebord />
@@ -170,7 +168,7 @@ function Solo() {
                 </div>
                 <aside id="info-party-solo">
                     <div id="next-piece-container">
-                        <div id="solo-next-piece">
+                        <div id="solo-next-piece" onClick={clickBtnTest}>
                             <MakeNewPiece />
                         </div>
                     </div>

@@ -1,5 +1,6 @@
 import fs from 'fs'
 import debug from 'debug'
+import p from './pieces/classPieces'
 
 const logerror = debug('tetris:error')
     , loginfo = debug('tetris:info')
@@ -33,6 +34,10 @@ const initEngine = io => {
             console.log(action.type)
             if (action.type === 'server/ping') {
                 socket.emit('action', { type: 'pong' })
+            }
+            if (action.type === 'server/piecesSolo') {
+                socket.emit('action', { type: 'newPiece', piece: p.getPieces() })
+
             }
         })
     })

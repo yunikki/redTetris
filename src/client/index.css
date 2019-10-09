@@ -166,7 +166,7 @@ body {
 }
 
 #solo-next-piece {
-    width: 200px;
+    width: 300px;
     display: flex;
     flex-wrap: wrap;
     padding: 0 50px 0;
