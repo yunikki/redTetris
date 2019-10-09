@@ -177,8 +177,8 @@ body {
     height: 590px;
     background-color: #505050;
     display: flex;
-    flex-wrap: wrap;
-
+    overflow: hidden;
+    position: relative;
 }
 
 .case-spectre-solo {
@@ -187,10 +187,11 @@ body {
 }
 
 #bord_display {
-    left: 50px;
-    float: left;
-    margin: 0 50px;
-    transform: translate3d(0, 0, 0);
+    /* position: relative; */
+    height: 500px;
+    width: 300px;
+
+    /* animation: AutoSlide 5s infinite linear; */
 }
 
 #spectre-border-container {
@@ -199,7 +200,32 @@ body {
     border: #18171b solid 1px;
     width: 200px;
     height: 500px;
-    margin-top: 50px;
+    margin: 50px 50px 7px;
+}
+
+.wrapper-carrou {
+    width: fit-content;
     display: flex;
-    flex-wrap: wrap;
+    flex-flow: row;
+    position: relative;
+    animation: AniCarrou 5s infinite linear;
+}
+
+@keyframes AniCarrou {
+    0% {
+        transform: translateX(0);
+    }
+    99% {
+        transform: translateX(-100%);
+
+        /* right: 0px; */
+    }
+}
+@keyframes AutoSlide {
+	0%, 15% {
+		transform: translateX(0);
+	}
+    100% {
+		transform: translateX(-100%);
+	}
 }

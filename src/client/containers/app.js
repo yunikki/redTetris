@@ -26,7 +26,7 @@ function Makebord(c) {
     return (container)
 }
 
-function SpectreSolo(c) {
+function SpectreSolo_(name, nb) {
     var container = []
     var key = 1
     var x = 0;
@@ -41,7 +41,32 @@ function SpectreSolo(c) {
         x++;
     }
 
-    return (container)
+    return (
+        <div id="bord_display" key={nb}>
+            <div id="spectre-border-container">
+                container
+        </div>
+            <div>{name}</div>
+        </div>
+    )
+}
+
+function SpectreSolo(props) {
+    var container = []
+    var key = 1
+    var nb = props.name.length
+    console.log(nb)
+    while (nb) {
+        container.push(SpectreSolo_(props.name[nb - 1], nb))
+        nb -= 1
+        key += 1
+    }
+
+    return (
+        <div className="wrapper-carrou" style={{ width: (props.name.length - 1) * 300 + "px" }}>
+            {container}
+        </div>
+    )
 }
 
 
@@ -130,33 +155,36 @@ function Comp(props) {
 }
 
 function Solo() {
+    var name = []
+    name.push("mathieu")
+    name.push("zaz")
+    name.push("norminet")
+
     return (
         <Router>
-        <div id="container-party-solo">
-            <div className="content-bord-solo">
-                <div id="bord">
-                    <Makebord />
-                </div>
-            </div>
-            <aside id="info-party-solo">
-                <div id="next-piece-container">
-                    <div id="solo-next-piece">
-                        <MakeNewPiece />
+            <div id="container-party-solo">
+                <div className="content-bord-solo">
+                    <div id="bord">
+                        <Makebord />
                     </div>
                 </div>
-                <p>Your Score :</p>
-                <img id="title-img" src="./assets/images/title.png"></img>
-                <div id="container-spectre-solo">
-                    <div id="bord_display">
-                        <div id="spectre-border-container">
-                            <SpectreSolo />
+                <aside id="info-party-solo">
+                    <div id="next-piece-container">
+                        <div id="solo-next-piece">
+                            <MakeNewPiece />
                         </div>
                     </div>
-                </div>
-            <Link id="return-menu" className="btn" to="/" onClick={backMenu}>Back to Menu</Link>
-            </aside>
+                    <p>Your Score :</p>
+                    <img id="title-img" src="./assets/images/title.png"></img>
+                    <div id="container-spectre-solo">
 
-        </div>
+                        <SpectreSolo name={name} />
+
+                    </div>
+                    <Link id="return-menu" className="btn" to="/" onClick={backMenu}>Back to Menu</Link>
+                </aside>
+
+            </div>
         </Router>
     )
 }
