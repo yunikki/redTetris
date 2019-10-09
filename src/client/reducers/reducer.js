@@ -21,25 +21,6 @@ function reducer(state = {}, action) {
     }
 }
 
-function MakeNewPiece() {
-    var container = []
-    var key = 1
-    var x = 0;
-
-    console.log('test')
-    while (x < 4) {
-        const y = 0;
-        while (y < 4) {
-            container.push(<div className="caseNewPiece" key={key} col={x} row={y}></div>)
-            y++;
-            key++;
-        }
-        x++;
-    }
-
-    return (container)
-}
-
 function affNewPiece(piece) {
     var div = document.getElementsByClassName("caseNewPiece")
     var x = 0;
