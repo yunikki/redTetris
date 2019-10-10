@@ -4,6 +4,7 @@ import createSocketIoMiddleware from 'redux-socket.io';
 import io from 'socket.io-client';
 import React from 'react'
 import ReactDOM from 'react-dom';
+import App from '../containers/app.js';
 
 
 let socket = io('http://localhost:3004');
@@ -15,28 +16,10 @@ function reducer(state = {}, action) {
         case 'pong':
             return Object.assign({}, { message: "oui" });
         case 'newPiece':
-            return affNewPiece(action.piece);
+            store.piece = action.piece
+            ReactDOM.render(<App test='test' />, document.getElementById('app'))
         default:
             return state;
-    }
-}
-
-function affNewPiece(piece) {
-    var div = document.getElementsByClassName("caseNewPiece")
-    var x = 0;
-    var countDiv = 0;
-    console.log(div)
-    while (x < 4) {
-        var y = 0;
-        while (y < 4) {
-            div[countDiv].style.backgroundColor = "#505050"
-            if (piece[y][x] == '#')
-                div[countDiv].style.backgroundColor = "red"
-            //console.log(piece[y][x])
-            y += 1;
-            countDiv += 1
-        }
-        x += 1;
     }
 }
 
