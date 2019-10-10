@@ -1,18 +1,19 @@
 import React from 'react'
-import reducer from '../reducers'
+import { connect } from 'react-redux';
+import { object } from 'prop-types';
 
-function MakeNewPiece() {
+function MakeNewPiece({ piece }) {
     var container = []
     var key = 1
     var x = 0;
-
+    console.log(piece)
     while (x < 4) {
         const y = 0;
         while (y < 4) {
-            if (reducer.store.piece === undefined)
+            if (piece === undefined)
                 container.push(<div className="caseNewPiece" key={key} col={x} row={y}></div>);
             else {
-                if (reducer.store.piece[y][x] == '#')
+                if (piece[y][x] == '#')
                     container.push(<div className="caseNewPiece" key={key} col={x} row={y} style={{ backgroundColor: "red" }} ></div>);
                 else
                     container.push(<div className="caseNewPiece" key={key} col={x} row={y} style={{ backgroundColor: "#505050" }} ></div>);
@@ -23,6 +24,19 @@ function MakeNewPiece() {
         x++;
     }
     return (container)
+
 }
 
-export default MakeNewPiece
+MakeNewPiece.propTypes = {
+    piece: object
+}
+
+const mapStateToProps = (state) => {
+    console.log("mapstatetoprops");
+
+    return ({
+        piece: state.piece
+    })
+};
+
+export default connect(mapStateToProps)(MakeNewPiece)

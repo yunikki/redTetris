@@ -3,16 +3,14 @@ import ReactDOM from 'react-dom';
 import Solo from './solo'
 import Home from './home'
 
-function clickBtnTest() {
-    reducer.store.dispatch({ type: 'server/piecesSolo', data: 'Hello!' });
+export function dipatcherOnNewPiece(dispatch) {
+    return () => dispatch({ type: 'server/piecesSolo', data: 'Hello!' });
 }
 
-function chargeSolo() {
-    ReactDOM.render(Solo(), document.getElementById("app"))
+export function chargePageHome(dispatch) {
+    return () => dispatch({ type: 'chargeHome', data: 'Hello!' });
 }
 
-function backMenu() {
-    ReactDOM.render(Home(), document.getElementById("app"));
+export function chargePageSolo(dispatch) {
+    return () => dispatch({ type: 'chargeSolo', data: 'Hello!' });
 }
-
-export default { clickBtnTest, chargeSolo, backMenu }

@@ -2,10 +2,12 @@ import React from 'react'
 import SpectreSolo from './spectreSolo'
 import Makebord from './makebord'
 import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } from "react-router-dom";
-import a from "./action"
+import { dipatcherOnNewPiece, chargePageHome } from "./action"
 import MakeNewPiece from './makeMewPiece'
+import { connect } from 'react-redux';
+import { func } from 'prop-types';
 
-function Solo() {
+function Solo({ onClickt, pageHome }) {
     var name = []
 
     return (
@@ -18,7 +20,7 @@ function Solo() {
                 </div>
                 <aside id="info-party-solo">
                     <div id="next-piece-container">
-                        <div id="solo-next-piece" onClick={a.clickBtnTest}>
+                        <div id="solo-next-piece" onClick={onClickt}>
                             <MakeNewPiece />
                         </div>
                     </div>
@@ -29,7 +31,7 @@ function Solo() {
                         <SpectreSolo name={name} />
 
                     </div>
-                    <Link id="return-menu" className="btn" to="/" onClick={a.backMenu}>Back to Menu</Link>
+                    <Link id="return-menu" className="btn" to="/" onClick={pageHome}>Back to Menu</Link>
                 </aside>
 
             </div>
@@ -37,4 +39,16 @@ function Solo() {
     )
 }
 
-export default Solo
+Solo.propTypes = {
+    onClickt: func
+};
+
+const mapStateToProps = (state, ownProps) => ({
+
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    onClickt: dipatcherOnNewPiece(dispatch),
+    pageHome: chargePageHome(dispatch)
+})
+export default connect(mapStateToProps, mapDispatchToProps)(Solo)

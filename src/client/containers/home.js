@@ -1,9 +1,23 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } from "react-router-dom";
-import a from "./action"
+import reducer from '../reducers'
+import { connect } from 'react-redux';
+import { chargePageSolo } from './action'
+
+function test() {
+    console.log(test)
+}
+
+function inpuYourName(props) {
+
+}
+
+function inputNameRoom(props) {
+
+}
 
 
-function Home() {
+function Home({ pageSolo }) {
     return (
         <Router>
             <div id="menu">
@@ -13,15 +27,15 @@ function Home() {
                 <div id="menu-panel">
                     <div id="container-selec-quick">
                         <p>Fast Game</p>
-                        <Link id="button-2player" className="btn" to="/solo" onClick={a.clickBtnTest}>One Player</Link>
-                        <Link id="button-1player" className="btn" to="/solo" onClick={a.chargeSolo}>Two Players</Link>
+                        {/* <Link id="button-2player" className="btn" to="/solo" onClick={a.clickBtnTest}>One Player</Link>*/}
+                        <Link id="button-1player" className="btn" to="/solo" onClick={pageSolo}>Two Players</Link>
                     </div>
                     <div id="creat-party">
                         <p>Create Game</p>
-                        <input className="input-creat" id="your-name-creat-room" type="text" placeholder="Your Name" />
-                        <input className="input-creat" id="name-room-creat-room" type="text" placeholder="Room Name" />
+                        <input className="input-creat" id="your-name-creat-room" type="text" placeholder="Your Name" onChange={inpuYourName} />
+                        <input className="input-creat" id="name-room-creat-room" type="text" placeholder="Room Name" onChange={inputNameRoom} />
                         <br></br>
-                        <div id="button-start-room" className="btn" disabled>Create Room</div>
+                        <div id="button-start-room" className="btn" onClick={test} disabled>Create Room</div>
                     </div>
 
 
@@ -41,4 +55,11 @@ function Home() {
     )
 }
 
-export default Home
+const mapStateToProps = (state, ownProps) => ({
+
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    pageSolo: chargePageSolo(dispatch)
+})
+export default connect(mapStateToProps, mapDispatchToProps)(Home)

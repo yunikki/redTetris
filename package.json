@@ -34,6 +34,7 @@
     "http": "0.0.0",
     "jest": "^24.9.0",
     "mini-css-extract-plugin": "^0.8.0",
+    "proptypes": "^1.1.0",
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
     "socket.io": "^2.3.0",
