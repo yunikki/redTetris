@@ -5,6 +5,7 @@ export const CHANGE_HOME = 'chargeHome'
 export const CHANGE_SOLO = 'chargeSolo'
 export const CHANGE_INPUT_NAME = 'CHANGE_INPUT_NAME'
 export const CHANGE_INPUT_NAME_ROOM = 'CHANGE_INPUT_NAME_ROOM'
+export const CHARGE_LOBBY = 'CHARGE_LOBBY'
 
 export const dataChangeHome = () => {
     return {
@@ -15,6 +16,12 @@ export const dataChangeHome = () => {
 export const dataChangeSolo = () => {
     return {
         type: CHANGE_SOLO,
+    }
+}
+
+export const dataChargeLobby = () => {
+    return {
+        type: CHARGE_LOBBY,
     }
 }
 

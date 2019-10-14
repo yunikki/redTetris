@@ -1,4 +1,4 @@
-import { dataChangeHome, dataChangeSolo, dataChangeInputName, dataChangeInputNameRoom } from '../actions'
+import { dataChangeHome, dataChangeSolo, dataChangeInputName, dataChangeInputNameRoom, dataChargeLobby } from '../actions'
 import { dataPiecesSolo } from '../actions/server'
 
 export function dipatcherOnNewPiece(dispatch) {
@@ -21,4 +21,8 @@ export function inputYourName(dispatch/*, generateAction*/) {
 
 export function inputYourNameRoom(dispatch/*, generateAction*/) {
     return (e) => { dispatch(dataChangeInputNameRoom(e.target.value)) };
+}
+
+export function chargeLobby(dispatch/*, generateAction*/) {
+    return () => { dispatch(dataChargeLobby()) };
 }

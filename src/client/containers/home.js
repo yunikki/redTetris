@@ -2,13 +2,13 @@ import React from 'react'
 import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } from "react-router-dom";
 import reducer from '../reducers'
 import { connect } from 'react-redux';
-import { chargePageSolo, inputYourName, inputYourNameRoom } from '../components/action'
+import { chargePageSolo, inputYourName, inputYourNameRoom, chargeLobby } from '../components/action'
 
-function test() {
-    console.log(test)
+function notChargeLobby() {
+    console.log('test')
 }
 
-function Home({ pageSolo, inputYourName, inputYourNameRoom, state }) {
+function Home({ pageSolo, inputYourName, inputYourNameRoom, state, chargeLobby }) {
     return (
         <Router>
             <div id="menu">
@@ -26,7 +26,7 @@ function Home({ pageSolo, inputYourName, inputYourNameRoom, state }) {
                         <input className="input-creat" id="your-name-creat-room" type="text" placeholder="Your Name" onChange={inputYourName} />
                         <input className="input-creat" id="name-room-creat-room" type="text" placeholder="Room Name" onChange={inputYourNameRoom} />
                         <br></br>
-                        <div id="button-start-room" className="btn" onClick={test} disabled={!state.runRoom}>Create Room</div>
+                        <Link id="button-start-room" className="btn" to={!state.runRoom ? "" : "/#" + state.inputNameRoom + '[' + state.inputName + ']'} onClick={state.runRoom ? chargeLobby : notChargeLobby} disabled={!state.runRoom}>Create Room</Link>
                     </div>
 
 
@@ -54,7 +54,8 @@ const mapDispatchToProps = (dispatch) => {
     return ({
         pageSolo: chargePageSolo(dispatch),
         inputYourName: inputYourName(dispatch),
-        inputYourNameRoom: inputYourNameRoom(dispatch)
+        inputYourNameRoom: inputYourNameRoom(dispatch),
+        chargeLobby: chargeLobby(dispatch)
     });
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

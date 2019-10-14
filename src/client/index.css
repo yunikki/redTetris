@@ -9,6 +9,10 @@ h3 {
     margin: 20px
 }
 
+H2 {
+    color: #FFFF;
+}
+
 #app {
     margin-top: 30px;
     min-width: 700px
@@ -228,4 +232,21 @@ body {
     100% {
 		transform: translateX(-100%);
 	}
+}
+
+
+.list_name_lobby {
+    margin: 2px 0;
+}
+
+.container_option {
+    display: block;
+}
+
+.name_option {
+    display: inline-block
+}
+
+.check_option {
+    margin-left: 10px;
 }

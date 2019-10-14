@@ -6,15 +6,18 @@ import ReactDOM from 'react-dom';
 import App from '../containers/app.js';
 
 function reducer(state = initialState, action) {
+    console.log(action.type)
     switch (action.type) {
         case 'pong':
             return Object.assign({}, { message: "oui" });
         case 'newPiece':
             return { ...state, piece: { ...action.piece } };
         case 'chargeHome':
-            return { ...state, location: "Home" }
+            return { ...state, location: "Home", runRoom: false, inputNameRoom: "", inputName: "" }
         case 'chargeSolo':
             return { ...state, location: "Solo" }
+        case 'CHARGE_LOBBY':
+            return { ...state, location: "Lobby" }
         case 'CHANGE_INPUT_NAME':
             return { ...state, inputName: action.data, runRoom: action.data != "" && state.inputNameRoom != "" }
         case 'CHANGE_INPUT_NAME_ROOM':

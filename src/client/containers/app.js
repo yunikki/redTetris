@@ -2,16 +2,17 @@ import React from 'react'
 import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } from "react-router-dom";
 import Home from './home'
 import Solo from './solo'
+import Lobby from './lobby'
 import { connect } from 'react-redux';
 
 
 function Comp(props) {
     const { match, location } = props;
     const re = location.hash.match(/#(.*)\[(.*)\]/)
-
+    console.log(props)
     if (re === null)
         return <Home />
-    return <div>{` room : ${re[1]} <> ${re[2]}`}</div>;
+    return <Lobby />
 }
 
 const MyComp = withRouter(Comp)
@@ -23,16 +24,17 @@ function App({ location }) {
     else if (location == "Solo") {
         return <Solo />
     }
-    return <Router>
-        <Switch>
-            <Route exact path="/solo">
-                <Solo />
-            </Route>
-            <Route path="/">
-                <MyComp />
-            </Route>
-        </Switch>
-    </Router>
+    else if (location == "Lobby")
+        return <Lobby />
+    else
+        return <Router>
+            <Switch>
+
+                <Route path="/">
+                    <MyComp />
+                </Route>
+            </Switch>
+        </Router>
 
 }
 
