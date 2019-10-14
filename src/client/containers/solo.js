@@ -1,8 +1,8 @@
 import React from 'react'
 import SpectreSolo from './spectreSolo'
-import Makebord from './makebord'
+import Makebord from '../components/makebord'
 import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } from "react-router-dom";
-import { dipatcherOnNewPiece, chargePageHome } from "./action"
+import { dipatcherOnNewPiece, chargePageHome } from "../components/action"
 import MakeNewPiece from './makeMewPiece'
 import { connect } from 'react-redux';
 import { func } from 'prop-types';
@@ -12,7 +12,7 @@ function Solo({ onClickt, pageHome }) {
 
     return (
         <Router>
-            <div id="container-party-solo" onLoad={console.log('bite')}>
+            <div id="container-party-solo" onLoad={console.log('testonload')}>
                 <div className="content-bord-solo">
                     <div id="bord">
                         <Makebord />

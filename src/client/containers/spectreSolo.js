@@ -29,7 +29,6 @@ function SpectreSolo(props) {
     var container = []
     var key = 1
     var nb = props.name.length
-    console.log(nb)
     while (nb) {
         container.push(SpectreSolo_(props.name[nb - 1], nb))
         nb -= 1

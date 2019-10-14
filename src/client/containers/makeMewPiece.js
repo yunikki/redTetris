@@ -6,7 +6,6 @@ function MakeNewPiece({ piece }) {
     var container = []
     var key = 1
     var x = 0;
-    console.log(piece)
     while (x < 4) {
         const y = 0;
         while (y < 4) {
@@ -32,8 +31,6 @@ MakeNewPiece.propTypes = {
 }
 
 const mapStateToProps = (state) => {
-    console.log("mapstatetoprops");
-
     return ({
         piece: state.piece
     })

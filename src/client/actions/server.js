@@ -1,12 +1,7 @@
+export const SERVEUR_PIECESSOLO = 'server/piecesSolo'
 
-export const ping = () => {
+export const dataPiecesSolo = () => {
     return {
-        type: 'server/ping'
-    }
-}
-
-export const nextPiece = () => {
-    return {
-        type: 'server/nextPiece'
+        type: SERVEUR_PIECESSOLO
     }
 }
