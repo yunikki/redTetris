@@ -9,23 +9,23 @@ import { connect } from 'react-redux';
 function Comp(props) {
     const { match, location } = props;
     const re = location.hash.match(/#(.*)\[(.*)\]/)
-    console.log(props)
-    if (re === null)
-        return <Home />
-    return <Lobby />
+    console.log("props", props)
+    // if (re === null || props.inputName == "" || props.inputNameRoom == "")
+    return <Home />
+
 }
 
 const MyComp = withRouter(Comp)
 
-function App({ location }) {
-    console.log(location)
-    if (location == "Home") {
+function App({ state }) {
+    console.log('state', state.location)
+    if (state.location == "Home") {
         return <Router><MyComp /></Router>
     }
-    else if (location == "Solo") {
+    else if (state.location == "Solo") {
         return <Solo />
     }
-    else if (location == "Lobby")
+    else if (state.location == "Lobby")
         return <Lobby />
     else
         return <Router>
@@ -40,7 +40,7 @@ function App({ location }) {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-    location: state.location
+    state
 })
 
 

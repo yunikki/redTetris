@@ -17,7 +17,8 @@ const initialState = {
     inputName: "",
     inputNameRoom: "",
     runRoom: false,
-    location: "Home"
+    location: "Home",
+    master: false
 }
 let socket = io('http://localhost:3004');
 let socketIoMiddleware = createSocketIoMiddleware(socket, "server/");

@@ -17,11 +17,19 @@ function reducer(state = initialState, action) {
         case 'chargeSolo':
             return { ...state, location: "Solo", piece: undefined }
         case 'CHARGE_LOBBY':
-            return { ...state, location: "Lobby" }
+            return { ...state, location: "Lobby", master: true }
         case 'CHANGE_INPUT_NAME':
-            return { ...state, inputName: action.data, runRoom: action.data != "" && state.inputNameRoom != "" }
+            return {
+                ...state,
+                inputName: action.data,
+                runRoom: action.data != "" && state.inputNameRoom != "",
+            }
         case 'CHANGE_INPUT_NAME_ROOM':
-            return { ...state, inputNameRoom: action.data, runRoom: action.data != "" && state.inputName != "" }
+            return {
+                ...state,
+                inputNameRoom: action.data,
+                runRoom: action.data != "" && state.inputName != ""
+            }
         default:
             return state;
     }
