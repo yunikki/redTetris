@@ -39,7 +39,7 @@ var initEngine = function (io) {
                 socket.emit('action', { type: 'newPiece', piece: classPieces_1.default.getPieces() });
             }
             if (action.type === 'server/creatRoom') {
-                console.log('le nom de la room est :' + action.data)
+                console.log('le nom de la room est :' + action.data);
             }
         });
     });

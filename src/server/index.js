@@ -37,7 +37,9 @@ const initEngine = io => {
             }
             if (action.type === 'server/piecesSolo') {
                 socket.emit('action', { type: 'newPiece', piece: p.getPieces() })
-
+            }
+            if (action.type === 'server/creatRoom') {
+                console.log('le nom de la room est :' + action.data)
             }
         })
     })
