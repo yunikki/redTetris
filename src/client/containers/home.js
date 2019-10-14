@@ -3,9 +3,12 @@ import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } 
 import reducer from '../reducers'
 import { connect } from 'react-redux';
 import { chargePageSolo, inputYourName, inputYourNameRoom, chargeLobby } from '../components/action'
+import { dataChargeLobby } from '../actions'
+import { dataCreateRoom } from '../actions/server'
 
 function notChargeLobby() {
     console.log('test')
+    console.log(getState())
 }
 
 function Home({ pageSolo, inputYourName, inputYourNameRoom, state, chargeLobby }) {
@@ -26,7 +29,7 @@ function Home({ pageSolo, inputYourName, inputYourNameRoom, state, chargeLobby }
                         <input className="input-creat" id="your-name-creat-room" type="text" placeholder="Your Name" onChange={inputYourName} />
                         <input className="input-creat" id="name-room-creat-room" type="text" placeholder="Room Name" onChange={inputYourNameRoom} />
                         <br></br>
-                        <Link id="button-start-room" className="btn" to={!state.runRoom ? "" : "/#" + state.inputNameRoom + '[' + state.inputName + ']'} onClick={state.runRoom ? chargeLobby : notChargeLobby} disabled={!state.runRoom}>Create Room</Link>
+                        <Link id="button-start-room" className="btn" to={!state.runRoom ? "" : "/#" + state.inputNameRoom + '[' + state.inputName + ']'} onClick={state.runRoom ? () => chargeLobby(state) : notChargeLobby} disabled={!state.runRoom}>Create Room</Link>
                     </div>
 
 
@@ -55,7 +58,10 @@ const mapDispatchToProps = (dispatch) => {
         pageSolo: chargePageSolo(dispatch),
         inputYourName: inputYourName(dispatch),
         inputYourNameRoom: inputYourNameRoom(dispatch),
-        chargeLobby: chargeLobby(dispatch)
+        chargeLobby: (state) => {
+            dispatch(dataChargeLobby())
+            dispatch(dataCreateRoom(state))
+        }
     });
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

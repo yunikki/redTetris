@@ -38,6 +38,9 @@ var initEngine = function (io) {
             if (action.type === 'server/piecesSolo') {
                 socket.emit('action', { type: 'newPiece', piece: classPieces_1.default.getPieces() });
             }
+            if (action.type === 'server/creatRoom') {
+                console.log('le nom de la room est :' + action.data)
+            }
         });
     });
 };

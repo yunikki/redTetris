@@ -42,7 +42,7 @@ export function NameEnnemy({ state }) {
 
     for (var i in Name) {
         ret.push(
-            <p className="list_name_lobby"> {Name[i] + ' ' + i}</p>
+            <p className="list_name_lobby" key={i}> {Name[i] + ' ' + i}</p>
         )
     }
     return (ret)
