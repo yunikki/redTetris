@@ -18,6 +18,7 @@ function Comp(props) {
 const MyComp = withRouter(Comp)
 
 function App({ location }) {
+    console.log(location)
     if (location == "Home") {
         return <Router><MyComp /></Router>
     }

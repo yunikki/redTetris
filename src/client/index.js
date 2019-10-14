@@ -16,7 +16,8 @@ import io from 'socket.io-client';
 const initialState = {
     inputName: "",
     inputNameRoom: "",
-    runRoom: false
+    runRoom: false,
+    location: "Home"
 }
 let socket = io('http://localhost:3004');
 let socketIoMiddleware = createSocketIoMiddleware(socket, "server/");
