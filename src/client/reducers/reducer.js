@@ -30,6 +30,11 @@ function reducer(state = initialState, action) {
                 inputNameRoom: action.data,
                 runRoom: action.data != "" && state.inputName != ""
             }
+        case 'SAVE_SEARCH':
+            return {
+                ...state,
+                nameSearch: action.data
+            }
         default:
             return state;
     }

@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var fs_1 = __importDefault(require("fs"));
 var debug_1 = __importDefault(require("debug"));
 var classPieces_1 = __importDefault(require("./pieces/classPieces"));
+var joinRoom_1 = require("./rooms/joinRoom");
 var logerror = debug_1.default('tetris:error'), loginfo = debug_1.default('tetris:info');
 var initApp = function (app, params, cb) {
     var host = params.host, port = params.port;
@@ -27,11 +28,11 @@ var initApp = function (app, params, cb) {
         cb();
     });
 };
+var rooms_array = [];
 var initEngine = function (io) {
     io.on('connection', function (socket) {
         console.log("Socket connected: " + socket.id);
         socket.on('action', function (action) {
-            console.log(action.type);
             if (action.type === 'server/ping') {
                 socket.emit('action', { type: 'pong' });
             }
@@ -39,7 +40,14 @@ var initEngine = function (io) {
                 socket.emit('action', { type: 'newPiece', piece: classPieces_1.default.getPieces() });
             }
             if (action.type === 'server/creatRoom') {
-                console.log('le nom de la room est :' + action.data);
+                rooms_array = joinRoom_1.joinRoom(action.roomName, action.playerName, action.socketID, rooms_array);
+                var room = joinRoom_1.getRoom(action.playerName, rooms_array);
+                console.log(room);
+            }
+            if (action.type == 'server/searchRoom') {
+                console.log("Socket Id: ", action.socketID);
+                console.log("Searching for room, searching for: ", action.search);
+                //TODO -> Recherche des parties en fonction de action.search et le retourner au front
             }
         });
     });

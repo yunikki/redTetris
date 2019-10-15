@@ -6,6 +6,7 @@ export const CHANGE_SOLO = 'chargeSolo'
 export const CHANGE_INPUT_NAME = 'CHANGE_INPUT_NAME'
 export const CHANGE_INPUT_NAME_ROOM = 'CHANGE_INPUT_NAME_ROOM'
 export const CHARGE_LOBBY = 'CHARGE_LOBBY'
+export const SAVE_SEARCH = 'SAVE_SEARCH'
 
 export const dataChangeHome = () => {
     return {
@@ -35,6 +36,13 @@ export const dataChangeInputName = (val) => {
 export const dataChangeInputNameRoom = (val) => {
     return {
         type: CHANGE_INPUT_NAME_ROOM,
+        data: val
+    }
+}
+
+export const saveResearch = (val) => {
+    return {
+        type: SAVE_SEARCH,
         data: val
     }
 }

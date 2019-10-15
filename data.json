@@ -1,0 +1,19 @@
+{
+    "rooms": [
+        {
+            "roomName": "",
+            "players": [
+                {
+                    "socketID": null,
+                    "grid": [],
+                    "playerName": "",
+                    "gameMaster": 0
+                }
+            ],
+            "rules" : [
+                
+            ]
+        }
+
+    ]
+}
