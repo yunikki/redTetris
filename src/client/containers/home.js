@@ -34,7 +34,7 @@ function Home({ pageSolo, inputYourName, inputYourNameRoom, state, chargeLobby, 
 
                 </div>
                 <h3>Join Game!</h3>
-                <input className="input-creat" value={state.inputName} id="search-party" type="text" placeholder="entre un nom avent d aller dans un room" onChange={(e) => startSearch(e)} />
+                <input className="input-creat" value={state.inputName} id="search-party" type="text" placeholder="entre un nom avent d aller dans une room" onChange={(e) => startSearch(e)} />
                 <div id="list-room">
                     <div id="list-room-line-first">
                         <div className="name-list">Room name</div>
