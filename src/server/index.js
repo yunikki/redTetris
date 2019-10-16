@@ -3,7 +3,7 @@ import debug from 'debug'
 import p from './pieces/classPieces'
 import { getSearchResult } from './game/Game'
 import { Player } from './player/Player'
-import { Game, joinGame, getGame } from './game/Game'
+import { Game, joinGame, getGame, removePlayer } from './game/Game'
 
 
 const logerror = debug('tetris:error')
@@ -53,7 +53,12 @@ const initEngine = io => {
         })
 
         socket.on('disconnect', function(){
-            console.log("User Disconnected");
+            let player = removePlayer("", socket.id, rooms_array)
+            if (player == null)
+                console.log("Unknown User Disconnected");
+            else
+                console.log("User disconnected : ", player)
+            console.log(rooms_array)
         })
     })
 }

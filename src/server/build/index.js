@@ -49,7 +49,12 @@ var initEngine = function (io) {
             }
         });
         socket.on('disconnect', function () {
-            console.log("User Disconnected");
+            var player = Game_2.removePlayer("", socket.id, rooms_array);
+            if (player == null)
+                console.log("Unknown User Disconnected");
+            else
+                console.log("User disconnected : ", player);
+            console.log(rooms_array);
         });
     });
 };

@@ -29,6 +29,29 @@ export class Game{
         }
         return null
     }
+
+    removePlayer(playerName = "", socketID = ""){
+        let player;
+        if (playerName.length == 0){
+            for (let i = 0; i < this.players.length; i++){
+                if (this.players[i].socketID == socketID){
+                    player = this.players[i];
+                    this.players.shift(i, 1)
+                    return player
+                }
+            }
+        }
+        else{
+            for (let j = 0; j < this.players.length; j++){
+                if (this.players[i].name == playerName){
+                    player = this.players[i];
+                    this.players.shift(i, 1)
+                    return player
+                }
+            }
+        }
+        return null;
+    }
 }
 
 export function joinGame(roomName, playerName, playerSocket, games_array){
@@ -66,4 +89,16 @@ export function getSearchResult(rooms_array){
         })
     }
     return search_result;
+}
+
+export function removePlayer(playerName = "", socketID = "", games_array){
+    let player;
+    for (let i = 0; i < games_array.length; i++){
+        player = games_array[i].removePlayer(playerName, socketID)        
+        if (player == null)
+            i++;
+        else
+            return player
+    }
+    return null
 }
