@@ -5,7 +5,7 @@ import { chargePageSolo, chargePageHome } from '../components/action'
 import { OptionRoom, NameEnnemy } from '../components/optionRoom'
 import { removePlayerFromRoom } from '../actions/server'
 
-function Lobby({ pageSolo, pageHome, state, room }) {
+function Lobby({ pageSolo, leaveLobby, state, room }) {
     return (
         <Router>
             <div id="menu">
