@@ -6,7 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var fs_1 = __importDefault(require("fs"));
 var debug_1 = __importDefault(require("debug"));
 var classPieces_1 = __importDefault(require("./pieces/classPieces"));
-var joinRoom_1 = require("./rooms/joinRoom");
+var Game_1 = require("./game/Game");
+var Game_2 = require("./game/Game");
 var logerror = debug_1.default('tetris:error'), loginfo = debug_1.default('tetris:info');
 var initApp = function (app, params, cb) {
     var host = params.host, port = params.port;
@@ -37,15 +38,18 @@ var initEngine = function (io) {
                 socket.emit('action', { type: 'newPiece', piece: classPieces_1.default.getPieces() });
             }
             if (action.type === 'server/creatRoom') {
-                rooms_array = joinRoom_1.joinRoom(action.roomName, action.playerName, action.socketID, rooms_array);
-                var room = joinRoom_1.getRoom(action.playerName, rooms_array);
-                socket.emit('action', { type: 'joinRoom', room: room });
+                rooms_array = Game_2.joinGame(action.roomName, action.playerName, action.socketID, rooms_array);
+                var room = Game_2.getGame(action.playerName, rooms_array);
                 console.log(room);
+                socket.emit('action', { type: 'joinRoom', room: room });
             }
             if (action.type == 'server/searchRoom') {
-                console.log("Searching for room ", joinRoom_1.getSearchResult(rooms_array));
-                socket.emit('action', { type: 'searchResult', results: joinRoom_1.getSearchResult(rooms_array) });
+                console.log("Searching for room ", Game_1.getSearchResult(rooms_array));
+                socket.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
             }
+        });
+        socket.on('disconnect', function () {
+            console.log("User Disconnected");
         });
     });
 };

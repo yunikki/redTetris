@@ -1,7 +1,10 @@
 import fs from 'fs'
 import debug from 'debug'
 import p from './pieces/classPieces'
-import { joinRoom, getRoom, getSearchResult } from './rooms/joinRoom'
+import { getSearchResult } from './game/Game'
+import { Player } from './player/Player'
+import { Game, joinGame, getGame } from './game/Game'
+
 
 const logerror = debug('tetris:error')
     , loginfo = debug('tetris:info')
@@ -38,15 +41,19 @@ const initEngine = io => {
                 socket.emit('action', { type: 'newPiece', piece: p.getPieces() })
             }
             if (action.type === 'server/creatRoom') {
-                rooms_array = joinRoom(action.roomName, action.playerName, action.socketID, rooms_array);
-                let room = getRoom(action.playerName, rooms_array)
-                socket.emit('action', { type: 'joinRoom', room: room})
+                rooms_array = joinGame(action.roomName, action.playerName, action.socketID, rooms_array);
+                let room = getGame(action.playerName, rooms_array)
                 console.log(room);
+                socket.emit('action', { type: 'joinRoom', room: room})
             }
             if (action.type == 'server/searchRoom'){
                 console.log("Searching for room ", getSearchResult(rooms_array))
                 socket.emit('action', {type: 'searchResult', results: getSearchResult(rooms_array)})
             }
+        })
+
+        socket.on('disconnect', function(){
+            console.log("User Disconnected");
         })
     })
 }

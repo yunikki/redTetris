@@ -5,6 +5,7 @@ function oui() {
 }
 
 function FormatLine({ state }) {
+    console.log("POUR LA HORDE", state)
     var ret = []
 
     for (var i in state.searchResult) {
