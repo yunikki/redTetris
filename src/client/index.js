@@ -13,14 +13,21 @@ import reducer from './reducers'
 import createSocketIoMiddleware from 'redux-socket.io';
 import io from 'socket.io-client';
 
+let socket = io('http://localhost:3004');
+
 const initialState = {
     inputName: "",
     inputNameRoom: "",
     runRoom: false,
     location: "Home",
-    master: false
+    master: false,
+    socketID: "",
 }
-let socket = io('http://localhost:3004');
+
+socket.on('connect', function(){
+    initialState.socketID = socket.id;
+})
+
 let socketIoMiddleware = createSocketIoMiddleware(socket, "server/");
 // var store = applyMiddleware(socketIoMiddleware)(createStore)(reducer);
 

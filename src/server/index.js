@@ -1,6 +1,7 @@
 import fs from 'fs'
 import debug from 'debug'
 import p from './pieces/classPieces'
+import { joinRoom, getRoom, getSearchResult } from './rooms/joinRoom'
 
 const logerror = debug('tetris:error')
     , loginfo = debug('tetris:info')
@@ -27,19 +28,24 @@ const initApp = (app, params, cb) => {
     })
 }
 
+let rooms_array = [];
+
 const initEngine = io => {
     io.on('connection', function (socket) {
         console.log("Socket connected: " + socket.id)
         socket.on('action', (action) => {
-            console.log(action.type)
-            if (action.type === 'server/ping') {
-                socket.emit('action', { type: 'pong' })
-            }
             if (action.type === 'server/piecesSolo') {
                 socket.emit('action', { type: 'newPiece', piece: p.getPieces() })
             }
             if (action.type === 'server/creatRoom') {
-                console.log('le nom de la room est :' + action.data)
+                rooms_array = joinRoom(action.roomName, action.playerName, action.socketID, rooms_array);
+                let room = getRoom(action.playerName, rooms_array)
+                socket.emit('action', { type: 'joinRoom', room: room})
+                console.log(room);
+            }
+            if (action.type == 'server/searchRoom'){
+                console.log("Searching for room ", getSearchResult(rooms_array))
+                socket.emit('action', {type: 'searchResult', results: getSearchResult(rooms_array)})
             }
         })
     })

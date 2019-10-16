@@ -12,6 +12,10 @@ function reducer(state = initialState, action) {
             return Object.assign({}, { message: "oui" });
         case 'newPiece':
             return { ...state, piece: { ...action.piece } };
+        case 'joinRoom':
+            return {...state, room: {...action.room } };
+        case 'searchResult':
+            return {...state, searchResult: {...action.results}}
         case 'chargeHome':
             return { ...state, location: "Home", runRoom: false, inputNameRoom: "", inputName: "" }
         case 'chargeSolo':
@@ -29,6 +33,11 @@ function reducer(state = initialState, action) {
                 ...state,
                 inputNameRoom: action.data,
                 runRoom: action.data != "" && state.inputName != ""
+            }
+        case 'SAVE_SEARCH':
+            return {
+                ...state,
+                nameSearch: action.data
             }
         default:
             return state;

@@ -31,6 +31,7 @@ MakeNewPiece.propTypes = {
 }
 
 const mapStateToProps = (state) => {
+    console.log("PRE OR POST")
     return ({
         piece: state.piece
     })
