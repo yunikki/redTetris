@@ -27,7 +27,7 @@ export function RoomDispo({ state, dispatch }) {
                 <div className="creat-list">Creator</div>
                 <div className="player-list">Players</div>
             </div>
-            <FormatLine state={state} dispatch={dispatch} />
+            <FormatLine to={"/#" + state.inputNameRoom + '[' + state.inputName + ']'} state={state} dispatch={dispatch} />
         </div>
     )
 }

@@ -7,10 +7,23 @@ export const CHANGE_INPUT_NAME = 'CHANGE_INPUT_NAME'
 export const CHANGE_INPUT_NAME_ROOM = 'CHANGE_INPUT_NAME_ROOM'
 export const CHARGE_LOBBY = 'CHARGE_LOBBY'
 export const SAVE_SEARCH = 'SAVE_SEARCH'
+export const NOT_MASTER = 'NOT_MASTER'
+export const DO_MASTER = 'DO_MASTER'
 
 export const dataChangeHome = () => {
     return {
         type: CHANGE_HOME,
+    }
+}
+export const dataTMaster = () => {
+    return {
+        type: DO_MASTER,
+    }
+}
+
+export const dataNotMaster = () => {
+    return {
+        type: NOT_MASTER,
     }
 }
 
