@@ -34,15 +34,20 @@ export function OptionRoom({ state }) {
 }
 
 export function NameEnnemy({ state }) {
-    var Name = [];
     var ret = []
-    Name.push('other')
-    Name.push('other')
-    Name.push('other')
-
+    console.log('NameEnnemy', state.room)
+    if (state.room == undefined)
+        return (ret)
+    var Name = state.room.players
+    var you = true
     for (var i in Name) {
+
+        if (you && Name[i].playerName == state.inputName) {
+            you = false
+            continue
+        }
         ret.push(
-            <p className="list_name_lobby" key={i}> {Name[i] + ' ' + i}</p>
+            <p className="list_name_lobby" key={i}> {Name[i].playerName}</p>
         )
     }
     return (ret)

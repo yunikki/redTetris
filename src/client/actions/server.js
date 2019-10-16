@@ -16,6 +16,15 @@ export const dataCreateRoom = (state) => {
     }
 }
 
+export const dataCreateRoom_bis = (state, nameRoom) => {
+    return {
+        type: SERVEUR_CREAT_ROOM,
+        roomName: nameRoom,
+        playerName: state.inputName,
+        socketID: state.socketID
+    }
+}
+
 export const getRoomInfos = () => {
     return {
         type: SERVER_SEARCH_ROOM

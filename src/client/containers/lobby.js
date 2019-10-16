@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { chargePageSolo, chargePageHome } from '../components/action'
 import { OptionRoom, NameEnnemy } from '../components/optionRoom'
 
-function Lobby({ pageSolo, pageHome, state, room}) {
+function Lobby({ pageSolo, pageHome, state, room }) {
     return (
         <Router>
             <div id="menu">
