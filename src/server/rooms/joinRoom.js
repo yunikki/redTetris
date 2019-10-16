@@ -4,7 +4,7 @@ function createRoom(roomName, playerName, playerSocket){
         "roomName": roomName,
         "players": [
             {
-                "socketID": playerSocket,
+                "socket": playerSocket,
                 "grid": null,
                 "playerName": playerName,
                 "gameMaster": 1
@@ -17,7 +17,7 @@ function createRoom(roomName, playerName, playerSocket){
 function addPlayer(playerName, room, playerSocket){
     //TODO Check player name isnt same that existing one in the room
     room.players.push({
-        "socketID": playerSocket,
+        "socket": playerSocket,
         "grid": null,
         "playerName": playerName,
         "gameMaster": 0
@@ -54,4 +54,26 @@ export function getRoom(playerName, rooms_array){
         }
     }
     return null;
+}
+
+function getGM(players){
+    for (let j = 0; j < players.length; j++){
+        if (players[j].gameMaster == 1)
+            return players[j].playerName;
+    }
+    return null;
+}
+
+export function getSearchResult(rooms_array){
+    if (rooms_array.length == 0)
+        return null;
+    let search_result = [];
+    for (let i = 0; i < rooms_array.length; i++){
+        search_result.push({
+            "roomName": rooms_array[i].roomName,
+            "players": rooms_array[i].players.length,
+            "gameMaster": getGM(rooms_array[i].players)
+        })
+    }
+    return search_result;
 }

@@ -8,7 +8,6 @@ export const dataPiecesSolo = () => {
     }
 }
 export const dataCreateRoom = (state) => {
-    console.log("ETAT FRANCAIS", state)
     return {
         type: SERVEUR_CREAT_ROOM,
         roomName: state.inputNameRoom,
@@ -17,3 +16,8 @@ export const dataCreateRoom = (state) => {
     }
 }
 
+export const getRoomInfos = () => {
+    return {
+        type: SERVER_SEARCH_ROOM
+    }
+}

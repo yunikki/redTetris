@@ -12,7 +12,7 @@ function Solo({ onClickt, pageHome }) {
 
     return (
         <Router>
-            <div id="container-party-solo" onLoad={console.log('testonload')}>
+            <div id="container-party-solo">
                 <div className="content-bord-solo">
                     <div id="bord">
                         <Makebord />

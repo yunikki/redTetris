@@ -4,7 +4,7 @@ import reducer from '../reducers'
 import { connect } from 'react-redux';
 import { chargePageSolo, inputYourName, inputYourNameRoom, chargeLobby, searchingRooms, saveSearch} from '../components/action'
 import { dataChargeLobby } from '../actions'
-import { dataCreateRoom } from '../actions/server'
+import { dataCreateRoom, getRoomInfos} from '../actions/server'
 
 function notChargeLobby() {
     console.log('test')
@@ -33,13 +33,13 @@ function Home({ pageSolo, inputYourName, inputYourNameRoom, state, chargeLobby, 
 
 
                 </div>
-                <h3>Join Game!</h3>
-                <input className="input-creat" id="search-party" type="text" placeholder="Search Room" onChange={startSearch}/>
+                <h3>Join Game!</h3> 
+                <input className="input-creat" id="search-party" type="text" placeholder="Search Room" onChange={(e) => startSearch(e)}/>
                 <div id="list-room">
                     <div id="list-room-line-first">
                         <div className="name-list">Room name</div>
                         <div className="creat-list">Creator</div>
-                        <div className="player-list">Players</div>
+                        <div className="player-list">Players</div> 
                     </div>
                 </div>
             </div>
@@ -58,10 +58,13 @@ const mapDispatchToProps = (dispatch) => {
         inputYourName: inputYourName(dispatch),
         inputYourNameRoom: inputYourNameRoom(dispatch),
         chargeLobby: (state) => {
-            dispatch(dataChargeLobby())
             dispatch(dataCreateRoom(state))
+            dispatch(dataChargeLobby())
         },
-        startSearch: saveSearch(dispatch)
+        startSearch: (e) => {
+            dispatch(saveSearch(dispatch, e)),
+            dispatch(getRoomInfos())
+        }
     });
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

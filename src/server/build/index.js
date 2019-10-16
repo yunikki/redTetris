@@ -33,21 +33,18 @@ var initEngine = function (io) {
     io.on('connection', function (socket) {
         console.log("Socket connected: " + socket.id);
         socket.on('action', function (action) {
-            if (action.type === 'server/ping') {
-                socket.emit('action', { type: 'pong' });
-            }
             if (action.type === 'server/piecesSolo') {
                 socket.emit('action', { type: 'newPiece', piece: classPieces_1.default.getPieces() });
             }
             if (action.type === 'server/creatRoom') {
                 rooms_array = joinRoom_1.joinRoom(action.roomName, action.playerName, action.socketID, rooms_array);
                 var room = joinRoom_1.getRoom(action.playerName, rooms_array);
+                socket.emit('action', { type: 'joinRoom', room: room });
                 console.log(room);
             }
             if (action.type == 'server/searchRoom') {
-                console.log("Socket Id: ", action.socketID);
-                console.log("Searching for room, searching for: ", action.search);
-                //TODO -> Recherche des parties en fonction de action.search et le retourner au front
+                console.log("Searching for room ", joinRoom_1.getSearchResult(rooms_array));
+                socket.emit('action', { type: 'searchResult', results: joinRoom_1.getSearchResult(rooms_array) });
             }
         });
     });

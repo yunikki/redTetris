@@ -27,6 +27,6 @@ export function chargeLobby(dispatch/*, generateAction*/) {
     return () => { dispatch(dataChargeLobby()) };
 }
 
-export function saveSearch(dispatch) {
-    return (e) => {dispatch(saveResearch(e.target.value))};
+export function saveSearch(dispatch, e) {
+    return () => {dispatch(saveResearch(e.target.value))};
 }

@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import { chargePageSolo, chargePageHome } from '../components/action'
 import { OptionRoom, NameEnnemy } from '../components/optionRoom'
 
-function Lobby({ pageSolo, pageHome, state }) {
-    console.log('oui', state)
+function Lobby({ pageSolo, pageHome, state, room}) {
     return (
         <Router>
             <div id="menu">
@@ -32,7 +31,8 @@ function Lobby({ pageSolo, pageHome, state }) {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-    state: state
+    state: state,
+    room: state.room
 })
 
 const mapDispatchToProps = (dispatch) => {

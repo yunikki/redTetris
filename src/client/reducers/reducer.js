@@ -12,6 +12,10 @@ function reducer(state = initialState, action) {
             return Object.assign({}, { message: "oui" });
         case 'newPiece':
             return { ...state, piece: { ...action.piece } };
+        case 'joinRoom':
+            return {...state, room: {...action.room } };
+        case 'searchResult':
+            return {...state, searchResult: {...action.results}}
         case 'chargeHome':
             return { ...state, location: "Home", runRoom: false, inputNameRoom: "", inputName: "" }
         case 'chargeSolo':

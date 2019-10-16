@@ -21,7 +21,7 @@ const initialState = {
     runRoom: false,
     location: "Home",
     master: false,
-    socketID: ""
+    socketID: "",
 }
 
 socket.on('connect', function(){
