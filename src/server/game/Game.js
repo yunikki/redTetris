@@ -43,9 +43,9 @@ export class Game{
         }
         else{
             for (let j = 0; j < this.players.length; j++){
-                if (this.players[i].name == playerName){
-                    player = this.players[i];
-                    this.players.shift(i, 1)
+                if (this.players[j].name == playerName){
+                    player = this.players[j];
+                    this.players.shift(j, 1)
                     return player
                 }
             }
@@ -97,8 +97,11 @@ export function removePlayer(playerName = "", socketID = "", games_array){
         player = games_array[i].removePlayer(playerName, socketID)        
         if (player == null)
             i++;
-        else
+        else{
+            if (games_array[i].players.length == 0)
+                games_array.shift(i, 1);
             return player
+        }
     }
     return null
 }

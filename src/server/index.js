@@ -50,6 +50,10 @@ const initEngine = io => {
                 console.log("Searching for room ", getSearchResult(rooms_array))
                 socket.emit('action', {type: 'searchResult', results: getSearchResult(rooms_array)})
             }
+            if (action.type == 'server/removePlayerFromRoom'){
+                let removedPlayer = removePlayer(action.playerName, "", rooms_array);
+                console.log(removedPlayer, rooms_array)
+            }
         })
 
         socket.on('disconnect', function(){

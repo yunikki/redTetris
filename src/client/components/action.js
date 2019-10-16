@@ -30,3 +30,4 @@ export function chargeLobby(dispatch/*, generateAction*/) {
 export function saveSearch(dispatch, e) {
     return () => {dispatch(saveResearch(e.target.value))};
 }
+

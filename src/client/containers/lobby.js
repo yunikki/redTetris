@@ -3,8 +3,10 @@ import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } 
 import { connect } from 'react-redux';
 import { chargePageSolo, chargePageHome } from '../components/action'
 import { OptionRoom, NameEnnemy } from '../components/optionRoom'
+import { removePlayerFromRoom } from '../actions/server'
 
-function Lobby({ pageSolo, pageHome, state, room}) {
+function Lobby({ pageSolo, leaveLobby, state, room}) {
+    console.log("POUR ZERUS : ", state)
     return (
         <Router>
             <div id="menu">
@@ -19,7 +21,7 @@ function Lobby({ pageSolo, pageHome, state, room}) {
                     <h3>mode enabel:</h3>
                     <OptionRoom state={state} />
                     <div id="container-selec-quick">
-                        <Link id="button-2player" className="btn" to="/" onClick={pageHome}>leave the room</Link>
+                        <Link id="button-2player" className="btn" to="/" onClick={() => leaveLobby(state)}>leave the room</Link>
                         <Link id="button-1player" className="btn" to="/solo" onClick={pageSolo}>start the game</Link>
                     </div>
                 </div>
@@ -38,7 +40,10 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch) => {
     return ({
         pageSolo: chargePageSolo(dispatch),
-        pageHome: chargePageHome(dispatch),
+        leaveLobby: (state) => {
+            dispatch(removePlayerFromRoom(state))
+            dispatch(chargePageHome(dispatch))
+        }
     });
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Lobby)

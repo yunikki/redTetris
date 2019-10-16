@@ -47,6 +47,10 @@ var initEngine = function (io) {
                 console.log("Searching for room ", Game_1.getSearchResult(rooms_array));
                 socket.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
             }
+            if (action.type == 'server/removePlayerFromRoom') {
+                var removedPlayer = Game_2.removePlayer(action.playerName, "", rooms_array);
+                console.log(removedPlayer, rooms_array);
+            }
         });
         socket.on('disconnect', function () {
             var player = Game_2.removePlayer("", socket.id, rooms_array);
