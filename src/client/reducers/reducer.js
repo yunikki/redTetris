@@ -13,15 +13,19 @@ function reducer(state = initialState, action) {
         case 'newPiece':
             return { ...state, piece: { ...action.piece } };
         case 'joinRoom':
-            return {...state, room: {...action.room } };
+            return { ...state, room: { ...action.room } };
         case 'searchResult':
-            return {...state, searchResult: {...action.results}}
+            return { ...state, searchResult: { ...action.results } }
         case 'chargeHome':
             return { ...state, location: "Home", runRoom: false, inputNameRoom: "", inputName: "" }
         case 'chargeSolo':
             return { ...state, location: "Solo", piece: undefined }
         case 'CHARGE_LOBBY':
-            return { ...state, location: "Lobby", master: true }
+            return { ...state, location: "Lobby" }
+        case 'NOT_MASTER':
+            return { ...state, master: false }
+        case 'DO_MASTER':
+            return { ...state, master: true }
         case 'CHANGE_INPUT_NAME':
             return {
                 ...state,

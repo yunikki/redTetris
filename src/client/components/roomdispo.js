@@ -1,9 +1,11 @@
 import React from 'react'
+import { connect } from 'react-redux';
+import { FormatLine } from './lienroomdispo'
 
 function oui() {
     console.log('ta maman')
 }
-
+/*
 function FormatLine({ state }) {
     console.log("POUR LA HORDE", state)
     var ret = []
@@ -17,7 +19,7 @@ function FormatLine({ state }) {
         </div>)
     }
     return (ret)
-}
+}*/
 
 export function RoomDispo({ state }) {
     console.log('a tester :', Object.entries(state.searchResult).length === 0)
@@ -44,7 +46,7 @@ export function RoomDispo({ state }) {
                 <div className="creat-list">Creator</div>
                 <div className="player-list">Players</div>
             </div>
-            <FormatLine state={state} />
+            <FormatLine to={"/#" + state.inputNameRoom + '[' + state.inputName + ']'} state={state} dispatch={dispatch} />
         </div>
     )
 }

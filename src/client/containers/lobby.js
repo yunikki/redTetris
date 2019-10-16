@@ -5,8 +5,7 @@ import { chargePageSolo, chargePageHome } from '../components/action'
 import { OptionRoom, NameEnnemy } from '../components/optionRoom'
 import { removePlayerFromRoom } from '../actions/server'
 
-function Lobby({ pageSolo, leaveLobby, state, room}) {
-    console.log("POUR ZERUS : ", state)
+function Lobby({ pageSolo, pageHome, state, room }) {
     return (
         <Router>
             <div id="menu">
@@ -23,6 +22,7 @@ function Lobby({ pageSolo, leaveLobby, state, room}) {
                     <div id="container-selec-quick">
                         <Link id="button-2player" className="btn" to="/" onClick={() => leaveLobby(state)}>leave the room</Link>
                         <Link id="button-1player" className="btn" to="/solo" onClick={pageSolo}>start the game</Link>
+                        <Link style={{ display: state.master ? "inline-block" : "none" }} id="button-1player" className="btn" to="/solo" onClick={pageSolo}>start the game</Link>
                     </div>
                 </div>
 

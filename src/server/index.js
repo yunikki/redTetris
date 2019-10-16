@@ -41,14 +41,14 @@ const initEngine = io => {
                 socket.emit('action', { type: 'newPiece', piece: p.getPieces() })
             }
             if (action.type === 'server/creatRoom') {
-                rooms_array = joinGame(action.roomName, action.playerName, action.socketID, rooms_array);
-                let room = getGame(action.playerName, rooms_array)
+                rooms_array = joinRoom(action.roomName, action.playerName, action.socketID, rooms_array);
+                let room = getRoom(action.playerName, rooms_array)
                 console.log(room);
                 socket.emit('action', { type: 'joinRoom', room: room})
             }
-            if (action.type == 'server/searchRoom'){
+            if (action.type == 'server/searchRoom') {
                 console.log("Searching for room ", getSearchResult(rooms_array))
-                socket.emit('action', {type: 'searchResult', results: getSearchResult(rooms_array)})
+                socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
             }
             if (action.type == 'server/removePlayerFromRoom'){
                 let removedPlayer = removePlayer(action.playerName, "", rooms_array);

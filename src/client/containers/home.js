@@ -4,14 +4,14 @@ import reducer from '../reducers'
 import { RoomDispo } from '../components/roomdispo'
 import { connect } from 'react-redux';
 import { chargePageSolo, inputYourName, inputYourNameRoom, chargeLobby, searchingRooms, saveSearch } from '../components/action'
-import { dataChargeLobby, dataChangeInputName } from '../actions'
+import { dataChargeLobby, dataChangeInputName, dataTMaster } from '../actions'
 import { dataCreateRoom, getRoomInfos } from '../actions/server'
 
 function notChargeLobby() {
     console.log('test')
 }
 
-function Home({ pageSolo, inputYourName, inputYourNameRoom, state, chargeLobby, startSearch }) {
+function Home({ pageSolo, dispatch, inputYourNameRoom, state, chargeLobby, startSearch }) {
     return (
         <Router>
             <div id="menu">
@@ -38,7 +38,7 @@ function Home({ pageSolo, inputYourName, inputYourNameRoom, state, chargeLobby, 
                 <input className="input-creat" value={state.inputName} id="search-party" type="text" placeholder="entre un nom avent d aller dans une room" onChange={(e) => startSearch(e)} />
 
                 <div >
-                    <RoomDispo state={state} />
+                    <RoomDispo state={state} dispatch={dispatch} />
                 </div>
             </div>
         </Router>
@@ -52,9 +52,11 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch) => {
     return ({
+        dispatch: dispatch,
         pageSolo: chargePageSolo(dispatch),
         inputYourNameRoom: inputYourNameRoom(dispatch),
         chargeLobby: (state) => {
+            dispatch(dataTMaster())
             dispatch(dataCreateRoom(state))
             dispatch(dataChargeLobby())
         },
