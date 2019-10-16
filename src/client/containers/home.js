@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } from "react-router-dom";
 import reducer from '../reducers'
+import { RoomDispo } from '../components/roomdispo'
 import { connect } from 'react-redux';
 import { chargePageSolo, inputYourName, inputYourNameRoom, chargeLobby, searchingRooms, saveSearch } from '../components/action'
 import { dataChargeLobby, dataChangeInputName } from '../actions'
@@ -35,12 +36,9 @@ function Home({ pageSolo, inputYourName, inputYourNameRoom, state, chargeLobby, 
                 </div>
                 <h3>Join Game!</h3>
                 <input className="input-creat" value={state.inputName} id="search-party" type="text" placeholder="entre un nom avent d aller dans une room" onChange={(e) => startSearch(e)} />
-                <div id="list-room">
-                    <div id="list-room-line-first">
-                        <div className="name-list">Room name</div>
-                        <div className="creat-list">Creator</div>
-                        <div className="player-list">Players</div>
-                    </div>
+
+                <div >
+                    <RoomDispo state={state} />
                 </div>
             </div>
         </Router>
@@ -54,6 +52,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch) => {
     return ({
+        pageSolo: chargePageSolo(dispatch),
         inputYourNameRoom: inputYourNameRoom(dispatch),
         chargeLobby: (state) => {
             dispatch(dataCreateRoom(state))

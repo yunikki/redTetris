@@ -22,9 +22,10 @@ const initialState = {
     location: "Home",
     master: false,
     socketID: "",
+    searchResult: {},
 }
 
-socket.on('connect', function(){
+socket.on('connect', function () {
     initialState.socketID = socket.id;
 })
 

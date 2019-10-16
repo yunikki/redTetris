@@ -106,7 +106,7 @@ body {
 
 #list-room {
     background-color: #2D2F32;
-    border-radius: 20px;
+    border-radius: 5px;
     margin: 0 auto;
     width: 580px;
 }
@@ -117,15 +117,15 @@ body {
 }
 
 .name-list {
-    width: 180px;
+    width: 85px;
 }
 
 .creat-list {
-    width: 200px;
+    width: 230px;
 }
 
 .player-list {
-    width: 180px;
+    width: 140px;
 }
 
 #bord {
@@ -249,4 +249,14 @@ body {
 
 .check_option {
     margin-left: 10px;
+}
+
+
+#list-room .line-room:nth-child(2n) {
+    background: #42464a;
+}
+
+.join-list {
+    display: inline-block;
+    width: 0px;
 }
