@@ -6,6 +6,7 @@ import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
 import App from './containers/app.js';
 import './index.css'
+import { keyTetris } from './actions/server'
 // import { storeStateMiddleWare } from './middleware/storeStateMiddleWare'
 import reducer from './reducers'
 // import { alert } from './actions/alert'
@@ -41,7 +42,9 @@ const store = createStore(
         createLogger()
     )
 )
-
+window.addEventListener('keydown', function (e) {
+    keyTetris(e, store.dispatch, store.getState())
+})
 
 ReactDOM.render(
 

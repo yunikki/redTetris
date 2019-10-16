@@ -40,12 +40,12 @@ const initEngine = io => {
             if (action.type === 'server/creatRoom') {
                 rooms_array = joinRoom(action.roomName, action.playerName, action.socketID, rooms_array);
                 let room = getRoom(action.playerName, rooms_array)
-                socket.emit('action', { type: 'joinRoom', room: room})
+                socket.emit('action', { type: 'joinRoom', room: room })
                 console.log(room);
             }
-            if (action.type == 'server/searchRoom'){
+            if (action.type == 'server/searchRoom') {
                 console.log("Searching for room ", getSearchResult(rooms_array))
-                socket.emit('action', {type: 'searchResult', results: getSearchResult(rooms_array)})
+                socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
             }
         })
     })
