@@ -54,6 +54,7 @@ const initEngine = io => {
                 let removedPlayer = removePlayer(action.playerName, "", rooms_array);
                 console.log(removedPlayer, rooms_array)
             }
+            //io.emit('searchingResult', {results: getSearchResult(rooms_array)}) Broadcast qui va pop sur tout les clients a chaque changement dans le back
         })
 
         socket.on('disconnect', function(){
