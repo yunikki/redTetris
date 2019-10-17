@@ -30,6 +30,12 @@ var initApp = function (app, params, cb) {
     });
 };
 var rooms_array = [];
+function emit_to_room(room, io) {
+    if (room)
+        for (var i in room.players) {
+            io.to(room.players[i].socketID).emit('action', { type: 'joinRoom', room: room, master: room.players[i].gameMaster });
+        }
+}
 var initEngine = function (io) {
     io.on('connection', function (socket) {
         console.log("Socket connected: " + socket.id);
@@ -42,6 +48,7 @@ var initEngine = function (io) {
                 var room = Game_2.getGame(action.playerName, rooms_array);
                 console.log(room);
                 socket.emit('action', { type: 'joinRoom', room: room });
+                socket.broadcast.emit('action', { type: 'joinRoom', room: room });
                 socket.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
                 socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
             }
@@ -50,7 +57,11 @@ var initEngine = function (io) {
                 socket.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
             }
             if (action.type == 'server/removePlayerFromRoom') {
+                var room = Game_2.getGame(action.playerName, rooms_array);
                 var removedPlayer = Game_2.removePlayer(action.playerName, "", rooms_array);
+                socket.emit('action', { type: 'joinRoom', room: undefined });
+                if (room)
+                    emit_to_room(room, io);
                 socket.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
                 socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
                 console.log(removedPlayer, rooms_array);
@@ -58,7 +69,10 @@ var initEngine = function (io) {
             //io.emit('searchingResult', {results: getSearchResult(rooms_array)}) Broadcast qui va pop sur tout les clients a chaque changement dans le back
         });
         socket.on('disconnect', function () {
+            var room = Game_2.getGameWithId(socket.id, rooms_array);
             var player = Game_2.removePlayer("", socket.id, rooms_array);
+            if (room)
+                emit_to_room(room, io);
             socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
             if (player == null)
                 console.log("Unknown User Disconnected");

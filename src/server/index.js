@@ -3,7 +3,7 @@ import debug from 'debug'
 import p from './pieces/classPieces'
 import { getSearchResult } from './game/Game'
 import { Player } from './player/Player'
-import { Game, joinGame, getGame, removePlayer } from './game/Game'
+import { Game, joinGame, getGame, removePlayer, getGameWithId } from './game/Game'
 
 
 const logerror = debug('tetris:error')
@@ -33,6 +33,13 @@ const initApp = (app, params, cb) => {
 
 let rooms_array = [];
 
+function emit_to_room(room, io) {
+    if (room)
+        for (var i in room.players) {
+            io.to(room.players[i].socketID).emit('action', { type: 'joinRoom', room: room, master: room.players[i].gameMaster })
+        }
+}
+
 const initEngine = io => {
     io.on('connection', function (socket) {
         console.log("Socket connected: " + socket.id)
@@ -45,6 +52,8 @@ const initEngine = io => {
                 let room = getGame(action.playerName, rooms_array)
                 console.log(room);
                 socket.emit('action', { type: 'joinRoom', room: room })
+                socket.broadcast.emit('action', { type: 'joinRoom', room: room })
+
                 socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
                 socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
             }
@@ -53,7 +62,12 @@ const initEngine = io => {
                 socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
             }
             if (action.type == 'server/removePlayerFromRoom') {
+                let room = getGame(action.playerName, rooms_array)
                 let removedPlayer = removePlayer(action.playerName, "", rooms_array);
+                socket.emit('action', { type: 'joinRoom', room: undefined })
+                if (room)
+                    emit_to_room(room, io)
+
                 socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
                 socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
                 console.log(removedPlayer, rooms_array)
@@ -62,7 +76,10 @@ const initEngine = io => {
         })
 
         socket.on('disconnect', function () {
+            let room = getGameWithId(socket.id, rooms_array)
             let player = removePlayer("", socket.id, rooms_array)
+            if (room)
+                emit_to_room(room, io)
             socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
             if (player == null)
                 console.log("Unknown User Disconnected");

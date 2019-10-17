@@ -13,7 +13,7 @@ function reducer(state = initialState, action) {
         case 'newPiece':
             return { ...state, piece: { ...action.piece } };
         case 'joinRoom':
-            return { ...state, room: { ...action.room } };
+            return { ...state, room: { ...action.room }, master: action.master == 1 ? true : false };
         case 'searchResult':
             return { ...state, searchResult: { ...action.results } }
         case 'chargeHome':

@@ -19,6 +19,14 @@ var Game = /** @class */ (function () {
         }
         return null;
     };
+    Game.prototype.isSocketInGame = function (playerName) {
+        for (var i = 0; i < this.players.length; i++) {
+            if (this.players[i].socketID == playerName) {
+                return 1;
+            }
+        }
+        return null;
+    };
     Game.prototype.getGM = function () {
         for (var i = 0; i < this.players.length; i++) {
             if (this.players[i].gameMaster == 1)
@@ -87,6 +95,14 @@ function getGame(playerName, games_array) {
     return null;
 }
 exports.getGame = getGame;
+function getGameWithId(socketId, games_array) {
+    for (var i = 0; i < games_array.length; i++) {
+        if (games_array[i].isSocketInGame(socketId) != null)
+            return games_array[i];
+    }
+    return null;
+}
+exports.getGameWithId = getGameWithId;
 function getSearchResult(rooms_array) {
     if (rooms_array.length == 0)
         return null;

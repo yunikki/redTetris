@@ -22,6 +22,15 @@ export class Game {
         return null;
     }
 
+    isSocketInGame(playerName) {
+        for (let i = 0; i < this.players.length; i++) {
+            if (this.players[i].socketID == playerName) {
+                return 1;
+            }
+        }
+        return null;
+    }
+
     getGM() {
         for (let i = 0; i < this.players.length; i++) {
             if (this.players[i].gameMaster == 1)
@@ -84,6 +93,14 @@ export function joinGame(roomName, playerName, playerSocket, games_array) {
 export function getGame(playerName, games_array) {
     for (let i = 0; i < games_array.length; i++) {
         if (games_array[i].isPlayerInGame(playerName) != null)
+            return games_array[i]
+    }
+    return null;
+}
+
+export function getGameWithId(socketId, games_array) {
+    for (let i = 0; i < games_array.length; i++) {
+        if (games_array[i].isSocketInGame(socketId) != null)
             return games_array[i]
     }
     return null;
