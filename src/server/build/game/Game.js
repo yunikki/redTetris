@@ -5,8 +5,14 @@ var Game = /** @class */ (function () {
     function Game(roomName, player) {
         this.name = roomName;
         this.players = [];
-        this.rules = [];
+        this.rules = {
+            speedrun: false,
+            juniorBoard: false,
+            scoremode: false,
+            bubbleTiles: false
+        };
         this.players.push(player);
+        this.status = 'waiting';
     }
     Game.prototype.addPlayer = function (player) {
         this.players.push(player);
@@ -95,6 +101,14 @@ function getGame(playerName, games_array) {
     return null;
 }
 exports.getGame = getGame;
+function isMasterInRoom(playerName, room) {
+    for (var i = 0; i < games_array.length; i++) {
+        if (games_array[i].isPlayerInGame(playerName) != null)
+            return games_array[i];
+    }
+    return null;
+}
+exports.isMasterInRoom = isMasterInRoom;
 function getGameWithId(socketId, games_array) {
     for (var i = 0; i < games_array.length; i++) {
         if (games_array[i].isSocketInGame(socketId) != null)

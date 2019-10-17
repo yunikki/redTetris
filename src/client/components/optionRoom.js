@@ -2,20 +2,24 @@ import React from 'react'
 import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 
+function test() {
+    console.log(state)
+}
 export function OptionRoom({ state }) {
     var NameOption = [];
     var option = [];
 
     NameOption.push('speedrun')
-    NameOption.push('speedrun')
-    NameOption.push('speedrun')
+    NameOption.push('junior board')
+    NameOption.push('scord mode')
+    NameOption.push('bubble tiles')
     console.log('haha je suis le state', state)
     if (state.master) {
         for (var i in NameOption) {
             option.push(
                 <div className="container_option" key={i}>
                     <div className="name_option">{NameOption[i]}</div>
-                    <input className="check_option" type="checkbox" value={NameOption[i]} defaultChecked={false}></input>
+                    <input className="check_option" type="checkbox" value={NameOption[i]} onChange={test} defaultChecked={false}></input>
                 </div>
             )
         }

@@ -5,8 +5,14 @@ export class Game {
     constructor(roomName, player) {
         this.name = roomName;
         this.players = [];
-        this.rules = [];
+        this.rules = {
+            speedrun: false,
+            juniorBoard: false,
+            scoremode: false,
+            bubbleTiles: false
+        };
         this.players.push(player)
+        this.status = 'waiting'
     }
 
     addPlayer(player) {
@@ -91,6 +97,14 @@ export function joinGame(roomName, playerName, playerSocket, games_array) {
 }
 
 export function getGame(playerName, games_array) {
+    for (let i = 0; i < games_array.length; i++) {
+        if (games_array[i].isPlayerInGame(playerName) != null)
+            return games_array[i]
+    }
+    return null;
+}
+
+export function isMasterInRoom(playerName, room) {
     for (let i = 0; i < games_array.length; i++) {
         if (games_array[i].isPlayerInGame(playerName) != null)
             return games_array[i]

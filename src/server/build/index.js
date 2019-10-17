@@ -47,8 +47,8 @@ var initEngine = function (io) {
                 rooms_array = Game_2.joinGame(action.roomName, action.playerName, action.socketID, rooms_array);
                 var room = Game_2.getGame(action.playerName, rooms_array);
                 console.log(room);
-                socket.emit('action', { type: 'joinRoom', room: room });
-                socket.broadcast.emit('action', { type: 'joinRoom', room: room });
+                socket.emit('action', { type: 'joinRoom', room: room, master: 2 });
+                socket.broadcast.emit('action', { type: 'joinRoom', room: room, master: 2 });
                 socket.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
                 socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
             }
@@ -59,7 +59,7 @@ var initEngine = function (io) {
             if (action.type == 'server/removePlayerFromRoom') {
                 var room = Game_2.getGame(action.playerName, rooms_array);
                 var removedPlayer = Game_2.removePlayer(action.playerName, "", rooms_array);
-                socket.emit('action', { type: 'joinRoom', room: undefined });
+                socket.emit('action', { type: 'joinRoom', room: undefined, master: false });
                 if (room)
                     emit_to_room(room, io);
                 socket.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });

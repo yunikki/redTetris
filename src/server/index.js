@@ -3,7 +3,7 @@ import debug from 'debug'
 import p from './pieces/classPieces'
 import { getSearchResult } from './game/Game'
 import { Player } from './player/Player'
-import { Game, joinGame, getGame, removePlayer, getGameWithId } from './game/Game'
+import { Game, joinGame, getGame, removePlayer, getGameWithId, isMasterInRoom } from './game/Game'
 
 
 const logerror = debug('tetris:error')
@@ -51,8 +51,8 @@ const initEngine = io => {
                 rooms_array = joinGame(action.roomName, action.playerName, action.socketID, rooms_array);
                 let room = getGame(action.playerName, rooms_array)
                 console.log(room);
-                socket.emit('action', { type: 'joinRoom', room: room })
-                socket.broadcast.emit('action', { type: 'joinRoom', room: room })
+                socket.emit('action', { type: 'joinRoom', room: room, master: 2 })
+                socket.broadcast.emit('action', { type: 'joinRoom', room: room, master: 2 })
 
                 socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
                 socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
@@ -64,7 +64,7 @@ const initEngine = io => {
             if (action.type == 'server/removePlayerFromRoom') {
                 let room = getGame(action.playerName, rooms_array)
                 let removedPlayer = removePlayer(action.playerName, "", rooms_array);
-                socket.emit('action', { type: 'joinRoom', room: undefined })
+                socket.emit('action', { type: 'joinRoom', room: undefined, master: false })
                 if (room)
                     emit_to_room(room, io)
 
