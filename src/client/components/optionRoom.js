@@ -41,13 +41,12 @@ export function NameEnnemy({ state }) {
     var Name = state.room.players
     var you = true
     for (var i in Name) {
-
-        if (you && Name[i].playerName == state.inputName) {
+        if (you && Name[i].name == state.inputName) {
             you = false
             continue
         }
         ret.push(
-            <p className="list_name_lobby" key={i}> {Name[i].playerName}</p>
+            <p className="list_name_lobby" key={i}> {Name[i].name}</p>
         )
     }
     return (ret)

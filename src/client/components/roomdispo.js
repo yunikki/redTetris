@@ -5,23 +5,8 @@ import { FormatLine } from './lienroomdispo'
 function oui() {
     console.log('ta maman')
 }
-/*
-function FormatLine({ state }) {
-    console.log("POUR LA HORDE", state)
-    var ret = []
 
-    for (var i in state.searchResult) {
-        ret.push(<div className="line-room" key={i}>
-            <div className="name-list">{state.searchResult[i].roomName}</div>
-            <div className="creat-list">{state.searchResult[i].gameMaster}</div>
-            <div className="player-list">{state.searchResult[i].players}</div>
-            <div className="join-list" onClick={() => oui()}>join</div>
-        </div>)
-    }
-    return (ret)
-}*/
-
-export function RoomDispo({ state }) {
+export function RoomDispo({ state, dispatch }) {
     console.log('a tester :', Object.entries(state.searchResult).length === 0)
     if (state.inputName === "")
         return (<div></div>)

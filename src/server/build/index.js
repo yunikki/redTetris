@@ -42,6 +42,8 @@ var initEngine = function (io) {
                 var room = Game_2.getGame(action.playerName, rooms_array);
                 console.log(room);
                 socket.emit('action', { type: 'joinRoom', room: room });
+                socket.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
+                socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
             }
             if (action.type == 'server/searchRoom') {
                 console.log("Searching for room ", Game_1.getSearchResult(rooms_array));
@@ -49,12 +51,15 @@ var initEngine = function (io) {
             }
             if (action.type == 'server/removePlayerFromRoom') {
                 var removedPlayer = Game_2.removePlayer(action.playerName, "", rooms_array);
+                socket.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
+                socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
                 console.log(removedPlayer, rooms_array);
             }
             //io.emit('searchingResult', {results: getSearchResult(rooms_array)}) Broadcast qui va pop sur tout les clients a chaque changement dans le back
         });
         socket.on('disconnect', function () {
             var player = Game_2.removePlayer("", socket.id, rooms_array);
+            socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
             if (player == null)
                 console.log("Unknown User Disconnected");
             else

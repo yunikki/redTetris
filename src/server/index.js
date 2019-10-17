@@ -44,21 +44,26 @@ const initEngine = io => {
                 rooms_array = joinGame(action.roomName, action.playerName, action.socketID, rooms_array);
                 let room = getGame(action.playerName, rooms_array)
                 console.log(room);
-                socket.emit('action', { type: 'joinRoom', room: room})
+                socket.emit('action', { type: 'joinRoom', room: room })
+                socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
+                socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
             }
-            if (action.type == 'server/searchRoom'){
+            if (action.type == 'server/searchRoom') {
                 console.log("Searching for room ", getSearchResult(rooms_array))
-                socket.emit('action', {type: 'searchResult', results: getSearchResult(rooms_array)})
+                socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
             }
-            if (action.type == 'server/removePlayerFromRoom'){
+            if (action.type == 'server/removePlayerFromRoom') {
                 let removedPlayer = removePlayer(action.playerName, "", rooms_array);
+                socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
+                socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
                 console.log(removedPlayer, rooms_array)
             }
             //io.emit('searchingResult', {results: getSearchResult(rooms_array)}) Broadcast qui va pop sur tout les clients a chaque changement dans le back
         })
 
-        socket.on('disconnect', function(){
+        socket.on('disconnect', function () {
             let player = removePlayer("", socket.id, rooms_array)
+            socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
             if (player == null)
                 console.log("Unknown User Disconnected");
             else

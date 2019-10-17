@@ -21,7 +21,6 @@ function Lobby({ pageSolo, leaveLobby, state, room }) {
                     <OptionRoom state={state} />
                     <div id="container-selec-quick">
                         <Link id="button-2player" className="btn" to="/" onClick={() => leaveLobby(state)}>leave the room</Link>
-                        <Link id="button-1player" className="btn" to="/solo" onClick={pageSolo}>start the game</Link>
                         <Link style={{ display: state.master ? "inline-block" : "none" }} id="button-1player" className="btn" to="/solo" onClick={pageSolo}>start the game</Link>
                     </div>
                 </div>

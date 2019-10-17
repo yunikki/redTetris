@@ -30,11 +30,17 @@ var Game = /** @class */ (function () {
         if (playerName === void 0) { playerName = ""; }
         if (socketID === void 0) { socketID = ""; }
         var player;
+        var master = false;
         if (playerName.length == 0) {
             for (var i = 0; i < this.players.length; i++) {
                 if (this.players[i].socketID == socketID) {
+                    if (this.players[i].gameMaster == 1) {
+                        master = true;
+                    }
                     player = this.players[i];
                     this.players.shift(i, 1);
+                    if (master && this.players.length != 0)
+                        this.players[0].gameMaster = 1;
                     return player;
                 }
             }
@@ -42,8 +48,13 @@ var Game = /** @class */ (function () {
         else {
             for (var j = 0; j < this.players.length; j++) {
                 if (this.players[j].name == playerName) {
+                    if (this.players[j].gameMaster == 1) {
+                        master = true;
+                    }
                     player = this.players[j];
                     this.players.shift(j, 1);
+                    if (master && this.players.length != 0)
+                        this.players[0].gameMaster = 1;
                     return player;
                 }
             }
