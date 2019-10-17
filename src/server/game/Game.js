@@ -5,12 +5,12 @@ export class Game {
     constructor(roomName, player) {
         this.name = roomName;
         this.players = [];
-        this.rules = {
-            speedrun: false,
-            juniorBoard: false,
-            scoremode: false,
-            bubbleTiles: false
-        };
+        this.rules = [
+            false, //speedrun:
+            true, //juniorBoard:
+            false, //scoremode:
+            false //bubbleTiles:
+        ];
         this.players.push(player)
         this.status = 'waiting'
     }
@@ -43,6 +43,10 @@ export class Game {
                 return this.players[i].name;
         }
         return null
+    }
+
+    changeParam(val, id) {
+        this.rules[id] = val;
     }
 
     removePlayer(playerName = "", socketID = "") {
@@ -147,4 +151,17 @@ export function removePlayer(playerName = "", socketID = "", games_array) {
         }
     }
     return null
+}
+
+export function getGameWithNameRoom(name, rooms) {
+    for (let i in rooms) {
+        if (rooms[i].name == name) {
+            return (rooms[i])
+        }
+    }
+}
+
+export function GameChangeParam(val, id, name, rooms) {
+    let room = getGameWithNameRoom(name, rooms)
+    room.changeParam(val, id);
 }

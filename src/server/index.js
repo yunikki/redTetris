@@ -3,7 +3,7 @@ import debug from 'debug'
 import p from './pieces/classPieces'
 import { getSearchResult } from './game/Game'
 import { Player } from './player/Player'
-import { Game, joinGame, getGame, removePlayer, getGameWithId, isMasterInRoom } from './game/Game'
+import { Game, joinGame, getGame, removePlayer, getGameWithId, GameChangeParam, getGameWithNameRoom } from './game/Game'
 
 
 const logerror = debug('tetris:error')
@@ -71,6 +71,13 @@ const initEngine = io => {
                 socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
                 socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
                 console.log(removedPlayer, rooms_array)
+            }
+            if (action.type == 'server/changeParamRoom') {
+                GameChangeParam(action.val, action.id, action.name, rooms_array)
+                let room = getGameWithNameRoom(action.name, rooms_array)
+                console.log(room)
+                if (room)
+                    emit_to_room(room, io)
             }
             //io.emit('searchingResult', {results: getSearchResult(rooms_array)}) Broadcast qui va pop sur tout les clients a chaque changement dans le back
         })

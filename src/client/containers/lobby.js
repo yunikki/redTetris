@@ -5,7 +5,7 @@ import { chargePageSolo, chargePageHome } from '../components/action'
 import { OptionRoom, NameEnnemy } from '../components/optionRoom'
 import { removePlayerFromRoom } from '../actions/server'
 
-function Lobby({ pageSolo, leaveLobby, state, room }) {
+function Lobby({ pageSolo, leaveLobby, state, room, dispatch }) {
     return (
         <Router>
             <div id="menu">
@@ -18,7 +18,7 @@ function Lobby({ pageSolo, leaveLobby, state, room }) {
                     <p className="list_name_lobby">you: ({state.inputName})</p>
                     <NameEnnemy state={state} />
                     <h3>mode enabel:</h3>
-                    <OptionRoom state={state} />
+                    <OptionRoom state={state} dispatch={dispatch} />
                     <div id="container-selec-quick">
                         <Link id="button-2player" className="btn" to="/" onClick={() => leaveLobby(state)}>leave the room</Link>
                         <Link style={{ display: state.master ? "inline-block" : "none" }} id="button-1player" className="btn" to="/solo" onClick={pageSolo}>start the game</Link>
@@ -38,6 +38,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch) => {
     return ({
+        dispatch: dispatch,
         pageSolo: chargePageSolo(dispatch),
         leaveLobby: (state) => {
             dispatch(removePlayerFromRoom(state))

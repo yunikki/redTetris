@@ -7,12 +7,23 @@ export const SERVER_KEY_UP = 'server/keyUp'
 export const SERVER_KEY_DOWN = 'server/keyDown'
 export const SERVER_KEY_LEFT = 'server/keyleft'
 export const SERVER_KEY_RIGHT = 'server/keyRight'
+export const CHANGE_PARAM_ROOM = 'server/changeParamRoom'
 
 export const dataPiecesSolo = () => {
     return {
         type: SERVEUR_PIECESSOLO
     }
 }
+
+export const dataChangeParamRoom = (val, id, name) => {
+    return {
+        type: CHANGE_PARAM_ROOM,
+        val: val,
+        id: id,
+        name: name
+    }
+}
+
 export const dataCreateRoom = (state) => {
     return {
         type: SERVEUR_CREAT_ROOM,

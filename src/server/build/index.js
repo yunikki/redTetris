@@ -66,6 +66,13 @@ var initEngine = function (io) {
                 socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
                 console.log(removedPlayer, rooms_array);
             }
+            if (action.type == 'server/changeParamRoom') {
+                Game_2.GameChangeParam(action.val, action.id, action.name, rooms_array);
+                var room = Game_2.getGameWithNameRoom(action.name, rooms_array);
+                console.log(room);
+                if (room)
+                    emit_to_room(room, io);
+            }
             //io.emit('searchingResult', {results: getSearchResult(rooms_array)}) Broadcast qui va pop sur tout les clients a chaque changement dans le back
         });
         socket.on('disconnect', function () {

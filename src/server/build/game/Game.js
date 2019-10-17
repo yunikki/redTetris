@@ -5,12 +5,12 @@ var Game = /** @class */ (function () {
     function Game(roomName, player) {
         this.name = roomName;
         this.players = [];
-        this.rules = {
-            speedrun: false,
-            juniorBoard: false,
-            scoremode: false,
-            bubbleTiles: false
-        };
+        this.rules = [
+            false,
+            true,
+            false,
+            false //bubbleTiles:
+        ];
         this.players.push(player);
         this.status = 'waiting';
     }
@@ -39,6 +39,9 @@ var Game = /** @class */ (function () {
                 return this.players[i].name;
         }
         return null;
+    };
+    Game.prototype.changeParam = function (val, id) {
+        this.rules[id] = val;
     };
     Game.prototype.removePlayer = function (playerName, socketID) {
         if (playerName === void 0) { playerName = ""; }
@@ -148,3 +151,16 @@ function removePlayer(playerName, socketID, games_array) {
     return null;
 }
 exports.removePlayer = removePlayer;
+function getGameWithNameRoom(name, rooms) {
+    for (var i in rooms) {
+        if (rooms[i].name == name) {
+            return (rooms[i]);
+        }
+    }
+}
+exports.getGameWithNameRoom = getGameWithNameRoom;
+function GameChangeParam(val, id, name, rooms) {
+    var room = getGameWithNameRoom(name, rooms);
+    room.changeParam(val, id);
+}
+exports.GameChangeParam = GameChangeParam;

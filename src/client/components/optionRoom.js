@@ -1,36 +1,42 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } from "react-router-dom";
 import { connect } from 'react-redux';
+import { dataChangeParamRoom } from '../actions/server'
 
-function test() {
-    console.log(state)
+function test(state, e, dispatch, name) {
+    console.log(state, e.target.checked, e.target.getAttribute('option'))
+    dispatch(dataChangeParamRoom(e.target.checked, e.target.getAttribute('option'), name))
 }
-export function OptionRoom({ state }) {
+export function OptionRoom({ state, dispatch }) {
     var NameOption = [];
     var option = [];
-
+    if (!state.room || !state.room.rules)
+        return (<div></div>)
     NameOption.push('speedrun')
     NameOption.push('junior board')
     NameOption.push('scord mode')
     NameOption.push('bubble tiles')
     console.log('haha je suis le state', state)
     if (state.master) {
+        console.log('ici')
+        console.log(state.room.rules)
         for (var i in NameOption) {
             option.push(
                 <div className="container_option" key={i}>
                     <div className="name_option">{NameOption[i]}</div>
-                    <input className="check_option" type="checkbox" value={NameOption[i]} onChange={test} defaultChecked={false}></input>
+                    <input className="check_option" type="checkbox" option={i} onChange={(e) => test(state, e, dispatch, state.room.name)} defaultChecked={state.room.rules[i]}></input>
                 </div>
             )
         }
     }
     else {
         for (var i in NameOption) {
-            option.push(
-                <div className="container_option" key={i}>
-                    <div className="name_option">{NameOption[i]}</div>
-                </div>
-            )
+            if (state.room.rules[i])
+                option.push(
+                    <div className="container_option" key={i}>
+                        <div className="name_option">{NameOption[i]}</div>
+                    </div>
+                )
         }
     }
 
