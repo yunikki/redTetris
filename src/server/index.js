@@ -53,12 +53,11 @@ const initEngine = io => {
                 console.log(room);
                 socket.emit('action', { type: 'joinRoom', room: room, master: 2 })
                 socket.broadcast.emit('action', { type: 'joinRoom', room: room, master: 2 })
-
-                socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
+                //socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
                 socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
             }
             if (action.type == 'server/searchRoom') {
-                console.log("Searching for room ", getSearchResult(rooms_array))
+                console.log("Searching for room ", getSearchResult(rooms_array))    
                 socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
             }
             if (action.type == 'server/removePlayerFromRoom') {
@@ -79,12 +78,24 @@ const initEngine = io => {
                 if (room)
                     emit_to_room(room, io)
             }
-            //io.emit('searchingResult', {results: getSearchResult(rooms_array)}) Broadcast qui va pop sur tout les clients a chaque changement dans le back
+            if (action.type == 'server/gameStart') {
+                let room = getGame(action.playerName, rooms_array);
+                console.log("KAKEGURUI: ", room)
+                let socketRoom = getGameWithNameRoom(room.name, rooms_array)
+                if (room){
+                    for (let i in socketRoom.players){
+                        console.log("SOCKET ROOM", socketRoom.players[i]);
+                        io.to(socketRoom.players[i].socketID).emit('action', { type: 'GAME_START', room: room})
+                        //n'emit rien
+                    }
+                }
+            }
         })
 
         socket.on('disconnect', function () {
             let room = getGameWithId(socket.id, rooms_array)
             let player = removePlayer("", socket.id, rooms_array)
+            console.log(room, player);
             if (room)
                 emit_to_room(room, io)
             socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })

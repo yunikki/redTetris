@@ -3,6 +3,8 @@ export const SERVEUR_CREAT_ROOM = 'server/creatRoom'
 export const SERVER_SEARCH_ROOM = 'server/searchRoom'
 export const REMOVE_PLAYER_FROM_ROOM = 'server/removePlayerFromRoom'
 
+export const KAKEGURUI_MASHOU = 'server/gameStart'
+
 export const SERVER_KEY_UP = 'server/keyUp'
 export const SERVER_KEY_DOWN = 'server/keyDown'
 export const SERVER_KEY_LEFT = 'server/keyleft'
@@ -54,6 +56,14 @@ export const removePlayerFromRoom = (state) => {
         playerName: state.inputName
     }
 }
+
+export const startGame = (state) => {
+    return {
+        type: KAKEGURUI_MASHOU,
+        playerName: state.inputName
+    }
+}
+
 export const DataKeyUp = () => {
     return {
         type: SERVER_KEY_UP

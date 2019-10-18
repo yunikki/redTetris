@@ -43,6 +43,12 @@ function reducer(state = initialState, action) {
                 ...state,
                 nameSearch: action.data
             }
+        case 'GAME_START':
+            console.log("GAME STARTED")
+            return {
+                ...state,
+                location: 'game'
+            }
         default:
             return state;
     }

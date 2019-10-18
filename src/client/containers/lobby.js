@@ -3,9 +3,11 @@ import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } 
 import { connect } from 'react-redux';
 import { chargePageSolo, chargePageHome } from '../components/action'
 import { OptionRoom, NameEnnemy } from '../components/optionRoom'
-import { removePlayerFromRoom } from '../actions/server'
+import { removePlayerFromRoom, startGame } from '../actions/server'
 
-function Lobby({ pageSolo, leaveLobby, state, room, dispatch }) {
+function Lobby({ chargeGame, leaveLobby, state, room, dispatch }) {
+    if (state.location && state.location == 'game')
+        dispatch(chargePageSolo(dispatch))
     return (
         <Router>
             <div id="menu">
@@ -21,7 +23,7 @@ function Lobby({ pageSolo, leaveLobby, state, room, dispatch }) {
                     <OptionRoom state={state} dispatch={dispatch} />
                     <div id="container-selec-quick">
                         <Link id="button-2player" className="btn" to="/" onClick={() => leaveLobby(state)}>leave the room</Link>
-                        <Link style={{ display: state.master ? "inline-block" : "none" }} id="button-1player" className="btn" to="/solo" onClick={pageSolo}>start the game</Link>
+                        <Link style={{ display: state.master ? "inline-block" : "none" }} id="button-1player" className="btn" to="/solo" onClick={() => chargeGame(state)}>start the game</Link>
                     </div>
                 </div>
 
@@ -39,6 +41,10 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch) => {
     return ({
         dispatch: dispatch,
+        chargeGame: (state) => {
+            //dispatch(chargePageSolo(dispatch)),
+            dispatch(startGame(state))
+        },
         pageSolo: chargePageSolo(dispatch),
         leaveLobby: (state) => {
             dispatch(removePlayerFromRoom(state))
