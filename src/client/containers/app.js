@@ -22,7 +22,7 @@ function App({ state }) {
     if (state.location == "Home") {
         return <Router><MyComp /></Router>
     }
-    else if (state.location == "Solo") {
+    else if (state.location == "game") {
         return <Solo />
     }
     else if (state.location == "Lobby")

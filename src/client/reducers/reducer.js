@@ -47,7 +47,10 @@ function reducer(state = initialState, action) {
             console.log("GAME STARTED")
             return {
                 ...state,
-                location: 'game'
+                location: 'game',
+                piece: action.next,
+                grid: action.grid,
+                room: action.room
             }
         default:
             return state;

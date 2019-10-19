@@ -1,6 +1,6 @@
 import p from "./piece"
 
-function getRandomInt(max) {
+export function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
 }
 
@@ -80,7 +80,53 @@ function randPiece() {
 
 }
 
-class pieces {
+function epurPiece(p) {
+    for (let i in p) {
+        if (p[i] == "....") {
+            p.splice(i, 1)
+        }
+    }
+    return p
+}
+
+function randColor() {
+    let r = getRandomInt(4)
+    switch (r) {
+        case 0:
+            return ('PR');
+        case 1:
+            return ('PG');
+        case 2:
+            return ('PB');
+        case 3:
+            return ('PO');
+        case 4:
+            return ('PV');
+
+        default:
+            break;
+    }
+}
+
+export function setNewPieceInGridForAll(room) {
+    let p = epurPiece(room.Pieces[0].piece)
+    let c = randColor()
+    for (let i in room.players) {
+        for (let l in p) {
+            let l_grid = 3;
+            let l_piece = 0
+            while (l_piece < 4) {
+                if (p[l][l_piece] == "#")
+                    room.players[i].grid[l][l_grid] = c
+                l_grid += 1;
+                l_piece += 1
+            }
+        }
+    }
+    return room
+}
+
+export class pieces {
     constructor() {
         this.piece = randPiece();
         this.next = undefined;
@@ -91,9 +137,7 @@ class pieces {
     }
 }
 
-function getPieces() {
+export function getPieces() {
     //var c = new pieces;
     return (randPiece())
 }
-
-export default { pieces, getPieces }

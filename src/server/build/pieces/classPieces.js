@@ -7,6 +7,7 @@ var piece_1 = __importDefault(require("./piece"));
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
 }
+exports.getRandomInt = getRandomInt;
 function randPiece() {
     switch (getRandomInt(5)) {
         case 0: //carre
@@ -80,6 +81,49 @@ function randPiece() {
             break;
     }
 }
+function epurPiece(p) {
+    for (var i in p) {
+        if (p[i] == "....") {
+            p.splice(i, 1);
+        }
+    }
+    return p;
+}
+function randColor() {
+    var r = getRandomInt(4);
+    switch (r) {
+        case 0:
+            return ('PR');
+        case 1:
+            return ('PG');
+        case 2:
+            return ('PB');
+        case 3:
+            return ('PO');
+        case 4:
+            return ('PV');
+        default:
+            break;
+    }
+}
+function setNewPieceInGridForAll(room) {
+    var p = epurPiece(room.Pieces[0].piece);
+    var c = randColor();
+    for (var i in room.players) {
+        for (var l in p) {
+            var l_grid = 3;
+            var l_piece = 0;
+            while (l_piece < 4) {
+                if (p[l][l_piece] == "#")
+                    room.players[i].grid[l][l_grid] = c;
+                l_grid += 1;
+                l_piece += 1;
+            }
+        }
+    }
+    return room;
+}
+exports.setNewPieceInGridForAll = setNewPieceInGridForAll;
 var pieces = /** @class */ (function () {
     function pieces() {
         this.piece = randPiece();
@@ -90,8 +134,9 @@ var pieces = /** @class */ (function () {
     };
     return pieces;
 }());
+exports.pieces = pieces;
 function getPieces() {
     //var c = new pieces;
     return (randPiece());
 }
-exports.default = { pieces: pieces, getPieces: getPieces };
+exports.getPieces = getPieces;

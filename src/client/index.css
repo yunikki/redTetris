@@ -200,11 +200,10 @@ body {
 
 #spectre-border-container {
     background-color: grey;
-    margin: 0 auto;
-    border: #18171b solid 1px;
     width: 200px;
-    height: 500px;
     margin: 50px 50px 7px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .wrapper-carrou {

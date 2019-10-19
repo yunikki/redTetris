@@ -7,7 +7,7 @@ import MakeNewPiece from './makeMewPiece'
 import { connect } from 'react-redux';
 import { func } from 'prop-types';
 
-function Solo({ onClickt, pageHome }) {
+function Solo({ onClickt, pageHome, state }) {
     var name = []
 
     return (
@@ -15,20 +15,20 @@ function Solo({ onClickt, pageHome }) {
             <div id="container-party-solo">
                 <div className="content-bord-solo">
                     <div id="bord">
-                        <Makebord />
+                        <Makebord state={state} />
                     </div>
                 </div>
                 <aside id="info-party-solo">
                     <div id="next-piece-container">
                         <div id="solo-next-piece" onClick={onClickt}>
-                            <MakeNewPiece />
+                            <MakeNewPiece piece={state.piece} />
                         </div>
                     </div>
                     <p>Your Score :</p>
                     <img id="title-img" src="./assets/images/title.png"></img>
                     <div id="container-spectre-solo">
 
-                        <SpectreSolo name={name} />
+                        <SpectreSolo state={state} />
 
                     </div>
                     <Link id="return-menu" className="btn" to="/" onClick={pageHome}>Back to Menu</Link>
@@ -44,7 +44,7 @@ Solo.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-
+    state: state
 })
 
 const mapDispatchToProps = (dispatch) => ({

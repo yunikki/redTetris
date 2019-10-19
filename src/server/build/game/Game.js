@@ -4,6 +4,7 @@ var Player_1 = require("../player/Player");
 var Game = /** @class */ (function () {
     function Game(roomName, player) {
         this.name = roomName;
+        this.Pieces = [];
         this.players = [];
         this.rules = [
             false,

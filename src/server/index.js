@@ -1,6 +1,6 @@
 import fs from 'fs'
 import debug from 'debug'
-import p from './pieces/classPieces'
+import { pieces, getPieces, setNewPieceInGridForAll } from './pieces/classPieces'
 import { getSearchResult } from './game/Game'
 import { Player } from './player/Player'
 import { Game, joinGame, getGame, removePlayer, getGameWithId, GameChangeParam, getGameWithNameRoom } from './game/Game'
@@ -45,19 +45,17 @@ const initEngine = io => {
         console.log("Socket connected: " + socket.id)
         socket.on('action', (action) => {
             if (action.type === 'server/piecesSolo') {
-                socket.emit('action', { type: 'newPiece', piece: p.getPieces() })
+                socket.emit('action', { type: 'newPiece', piece: getPieces() })
             }
             if (action.type === 'server/creatRoom') {
                 rooms_array = joinGame(action.roomName, action.playerName, action.socketID, rooms_array);
                 let room = getGame(action.playerName, rooms_array)
-                console.log(room);
                 socket.emit('action', { type: 'joinRoom', room: room, master: 2 })
                 socket.broadcast.emit('action', { type: 'joinRoom', room: room, master: 2 })
-                //socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
+                socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
                 socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
             }
             if (action.type == 'server/searchRoom') {
-                console.log("Searching for room ", getSearchResult(rooms_array))    
                 socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
             }
             if (action.type == 'server/removePlayerFromRoom') {
@@ -69,25 +67,29 @@ const initEngine = io => {
 
                 socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
                 socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
-                console.log(removedPlayer, rooms_array)
             }
             if (action.type == 'server/changeParamRoom') {
                 GameChangeParam(action.val, action.id, action.name, rooms_array)
                 let room = getGameWithNameRoom(action.name, rooms_array)
-                console.log(room)
                 if (room)
                     emit_to_room(room, io)
             }
             if (action.type == 'server/gameStart') {
                 let room = getGame(action.playerName, rooms_array);
-                console.log("KAKEGURUI: ", room)
                 let socketRoom = getGameWithNameRoom(room.name, rooms_array)
-                if (room){
-                    for (let i in socketRoom.players){
-                        console.log("SOCKET ROOM", socketRoom.players[i]);
-                        io.to(socketRoom.players[i].socketID).emit('action', { type: 'GAME_START', room: room})
+                let new_room = []
+                room.Pieces.push(new pieces())
+                room.Pieces.push(new pieces())
+                if (!room)
+                    return (undefined)
+                socketRoom = setNewPieceInGridForAll(room)
+                if (room) {
+                    for (let i in socketRoom.players) {
+                        io.to(socketRoom.players[i].socketID).emit('action', { type: 'GAME_START', room: room, grid: socketRoom.players[i].grid, next: socketRoom.Pieces[socketRoom.players[i].currentPiece + 1].piece })
+                        new_room.push(socketRoom)
                         //n'emit rien
                     }
+                    rooms_array = room
                 }
             }
         })

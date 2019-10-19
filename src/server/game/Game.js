@@ -4,6 +4,7 @@ import { Player } from '../player/Player'
 export class Game {
     constructor(roomName, player) {
         this.name = roomName;
+        this.Pieces = [];
         this.players = [];
         this.rules = [
             false, //speedrun:
