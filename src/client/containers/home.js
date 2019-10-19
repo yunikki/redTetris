@@ -4,7 +4,7 @@ import reducer from '../reducers'
 import { RoomDispo } from '../components/roomdispo'
 import { connect } from 'react-redux';
 import { chargePageSolo, inputYourName, inputYourNameRoom, chargeLobby, searchingRooms, saveSearch, strRandom } from '../components/action'
-import { dataChargeLobby, dataChangeInputName, dataTMaster } from '../actions'
+import { dataChargeLobby, dataChangeInputName, dataTMaster, dataChangeInputNameRoom } from '../actions'
 import { dataCreateRoom, getRoomInfos, dataCreateRoomSolo, startGame } from '../actions/server'
 
 function notChargeLobby() {
@@ -59,6 +59,7 @@ const mapDispatchToProps = (dispatch) => {
                 length: 20,
                 startsWithLowerCase: true
             });
+            dispatch(dataChangeInputName(str))
             state.inputName = str
             dispatch(dataCreateRoomSolo(state, str))
             dispatch(startGame(state))

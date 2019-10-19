@@ -85,9 +85,10 @@ export const DataKeyUp = () => {
     }
 }
 
-export const DataKeyDown = () => {
+export const DataKeyDown = (name) => {
     return {
-        type: SERVER_KEY_DOWN
+        type: SERVER_KEY_DOWN,
+        name: name
     }
 }
 
@@ -103,9 +104,10 @@ export const DataKeyRight = () => {
     }
 }
 
-export const DataKeySpace = () => {
+export const DataKeySpace = (name) => {
     return {
-        type: SERVER_KEY_SPACE
+        type: SERVER_KEY_SPACE,
+        name: name
     }
 }
 
@@ -115,11 +117,11 @@ export function keyTetris(e, dispatch, state) {
     if (state.location == "game" && (e.key == 'w' || e.key == 'ArrowUp'))
         dispatch(DataKeyUp())
     else if (state.location == "game" && (e.key == 's' || e.key == 'ArrowDown'))
-        dispatch(DataKeyDown())
+        dispatch(DataKeyDown(state.inputName))
     else if (state.location == "game" && (e.key == 'a' || e.key == 'ArrowLeft'))
         dispatch(DataKeyLeft())
     else if (state.location == "game" && (e.key == 'd' || e.key == 'ArrowRight'))
         dispatch(DataKeyRight())
     else if (state.location == "game" && (e.key == ' '))
-        dispatch(DataKeySpace())
+        dispatch(DataKeySpace(state.inputName))
 }
