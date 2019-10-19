@@ -128,7 +128,8 @@ function getSearchResult(rooms_array) {
         return null;
     var search_result = [];
     for (var i = 0; i < rooms_array.length; i++) {
-        if (rooms_array[i].priv == true)
+        console.log(rooms_array[i].priv);
+        if (rooms_array[i].priv == false)
             search_result.push({
                 "roomName": rooms_array[i].name,
                 "players": rooms_array[i].players.length,

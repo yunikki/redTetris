@@ -35,7 +35,7 @@ export const dataCreateRoom = (state) => {
         roomName: state.inputNameRoom,
         playerName: state.inputName,
         socketID: state.socketID,
-        private: false,
+        priv: false,
     }
 }
 
@@ -46,7 +46,7 @@ export const dataCreateRoomSolo = (state, str) => {
         roomName: str,
         playerName: str,
         socketID: state.socketID,
-        private: true
+        priv: true
     }
 }
 
@@ -55,7 +55,8 @@ export const dataCreateRoom_bis = (state, nameRoom) => {
         type: SERVEUR_CREAT_ROOM,
         roomName: nameRoom,
         playerName: state.inputName,
-        socketID: state.socketID
+        socketID: state.socketID,
+        priv: false,
     }
 }
 

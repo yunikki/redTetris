@@ -36,167 +36,6 @@ function emit_to_room(room, io) {
             io.to(room.players[i].socketID).emit('action', { type: 'joinRoom', room: room, master: room.players[i].gameMaster });
         }
 }
-function okForFall(grid) {
-    var x = 19;
-    while (x >= 0) {
-        var y = 9;
-        while (y >= 0) {
-            if (grid[x][y][0] == "P" && (grid[x + 1] == undefined || (grid[x + 1][y] != "." && grid[x + 1][y][0] != "P")))
-                return false;
-            y -= 1;
-        }
-        x -= 1;
-    }
-    return true;
-}
-function fall_piece(room) {
-    var i = 0;
-    for (i in room.players) {
-        if (okForFall(room.players[i].grid)) {
-            room.players[i].hit = false;
-            var x = 19;
-            while (x >= 0) {
-                var y = 9;
-                while (y >= 0) {
-                    if (room.players[i].grid[x + 1] && room.players[i].grid[x][y][0] == "P") {
-                        room.players[i].grid[x + 1][y] = room.players[i].grid[x][y];
-                        room.players[i].grid[x][y] = ".";
-                    }
-                    y -= 1;
-                }
-                x -= 1;
-            }
-        }
-        else if (room.players[i].hit == false) {
-            room.players[i].hit = true;
-        }
-        else {
-            room.players[i].hit = false;
-            var x = 19;
-            while (x >= 0) {
-                var y = 9;
-                while (y >= 0) {
-                    if (room.players[i].grid[x][y][0] == "P") {
-                        room.players[i].grid[x][y] = room.players[i].grid[x][y].substring(1, 2);
-                    }
-                    y -= 1;
-                }
-                x -= 1;
-            }
-            room.players[i].currentPiece += 1;
-            if (room.Pieces[room.players[i].currentPiece + 1]) {
-                var new_pices = room.Pieces[room.players[i].currentPiece].piece;
-                room.players[i] = classPieces_1.setNewPieceInGrid(room.players[i], new_pices);
-            }
-            else {
-                room.Pieces.push(new classPieces_1.pieces());
-                var new_pices = room.Pieces[room.players[i].currentPiece].piece;
-                room.players[i] = classPieces_1.setNewPieceInGrid(room.players[i], new_pices);
-            }
-        }
-    }
-    return (room);
-}
-function floorPiece(room, id) {
-    var players = undefined;
-    clearInterval(room.stop);
-    for (var i in room.players) {
-        if (room.players[i].socketID == id) {
-            while (okForFall(room.players[i].grid)) {
-                var x_1 = 19;
-                while (x_1 >= 0) {
-                    var y = 9;
-                    while (y >= 0) {
-                        if (room.players[i].grid[x_1 + 1] && room.players[i].grid[x_1][y][0] == "P") {
-                            room.players[i].grid[x_1 + 1][y] = room.players[i].grid[x_1][y];
-                            room.players[i].grid[x_1][y] = ".";
-                        }
-                        y -= 1;
-                    }
-                    x_1 -= 1;
-                }
-            }
-            room.players[i].hit = false;
-            var x = 19;
-            while (x >= 0) {
-                var y = 9;
-                while (y >= 0) {
-                    if (room.players[i].grid[x][y][0] == "P") {
-                        room.players[i].grid[x][y] = room.players[i].grid[x][y].substring(1, 2);
-                    }
-                    y -= 1;
-                }
-                x -= 1;
-            }
-            room.players[i].currentPiece += 1;
-            if (room.Pieces[room.players[i].currentPiece + 1]) {
-                var new_pices = room.Pieces[room.players[i].currentPiece].piece;
-                room.players[i] = classPieces_1.setNewPieceInGrid(room.players[i], new_pices);
-            }
-            else {
-                room.Pieces.push(new classPieces_1.pieces());
-                var new_pices = room.Pieces[room.players[i].currentPiece].piece;
-                room.players[i] = classPieces_1.setNewPieceInGrid(room.players[i], new_pices);
-            }
-            break;
-        }
-    }
-    return (room);
-}
-function featherDrop(room, id) {
-    var players = undefined;
-    clearInterval(room.stop);
-    for (var i in room.players) {
-        console.log(room.players[i].id, id);
-        if (room.players[i].socketID == id) {
-            //players = room.players[i].id
-            if (okForFall(room.players[i].grid)) {
-                var x = 19;
-                while (x >= 0) {
-                    var y = 9;
-                    while (y >= 0) {
-                        if (room.players[i].grid[x + 1] && room.players[i].grid[x][y][0] == "P") {
-                            //    console.log('test')
-                            room.players[i].grid[x + 1][y] = room.players[i].grid[x][y];
-                            room.players[i].grid[x][y] = ".";
-                        }
-                        y -= 1;
-                    }
-                    x -= 1;
-                }
-            }
-            else if (room.players[i].hit == false) {
-                room.players[i].hit = true;
-            }
-            else {
-                room.players[i].hit = false;
-                var x = 19;
-                while (x >= 0) {
-                    var y = 9;
-                    while (y >= 0) {
-                        if (room.players[i].grid[x][y][0] == "P") {
-                            room.players[i].grid[x][y] = room.players[i].grid[x][y].substring(1, 2);
-                        }
-                        y -= 1;
-                    }
-                    x -= 1;
-                }
-                room.players[i].currentPiece += 1;
-                if (room.Pieces[room.players[i].currentPiece + 1]) {
-                    var new_pices = room.Pieces[room.players[i].currentPiece].piece;
-                    room.players[i] = classPieces_1.setNewPieceInGrid(room.players[i], new_pices);
-                }
-                else {
-                    room.Pieces.push(new classPieces_1.pieces());
-                    var new_pices = room.Pieces[room.players[i].currentPiece].piece;
-                    room.players[i] = classPieces_1.setNewPieceInGrid(room.players[i], new_pices);
-                }
-            }
-            break;
-        }
-    }
-    return (room);
-}
 var initEngine = function (io) {
     io.on('connection', function (socket) {
         console.log("Socket connected: " + socket.id);
@@ -233,12 +72,12 @@ var initEngine = function (io) {
             }
             if (action.type == 'server/keyDown') {
                 var room_1 = Game_2.getGame(action.name, rooms_array);
-                room_1 = featherDrop(room_1, socket.id);
+                room_1 = classPieces_1.featherDrop(room_1, socket.id);
                 for (var i in room_1.players) {
                     io.to(room_1.players[i].socketID).emit('action', { type: 'GAME_START', room: room_1, grid: room_1.players[i].grid, next: room_1.Pieces[room_1.players[i].currentPiece + 1].piece });
                 }
                 room_1.stop = setInterval(function () {
-                    room_1 = fall_piece(room_1);
+                    room_1 = classPieces_1.fall_piece(room_1);
                     Game_2.updateRoomArray(room_1, rooms_array);
                     for (var i in room_1.players) {
                         io.to(room_1.players[i].socketID).emit('action', { type: 'GAME_START', room: room_1, grid: room_1.players[i].grid, next: room_1.Pieces[room_1.players[i].currentPiece + 1].piece });
@@ -248,12 +87,12 @@ var initEngine = function (io) {
             }
             if (action.type == 'server/keySpace') {
                 var room_2 = Game_2.getGame(action.name, rooms_array);
-                room_2 = floorPiece(room_2, socket.id);
+                room_2 = classPieces_1.floorPiece(room_2, socket.id);
                 for (var i in room_2.players) {
                     io.to(room_2.players[i].socketID).emit('action', { type: 'GAME_START', room: room_2, grid: room_2.players[i].grid, next: room_2.Pieces[room_2.players[i].currentPiece + 1].piece });
                 }
                 room_2.stop = setInterval(function () {
-                    room_2 = fall_piece(room_2);
+                    room_2 = classPieces_1.fall_piece(room_2);
                     Game_2.updateRoomArray(room_2, rooms_array);
                     for (var i in room_2.players) {
                         io.to(room_2.players[i].socketID).emit('action', { type: 'GAME_START', room: room_2, grid: room_2.players[i].grid, next: room_2.Pieces[room_2.players[i].currentPiece + 1].piece });
@@ -278,7 +117,7 @@ var initEngine = function (io) {
                 }
                 socketRoom_1.status = "runing";
                 socketRoom_1.stop = setInterval(function () {
-                    socketRoom_1 = fall_piece(socketRoom_1);
+                    socketRoom_1 = classPieces_1.fall_piece(socketRoom_1);
                     Game_2.updateRoomArray(socketRoom_1, rooms_array);
                     for (var i in socketRoom_1.players) {
                         io.to(socketRoom_1.players[i].socketID).emit('action', { type: 'GAME_START', room: room_3, grid: socketRoom_1.players[i].grid, next: socketRoom_1.Pieces[socketRoom_1.players[i].currentPiece + 1].piece });
