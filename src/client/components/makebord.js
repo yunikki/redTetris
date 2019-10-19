@@ -12,6 +12,16 @@ function chooseColor(c) {
             return ('orange');
         case 'PV':
             return ('purple');
+        case 'R':
+            return ('red');
+        case 'G':
+            return ('green');
+        case 'B':
+            return ('blue');
+        case 'O':
+            return ('orange');
+        case 'V':
+            return ('purple');
 
         default:
             return ('#505050');

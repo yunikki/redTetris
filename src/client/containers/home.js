@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } 
 import reducer from '../reducers'
 import { RoomDispo } from '../components/roomdispo'
 import { connect } from 'react-redux';
-import { chargePageSolo, inputYourName, inputYourNameRoom, chargeLobby, searchingRooms, saveSearch } from '../components/action'
+import { chargePageSolo, inputYourName, inputYourNameRoom, chargeLobby, searchingRooms, saveSearch, strRandom } from '../components/action'
 import { dataChargeLobby, dataChangeInputName, dataTMaster } from '../actions'
-import { dataCreateRoom, getRoomInfos } from '../actions/server'
+import { dataCreateRoom, getRoomInfos, dataCreateRoomSolo, startGame } from '../actions/server'
 
 function notChargeLobby() {
 }
@@ -20,8 +20,8 @@ function Home({ pageSolo, dispatch, inputYourNameRoom, state, chargeLobby, start
                 <div id="menu-panel">
                     <div id="container-selec-quick">
                         <p>Fast Game</p>
-                        <Link id="button-2player" className="btn" to="/solo" onClick={pageSolo}>One Player</Link>
-                        <Link id="button-1player" className="btn" to="/solo" onClick={pageSolo}>Two Players</Link>
+                        <Link id="button-2player" className="btn" to="/solo" onClick={() => pageSolo(state)}>One Player</Link>
+                        <Link id="button-1player" className="btn" to="/solo" onClick={() => pageSolo(state)}>Two Players</Link>
                     </div>
                     <div id="creat-party">
                         <p>Create Game</p>
@@ -52,7 +52,17 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch) => {
     return ({
         dispatch: dispatch,
-        pageSolo: chargePageSolo(dispatch),
+        pageSolo: (state) => {
+            let str = strRandom({
+                includeUpperCase: true,
+                includeNumbers: true,
+                length: 20,
+                startsWithLowerCase: true
+            });
+            state.inputName = str
+            dispatch(dataCreateRoomSolo(state, str))
+            dispatch(startGame(state))
+        },
         inputYourNameRoom: inputYourNameRoom(dispatch),
         chargeLobby: (state) => {
             dispatch(dataTMaster())

@@ -4,7 +4,7 @@ import Makebord from '../components/makebord'
 import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } from "react-router-dom";
 import { dipatcherOnNewPiece, chargePageHome } from "../components/action"
 import { removePlayerFromRoom } from "../actions/server"
-import { dataChangeSolo } from "../actions/"
+import { dataChangeHome } from "../actions/"
 import MakeNewPiece from './makeMewPiece'
 import { connect } from 'react-redux';
 import { func } from 'prop-types';
@@ -52,7 +52,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch) => ({
     onClickt: dipatcherOnNewPiece(dispatch),
     pageHome: (state) => {
-        dispatch(dataChangeSolo())
+        dispatch(dataChangeHome())
         dispatch(removePlayerFromRoom(state))
         console.log('ok', state)
     }

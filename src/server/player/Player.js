@@ -2,6 +2,8 @@
 export class Player {
     constructor(playerName, playerSocketID, grid, gameMaster) {
         this.currentPiece = 0;
+        this.loose = false;
+        this.hit = false;
         this.name = playerName;
         this.socketID = playerSocketID;
         this.grid = [[".", ".", ".", ".", ".", ".", ".", ".", ".", "."],

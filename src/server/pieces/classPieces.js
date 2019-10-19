@@ -126,6 +126,28 @@ export function setNewPieceInGridForAll(room) {
     return room
 }
 
+export function setNewPieceInGrid(player, piece) {
+    let p = epurPiece(piece)
+    let c = randColor()
+
+    for (let l in p) {
+        let l_grid = 3;
+        let l_piece = 0
+        while (l_piece < 4) {
+            if (player.grid[l][l_grid] != ".") {
+                player.loose = true
+                return player
+            }
+            else if (p[l][l_piece] == "#")
+                player.grid[l][l_grid] = c
+            l_grid += 1;
+            l_piece += 1
+        }
+    }
+
+    return player
+}
+
 export class pieces {
     constructor() {
         this.piece = randPiece();

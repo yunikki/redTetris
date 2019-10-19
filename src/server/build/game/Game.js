@@ -2,8 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var Player_1 = require("../player/Player");
 var Game = /** @class */ (function () {
-    function Game(roomName, player) {
+    function Game(roomName, player, priv) {
         this.name = roomName;
+        this.stop = undefined;
+        this.priv = priv;
         this.Pieces = [];
         this.players = [];
         this.rules = [
@@ -82,9 +84,9 @@ var Game = /** @class */ (function () {
     return Game;
 }());
 exports.Game = Game;
-function joinGame(roomName, playerName, playerSocket, games_array) {
+function joinGame(roomName, playerName, playerSocket, games_array, priv) {
     if (games_array.length == 0)
-        games_array[0] = new Game(roomName, new Player_1.Player(playerName, playerSocket, [], 1));
+        games_array[0] = new Game(roomName, new Player_1.Player(playerName, playerSocket, [], 1), priv);
     else {
         for (var i = 0; i < games_array.length; i++) {
             if (games_array[i].name == roomName) {
@@ -92,7 +94,7 @@ function joinGame(roomName, playerName, playerSocket, games_array) {
                 return games_array;
             }
         }
-        games_array.push(new Game(roomName, new Player_1.Player(playerName, playerSocket, [], 1)));
+        games_array.push(new Game(roomName, new Player_1.Player(playerName, playerSocket, [], 1), priv));
     }
     return games_array;
 }
@@ -126,11 +128,12 @@ function getSearchResult(rooms_array) {
         return null;
     var search_result = [];
     for (var i = 0; i < rooms_array.length; i++) {
-        search_result.push({
-            "roomName": rooms_array[i].name,
-            "players": rooms_array[i].players.length,
-            "gameMaster": rooms_array[i].getGM()
-        });
+        if (rooms_array[i].priv == true)
+            search_result.push({
+                "roomName": rooms_array[i].name,
+                "players": rooms_array[i].players.length,
+                "gameMaster": rooms_array[i].getGM()
+            });
     }
     return search_result;
 }
@@ -144,8 +147,11 @@ function removePlayer(playerName, socketID, games_array) {
         if (player == null)
             i++;
         else {
-            if (games_array[i].players.length == 0)
+            if (games_array[i].players.length == 0) {
+                if (games_array[i].stop)
+                    clearInterval(games_array[i].stop);
                 games_array.shift(i, 1);
+            }
             return player;
         }
     }
@@ -165,3 +171,12 @@ function GameChangeParam(val, id, name, rooms) {
     room.changeParam(val, id);
 }
 exports.GameChangeParam = GameChangeParam;
+function updateRoomArray(r, rooms) {
+    for (var i in rooms) {
+        if (rooms[i].name == r.name) {
+            rooms[i] = r;
+            return (rooms[i]);
+        }
+    }
+}
+exports.updateRoomArray = updateRoomArray;

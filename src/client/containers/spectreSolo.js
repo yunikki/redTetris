@@ -36,6 +36,8 @@ function SpectreSolo_(grid, name, nb) {
 function SpectreSolo({ state }) {
     var container = []
     var key = 0
+    if (!state.room || !state.room.players)
+        return (<div></div>)
     var nb = state.room.players.length
     while (nb) {
         if (state.room.players[nb - 1].name != state.inputName)

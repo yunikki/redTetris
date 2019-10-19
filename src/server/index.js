@@ -1,9 +1,9 @@
 import fs from 'fs'
 import debug from 'debug'
-import { pieces, getPieces, setNewPieceInGridForAll } from './pieces/classPieces'
+import { pieces, getPieces, setNewPieceInGridForAll, setNewPieceInGrid } from './pieces/classPieces'
 import { getSearchResult } from './game/Game'
 import { Player } from './player/Player'
-import { Game, joinGame, getGame, removePlayer, getGameWithId, GameChangeParam, getGameWithNameRoom } from './game/Game'
+import { Game, joinGame, getGame, removePlayer, getGameWithId, GameChangeParam, getGameWithNameRoom, updateRoomArray } from './game/Game'
 
 
 const logerror = debug('tetris:error')
@@ -40,6 +40,82 @@ function emit_to_room(room, io) {
         }
 }
 
+function okForFall(grid) {
+    let x = 19
+    while (x >= 0) {
+        let y = 9
+        while (y >= 0) {
+            if (grid[x][y][0] == "P" && (grid[x + 1] == undefined || (grid[x + 1][y] != "." && grid[x + 1][y][0] != "P")))
+                return false
+            y -= 1
+        }
+        x -= 1
+    }
+    return true
+}
+
+function fall_piece(room) {
+    // console.log('haha', room)
+    console.log('----------------------------------')
+    //console.log(room.players)
+    let i = 0
+    for (i in room.players) {
+        if (okForFall(room.players[i].grid)) {
+            let x = 19
+            while (x >= 0) {
+                let y = 9
+                while (y >= 0) {
+                    console.log(y)
+                    if (room.players[i].grid[x + 1] && room.players[i].grid[x][y][0] == "P") {
+                        //    console.log('test')
+                        room.players[i].grid[x + 1][y] = room.players[i].grid[x][y]
+                        room.players[i].grid[x][y] = "."
+
+                    }
+                    y -= 1
+                }
+                x -= 1
+            }
+        }
+        else if (room.players[i].hit == false) {
+            room.players[i].hit = true;
+            console.log(room.players[i].hit)
+        }
+        else {
+            room.players[i].hit = false
+            let x = 19
+            while (x >= 0) {
+                let y = 9
+                while (y >= 0) {
+                    console.log(y)
+                    if (room.players[i].grid[x][y][0] == "P") {
+                        room.players[i].grid[x][y] = room.players[i].grid[x][y].substring(1, 2)
+
+                    }
+                    y -= 1
+                }
+                x -= 1
+            }
+            room.players[i].currentPiece += 1
+            if (room.Pieces[room.players[i].currentPiece + 1]) {
+                let new_pices = room.Pieces[room.players[i].currentPiece].piece
+                room.players[i] = setNewPieceInGrid(room.players[i], new_pices)
+            }
+            else {
+                room.Pieces.push(new pieces())
+                let new_pices = room.Pieces[room.players[i].currentPiece].piece
+                room.players[i] = setNewPieceInGrid(room.players[i], new_pices)
+
+            }
+
+
+
+        }
+    }
+    console.log(room.players[0].grid)
+    return (room)
+}
+
 const initEngine = io => {
     io.on('connection', function (socket) {
         console.log("Socket connected: " + socket.id)
@@ -49,8 +125,7 @@ const initEngine = io => {
                 socket.emit('action', { type: 'newPiece', piece: getPieces() })
             }
             if (action.type === 'server/creatRoom') {
-                console.log(rooms_array)
-                rooms_array = joinGame(action.roomName, action.playerName, action.socketID, rooms_array);
+                rooms_array = joinGame(action.roomName, action.playerName, action.socketID, rooms_array, action.priv);
                 let room = getGame(action.playerName, rooms_array)
                 socket.emit('action', { type: 'joinRoom', room: room, master: 2 })
                 socket.broadcast.emit('action', { type: 'joinRoom', room: room, master: 2 })
@@ -82,7 +157,6 @@ const initEngine = io => {
                 let new_room = []
                 room.Pieces.push(new pieces())
                 room.Pieces.push(new pieces())
-                // console.log(room)
                 if (!room)
                     return (undefined)
                 socketRoom = setNewPieceInGridForAll(room)
@@ -92,6 +166,16 @@ const initEngine = io => {
                         //n'emit rien
                     }
                 }
+                socketRoom.status = "runing"
+                socketRoom.stop = setInterval(() => {
+                    socketRoom = fall_piece(socketRoom)
+                    updateRoomArray(socketRoom, rooms_array)
+                    console.log("next prod", socketRoom.players[0].currentPiece + 1)
+                    for (let i in socketRoom.players) {
+                        io.to(socketRoom.players[i].socketID).emit('action', { type: 'GAME_START', room: room, grid: socketRoom.players[i].grid, next: socketRoom.Pieces[socketRoom.players[i].currentPiece + 1].piece })
+                    }
+                }, 500);
+                updateRoomArray(socketRoom, rooms_array)
             }
         })
 

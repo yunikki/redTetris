@@ -36,6 +36,74 @@ function emit_to_room(room, io) {
             io.to(room.players[i].socketID).emit('action', { type: 'joinRoom', room: room, master: room.players[i].gameMaster });
         }
 }
+function okForFall(grid) {
+    var x = 19;
+    while (x >= 0) {
+        var y = 9;
+        while (y >= 0) {
+            if (grid[x][y][0] == "P" && (grid[x + 1] == undefined || (grid[x + 1][y] != "." && grid[x + 1][y][0] != "P")))
+                return false;
+            y -= 1;
+        }
+        x -= 1;
+    }
+    return true;
+}
+function fall_piece(room) {
+    // console.log('haha', room)
+    console.log('----------------------------------');
+    //console.log(room.players)
+    var i = 0;
+    for (i in room.players) {
+        if (okForFall(room.players[i].grid)) {
+            var x = 19;
+            while (x >= 0) {
+                var y = 9;
+                while (y >= 0) {
+                    console.log(y);
+                    if (room.players[i].grid[x + 1] && room.players[i].grid[x][y][0] == "P") {
+                        //    console.log('test')
+                        room.players[i].grid[x + 1][y] = room.players[i].grid[x][y];
+                        room.players[i].grid[x][y] = ".";
+                    }
+                    y -= 1;
+                }
+                x -= 1;
+            }
+        }
+        else if (room.players[i].hit == false) {
+            room.players[i].hit = true;
+            console.log(room.players[i].hit);
+        }
+        else {
+            room.players[i].hit = false;
+            var x = 19;
+            while (x >= 0) {
+                var y = 9;
+                while (y >= 0) {
+                    console.log(y);
+                    if (room.players[i].grid[x][y][0] == "P") {
+                        room.players[i].grid[x][y] = room.players[i].grid[x][y].substring(1, 2);
+                    }
+                    y -= 1;
+                }
+                x -= 1;
+            }
+            room.players[i].currentPiece += 1;
+            if (room.Pieces[room.players[i].currentPiece + 1]) {
+                var new_pices = room.Pieces[room.players[i].currentPiece].piece;
+                room.players[i] = classPieces_1.setNewPieceInGrid(room.players[i], new_pices);
+            }
+            else {
+                room.Pieces.push(new classPieces_1.pieces());
+                var new_pices = room.Pieces[room.players[i].currentPiece].piece;
+                room.players[i] = classPieces_1.setNewPieceInGrid(room.players[i], new_pices);
+            }
+        }
+    }
+    console.log(room.players[0].grid);
+    return (room);
+}
 var initEngine = function (io) {
     io.on('connection', function (socket) {
         console.log("Socket connected: " + socket.id);
@@ -45,8 +113,7 @@ var initEngine = function (io) {
                 socket.emit('action', { type: 'newPiece', piece: classPieces_1.getPieces() });
             }
             if (action.type === 'server/creatRoom') {
-                console.log(rooms_array);
-                rooms_array = Game_2.joinGame(action.roomName, action.playerName, action.socketID, rooms_array);
+                rooms_array = Game_2.joinGame(action.roomName, action.playerName, action.socketID, rooms_array, action.priv);
                 var room = Game_2.getGame(action.playerName, rooms_array);
                 socket.emit('action', { type: 'joinRoom', room: room, master: 2 });
                 socket.broadcast.emit('action', { type: 'joinRoom', room: room, master: 2 });
@@ -72,21 +139,30 @@ var initEngine = function (io) {
                     emit_to_room(room, io);
             }
             if (action.type == 'server/gameStart') {
-                var room = Game_2.getGame(action.playerName, rooms_array);
-                var socketRoom = Game_2.getGameWithNameRoom(room.name, rooms_array);
+                var room_1 = Game_2.getGame(action.playerName, rooms_array);
+                var socketRoom_1 = Game_2.getGameWithNameRoom(room_1.name, rooms_array);
                 var new_room = [];
-                room.Pieces.push(new classPieces_1.pieces());
-                room.Pieces.push(new classPieces_1.pieces());
-                // console.log(room)
-                if (!room)
+                room_1.Pieces.push(new classPieces_1.pieces());
+                room_1.Pieces.push(new classPieces_1.pieces());
+                if (!room_1)
                     return (undefined);
-                socketRoom = classPieces_1.setNewPieceInGridForAll(room);
-                if (room) {
-                    for (var i in socketRoom.players) {
-                        io.to(socketRoom.players[i].socketID).emit('action', { type: 'GAME_START', room: room, grid: socketRoom.players[i].grid, next: socketRoom.Pieces[socketRoom.players[i].currentPiece + 1].piece });
+                socketRoom_1 = classPieces_1.setNewPieceInGridForAll(room_1);
+                if (room_1) {
+                    for (var i in socketRoom_1.players) {
+                        io.to(socketRoom_1.players[i].socketID).emit('action', { type: 'GAME_START', room: room_1, grid: socketRoom_1.players[i].grid, next: socketRoom_1.Pieces[socketRoom_1.players[i].currentPiece + 1].piece });
                         //n'emit rien
                     }
                 }
+                socketRoom_1.status = "runing";
+                socketRoom_1.stop = setInterval(function () {
+                    socketRoom_1 = fall_piece(socketRoom_1);
+                    Game_2.updateRoomArray(socketRoom_1, rooms_array);
+                    console.log("next prod", socketRoom_1.players[0].currentPiece + 1);
+                    for (var i in socketRoom_1.players) {
+                        io.to(socketRoom_1.players[i].socketID).emit('action', { type: 'GAME_START', room: room_1, grid: socketRoom_1.players[i].grid, next: socketRoom_1.Pieces[socketRoom_1.players[i].currentPiece + 1].piece });
+                    }
+                }, 500);
+                Game_2.updateRoomArray(socketRoom_1, rooms_array);
             }
         });
         socket.on('disconnect', function () {

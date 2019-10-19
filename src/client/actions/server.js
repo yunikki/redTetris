@@ -1,3 +1,5 @@
+import { strRandom } from "../components/action"
+
 export const SERVEUR_PIECESSOLO = 'server/piecesSolo'
 export const SERVEUR_CREAT_ROOM = 'server/creatRoom'
 export const SERVER_SEARCH_ROOM = 'server/searchRoom'
@@ -31,7 +33,19 @@ export const dataCreateRoom = (state) => {
         type: SERVEUR_CREAT_ROOM,
         roomName: state.inputNameRoom,
         playerName: state.inputName,
-        socketID: state.socketID
+        socketID: state.socketID,
+        private: false,
+    }
+}
+
+export const dataCreateRoomSolo = (state, str) => {
+
+    return {
+        type: SERVEUR_CREAT_ROOM,
+        roomName: str,
+        playerName: str,
+        socketID: state.socketID,
+        private: true
     }
 }
 

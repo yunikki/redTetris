@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Player = /** @class */ (function () {
     function Player(playerName, playerSocketID, grid, gameMaster) {
         this.currentPiece = 0;
+        this.loose = false;
+        this.hit = false;
         this.name = playerName;
         this.socketID = playerSocketID;
         this.grid = [[".", ".", ".", ".", ".", ".", ".", ".", ".", "."],

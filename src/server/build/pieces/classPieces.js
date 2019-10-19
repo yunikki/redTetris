@@ -124,6 +124,26 @@ function setNewPieceInGridForAll(room) {
     return room;
 }
 exports.setNewPieceInGridForAll = setNewPieceInGridForAll;
+function setNewPieceInGrid(player, piece) {
+    var p = epurPiece(piece);
+    var c = randColor();
+    for (var l in p) {
+        var l_grid = 3;
+        var l_piece = 0;
+        while (l_piece < 4) {
+            if (player.grid[l][l_grid] != ".") {
+                player.loose = true;
+                return player;
+            }
+            else if (p[l][l_piece] == "#")
+                player.grid[l][l_grid] = c;
+            l_grid += 1;
+            l_piece += 1;
+        }
+    }
+    return player;
+}
+exports.setNewPieceInGrid = setNewPieceInGrid;
 var pieces = /** @class */ (function () {
     function pieces() {
         this.piece = randPiece();

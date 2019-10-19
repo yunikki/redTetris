@@ -19,7 +19,7 @@ function reducer(state = initialState, action) {
         case 'chargeHome':
             return { ...state, location: "Home", runRoom: false, inputNameRoom: "", inputName: "" }
         case 'chargeSolo':
-            return { ...state, location: "Solo", piece: undefined }
+            return { ...state, location: "game", piece: undefined }
         case 'CHARGE_LOBBY':
             return { ...state, location: "Lobby" }
         case 'NOT_MASTER':
