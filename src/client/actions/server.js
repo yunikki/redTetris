@@ -12,6 +12,7 @@ export const SERVER_KEY_DOWN = 'server/keyDown'
 export const SERVER_KEY_LEFT = 'server/keyleft'
 export const SERVER_KEY_RIGHT = 'server/keyRight'
 export const CHANGE_PARAM_ROOM = 'server/changeParamRoom'
+export const SERVER_KEY_SPACE = 'server/keySpace'
 
 export const dataPiecesSolo = () => {
     return {
@@ -102,14 +103,23 @@ export const DataKeyRight = () => {
     }
 }
 
+export const DataKeySpace = () => {
+    return {
+        type: SERVER_KEY_SPACE
+    }
+}
+
 
 export function keyTetris(e, dispatch, state) {
-    if (state.location == "Solo" && (e.key == 'w' || e.key == 'ArrowUp'))
+    console.log("e.key", e)
+    if (state.location == "game" && (e.key == 'w' || e.key == 'ArrowUp'))
         dispatch(DataKeyUp())
-    else if (state.location == "Solo" && (e.key == 's' || e.key == 'ArrowDown'))
+    else if (state.location == "game" && (e.key == 's' || e.key == 'ArrowDown'))
         dispatch(DataKeyDown())
-    else if (state.location == "Solo" && (e.key == 'a' || e.key == 'ArrowLeft'))
+    else if (state.location == "game" && (e.key == 'a' || e.key == 'ArrowLeft'))
         dispatch(DataKeyLeft())
-    else if (state.location == "Solo" && (e.key == 'd' || e.key == 'ArrowRight'))
+    else if (state.location == "game" && (e.key == 'd' || e.key == 'ArrowRight'))
         dispatch(DataKeyRight())
+    else if (state.location == "game" && (e.key == ' '))
+        dispatch(DataKeySpace())
 }
