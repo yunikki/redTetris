@@ -4,9 +4,6 @@ function SpectreSolo_(grid, name, nb) {
     var container = []
     var key = 1
     var x = 0;
-    console.log(grid)
-
-
 
     while (x < 20) {
         const y = 0;
@@ -41,13 +38,14 @@ function SpectreSolo({ state }) {
     var key = 0
     var nb = state.room.players.length
     while (nb) {
-        container.push(SpectreSolo_(state.room.players[nb - 1].grid, state.room.players[nb - 1].name, nb))
+        if (state.room.players[nb - 1].name != state.inputName)
+            container.push(SpectreSolo_(state.room.players[nb - 1].grid, state.room.players[nb - 1].name, nb))
         nb -= 1
         key += 1
     }
 
     return (
-        <div className="wrapper-carrou" style={{ width: (state.room.players.length - 1) * 300 + "px" }}>
+        <div className="wrapper-carrou" style={{ width: (state.room.players.length - 2) * 300 + "px" }}>
             {container}
         </div>
     )

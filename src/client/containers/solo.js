@@ -3,6 +3,8 @@ import SpectreSolo from './spectreSolo'
 import Makebord from '../components/makebord'
 import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } from "react-router-dom";
 import { dipatcherOnNewPiece, chargePageHome } from "../components/action"
+import { removePlayerFromRoom } from "../actions/server"
+import { dataChangeSolo } from "../actions/"
 import MakeNewPiece from './makeMewPiece'
 import { connect } from 'react-redux';
 import { func } from 'prop-types';
@@ -31,7 +33,7 @@ function Solo({ onClickt, pageHome, state }) {
                         <SpectreSolo state={state} />
 
                     </div>
-                    <Link id="return-menu" className="btn" to="/" onClick={pageHome}>Back to Menu</Link>
+                    <Link id="return-menu" className="btn" to="/" onClick={() => pageHome(state)}>Back to Menu</Link>
                 </aside>
 
             </div>
@@ -46,9 +48,13 @@ Solo.propTypes = {
 const mapStateToProps = (state, ownProps) => ({
     state: state
 })
-
+//server/removePlayerFromRoom
 const mapDispatchToProps = (dispatch) => ({
     onClickt: dipatcherOnNewPiece(dispatch),
-    pageHome: chargePageHome(dispatch)
+    pageHome: (state) => {
+        dispatch(dataChangeSolo())
+        dispatch(removePlayerFromRoom(state))
+        console.log('ok', state)
+    }
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Solo)

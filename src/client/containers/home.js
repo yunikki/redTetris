@@ -8,7 +8,6 @@ import { dataChargeLobby, dataChangeInputName, dataTMaster } from '../actions'
 import { dataCreateRoom, getRoomInfos } from '../actions/server'
 
 function notChargeLobby() {
-    console.log('test')
 }
 
 function Home({ pageSolo, dispatch, inputYourNameRoom, state, chargeLobby, startSearch }) {

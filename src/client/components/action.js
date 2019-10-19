@@ -1,4 +1,4 @@
-import { dataChangeHome, dataChangeSolo, dataChangeInputName, dataChangeInputNameRoom, dataChargeLobby , saveResearch} from '../actions'
+import { dataChangeHome, dataChangeSolo, dataChangeInputName, dataChangeInputNameRoom, dataChargeLobby, saveResearch } from '../actions'
 import { dataPiecesSolo, searchRooms } from '../actions/server'
 
 export function dipatcherOnNewPiece(dispatch) {
@@ -28,6 +28,5 @@ export function chargeLobby(dispatch/*, generateAction*/) {
 }
 
 export function saveSearch(dispatch, e) {
-    return () => {dispatch(saveResearch(e.target.value))};
+    return () => { dispatch(saveResearch(e.target.value)) };
 }
-

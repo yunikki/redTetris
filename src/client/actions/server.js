@@ -90,7 +90,6 @@ export const DataKeyRight = () => {
 
 
 export function keyTetris(e, dispatch, state) {
-    console.log(e.key)
     if (state.location == "Solo" && (e.key == 'w' || e.key == 'ArrowUp'))
         dispatch(DataKeyUp())
     else if (state.location == "Solo" && (e.key == 's' || e.key == 'ArrowDown'))

@@ -9,8 +9,6 @@ import { connect } from 'react-redux';
 function Comp(props) {
     const { match, location } = props;
     const re = location.hash.match(/#(.*)\[(.*)\]/)
-    console.log("props", props)
-    // if (re === null || props.inputName == "" || props.inputNameRoom == "")
     return <Home />
 
 }

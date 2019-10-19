@@ -54,7 +54,7 @@ const initEngine = io => {
                 let room = getGame(action.playerName, rooms_array)
                 socket.emit('action', { type: 'joinRoom', room: room, master: 2 })
                 socket.broadcast.emit('action', { type: 'joinRoom', room: room, master: 2 })
-                //     socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
+                socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
                 socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
             }
             if (action.type == 'server/searchRoom') {
@@ -82,17 +82,15 @@ const initEngine = io => {
                 let new_room = []
                 room.Pieces.push(new pieces())
                 room.Pieces.push(new pieces())
+                // console.log(room)
                 if (!room)
                     return (undefined)
                 socketRoom = setNewPieceInGridForAll(room)
                 if (room) {
                     for (let i in socketRoom.players) {
                         io.to(socketRoom.players[i].socketID).emit('action', { type: 'GAME_START', room: room, grid: socketRoom.players[i].grid, next: socketRoom.Pieces[socketRoom.players[i].currentPiece + 1].piece })
-                        new_room.push(socketRoom)
                         //n'emit rien
                     }
-                    rooms_array = new_room
-
                 }
             }
         })

@@ -16,14 +16,17 @@ export function FormatLine({ state, dispatch }) {
     var ret = []
 
     for (var i in state.searchResult) {
-        ret.push(<Router>
-            <div className="line-room" key={i}>
-                <div className="name-list">{state.searchResult[i].roomName}</div>
-                <div className="creat-list">{state.searchResult[i].gameMaster}</div>
-                <div className="player-list">{state.searchResult[i].players}</div>
-                <Link className="join-list" to={"/#" + state.searchResult[i].roomName + '[' + state.inputName + ']'} roomname={state.searchResult[i].roomName} onClick={(e) => join(state, dispatch, e)} >join</Link>
+        ret.push(
+            <div key={i + 1}>
+                <Router >
+                    <div className="line-room" >
+                        <div className="name-list">{state.searchResult[i].roomName}</div>
+                        <div className="creat-list">{state.searchResult[i].gameMaster}</div>
+                        <div className="player-list">{state.searchResult[i].players}</div>
+                        <Link className="join-list" to={"/#" + state.searchResult[i].roomName + '[' + state.inputName + ']'} roomname={state.searchResult[i].roomName} onClick={(e) => join(state, dispatch, e)} >join</Link>
+                    </div>
+                </Router>
             </div>
-        </Router>
         )
     }
     return (ret)

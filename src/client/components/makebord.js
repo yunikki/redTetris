@@ -1,7 +1,6 @@
 import React from 'react'
 
 function chooseColor(c) {
-    console.log(c)
     switch (c) {
         case 'PR':
             return ('red');
@@ -23,7 +22,6 @@ function Makebord({ state }) {
     var container = []
     var key = 1
     var x = 0;
-    console.log(state.grid)
     while (x < 20) {
         const y = 0;
         while (y < 10) {

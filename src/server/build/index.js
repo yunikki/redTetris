@@ -50,7 +50,7 @@ var initEngine = function (io) {
                 var room = Game_2.getGame(action.playerName, rooms_array);
                 socket.emit('action', { type: 'joinRoom', room: room, master: 2 });
                 socket.broadcast.emit('action', { type: 'joinRoom', room: room, master: 2 });
-                //     socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
+                socket.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
                 socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
             }
             if (action.type == 'server/searchRoom') {
@@ -77,16 +77,15 @@ var initEngine = function (io) {
                 var new_room = [];
                 room.Pieces.push(new classPieces_1.pieces());
                 room.Pieces.push(new classPieces_1.pieces());
+                // console.log(room)
                 if (!room)
                     return (undefined);
                 socketRoom = classPieces_1.setNewPieceInGridForAll(room);
                 if (room) {
                     for (var i in socketRoom.players) {
                         io.to(socketRoom.players[i].socketID).emit('action', { type: 'GAME_START', room: room, grid: socketRoom.players[i].grid, next: socketRoom.Pieces[socketRoom.players[i].currentPiece + 1].piece });
-                        new_room.push(socketRoom);
                         //n'emit rien
                     }
-                    rooms_array = new_room;
                 }
             }
         });
