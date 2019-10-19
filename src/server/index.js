@@ -44,15 +44,17 @@ const initEngine = io => {
     io.on('connection', function (socket) {
         console.log("Socket connected: " + socket.id)
         socket.on('action', (action) => {
+            console.log(action.type)
             if (action.type === 'server/piecesSolo') {
                 socket.emit('action', { type: 'newPiece', piece: getPieces() })
             }
             if (action.type === 'server/creatRoom') {
+                console.log(rooms_array)
                 rooms_array = joinGame(action.roomName, action.playerName, action.socketID, rooms_array);
                 let room = getGame(action.playerName, rooms_array)
                 socket.emit('action', { type: 'joinRoom', room: room, master: 2 })
                 socket.broadcast.emit('action', { type: 'joinRoom', room: room, master: 2 })
-                socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
+                //     socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
                 socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
             }
             if (action.type == 'server/searchRoom') {
@@ -89,7 +91,8 @@ const initEngine = io => {
                         new_room.push(socketRoom)
                         //n'emit rien
                     }
-                    rooms_array = room
+                    rooms_array = new_room
+
                 }
             }
         })

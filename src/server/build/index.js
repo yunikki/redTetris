@@ -40,15 +40,17 @@ var initEngine = function (io) {
     io.on('connection', function (socket) {
         console.log("Socket connected: " + socket.id);
         socket.on('action', function (action) {
+            console.log(action.type);
             if (action.type === 'server/piecesSolo') {
                 socket.emit('action', { type: 'newPiece', piece: classPieces_1.getPieces() });
             }
             if (action.type === 'server/creatRoom') {
+                console.log(rooms_array);
                 rooms_array = Game_2.joinGame(action.roomName, action.playerName, action.socketID, rooms_array);
                 var room = Game_2.getGame(action.playerName, rooms_array);
                 socket.emit('action', { type: 'joinRoom', room: room, master: 2 });
                 socket.broadcast.emit('action', { type: 'joinRoom', room: room, master: 2 });
-                socket.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
+                //     socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
                 socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
             }
             if (action.type == 'server/searchRoom') {
@@ -84,7 +86,7 @@ var initEngine = function (io) {
                         new_room.push(socketRoom);
                         //n'emit rien
                     }
-                    rooms_array = room;
+                    rooms_array = new_room;
                 }
             }
         });
