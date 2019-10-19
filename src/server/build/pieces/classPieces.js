@@ -9,7 +9,7 @@ function getRandomInt(max) {
 }
 exports.getRandomInt = getRandomInt;
 function randPiece() {
-    switch (getRandomInt(5)) {
+    switch (getRandomInt(7)) {
         case 0: //carre
             return (piece_1.default.square());
             break;
@@ -32,6 +32,25 @@ function randPiece() {
                     break;
             }
             break;
+        case 5: //L
+            switch (getRandomInt(4)) {
+                case 0:
+                    return (piece_1.default.tetriL5());
+                    break;
+                case 1:
+                    return (piece_1.default.tetriL6());
+                    break;
+                case 2:
+                    return (piece_1.default.tetriL7());
+                    break;
+                case 3:
+                    return (piece_1.default.tetriL8());
+                    break;
+                default:
+                    piece_1.default.tetriL();
+                    break;
+            }
+            break;
         case 2:
             switch (getRandomInt(2)) {
                 case 0:
@@ -39,6 +58,19 @@ function randPiece() {
                     break;
                 case 1:
                     return (piece_1.default.tetriZ2());
+                    break;
+                default:
+                    piece_1.default.tetriZ();
+                    break;
+            }
+            break;
+        case 6:
+            switch (getRandomInt(2)) {
+                case 0:
+                    return (piece_1.default.tetriZ3());
+                    break;
+                case 1:
+                    return (piece_1.default.tetriZ4());
                     break;
                 default:
                     piece_1.default.tetriZ();
@@ -89,33 +121,36 @@ function epurPiece(p) {
     }
     return p;
 }
-function randColor() {
-    var r = getRandomInt(4);
-    switch (r) {
-        case 0:
-            return ('PR');
-        case 1:
-            return ('PG');
-        case 2:
+function randColor(p) {
+    switch (p) {
+        case "C":
+            return ('PC');
+        case "B":
             return ('PB');
-        case 3:
-            return ('PO');
-        case 4:
-            return ('PV');
+        case "T":
+            return ('PT');
+        case "L":
+            return ('PL');
+        case "l":
+            return ('Pl');
+        case "Z":
+            return ('PZ');
+        case "z":
+            return ('Pz');
         default:
+            return ('PV');
             break;
     }
 }
 function setNewPieceInGridForAll(room) {
     var p = epurPiece(room.Pieces[0].piece);
-    var c = randColor();
     for (var i in room.players) {
         for (var l in p) {
             var l_grid = 3;
             var l_piece = 0;
             while (l_piece < 4) {
-                if (p[l][l_piece] == "#")
-                    room.players[i].grid[l][l_grid] = c;
+                if (p[l][l_piece] != ".")
+                    room.players[i].grid[l][l_grid] = randColor(p[l][l_piece]);
                 l_grid += 1;
                 l_piece += 1;
             }
@@ -126,7 +161,6 @@ function setNewPieceInGridForAll(room) {
 exports.setNewPieceInGridForAll = setNewPieceInGridForAll;
 function setNewPieceInGrid(player, piece) {
     var p = epurPiece(piece);
-    var c = randColor();
     for (var l in p) {
         var l_grid = 3;
         var l_piece = 0;
@@ -135,8 +169,8 @@ function setNewPieceInGrid(player, piece) {
                 player.loose = true;
                 return player;
             }
-            else if (p[l][l_piece] == "#")
-                player.grid[l][l_grid] = c;
+            else if (p[l][l_piece] != ".")
+                player.grid[l][l_grid] = randColor(p[l][l_piece]);
             l_grid += 1;
             l_piece += 1;
         }

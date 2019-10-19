@@ -5,7 +5,7 @@ export function getRandomInt(max) {
 }
 
 function randPiece() {
-    switch (getRandomInt(5)) {
+    switch (getRandomInt(7)) {
         case 0: //carre
             return (p.square())
             break;
@@ -28,6 +28,25 @@ function randPiece() {
                     break;
             }
             break;
+        case 5: //L
+            switch (getRandomInt(4)) {
+                case 0:
+                    return (p.tetriL5());
+                    break;
+                case 1:
+                    return (p.tetriL6());
+                    break;
+                case 2:
+                    return (p.tetriL7());
+                    break;
+                case 3:
+                    return (p.tetriL8());
+                    break;
+                default:
+                    p.tetriL()
+                    break;
+            }
+            break;
 
         case 2:
             switch (getRandomInt(2)) {
@@ -36,6 +55,19 @@ function randPiece() {
                     break;
                 case 1:
                     return (p.tetriZ2());
+                    break;
+                default:
+                    p.tetriZ()
+                    break;
+            }
+            break;
+        case 6:
+            switch (getRandomInt(2)) {
+                case 0:
+                    return (p.tetriZ3());
+                    break;
+                case 1:
+                    return (p.tetriZ4());
                     break;
                 default:
                     p.tetriZ()
@@ -89,35 +121,41 @@ function epurPiece(p) {
     return p
 }
 
-function randColor() {
-    let r = getRandomInt(4)
-    switch (r) {
-        case 0:
-            return ('PR');
-        case 1:
-            return ('PG');
-        case 2:
+function randColor(p) {
+    switch (p) {
+        case "C":
+            return ('PC');
+        case "B":
             return ('PB');
-        case 3:
-            return ('PO');
-        case 4:
-            return ('PV');
+        case "T":
+            return ('PT');
+        case "L":
+            return ('PL');
+        case "l":
+            return ('Pl');
+        case "Z":
+            return ('PZ');
+        case "z":
+            return ('Pz');
+
+
+
 
         default:
+            return ('PV');
             break;
     }
 }
 
 export function setNewPieceInGridForAll(room) {
     let p = epurPiece(room.Pieces[0].piece)
-    let c = randColor()
     for (let i in room.players) {
         for (let l in p) {
             let l_grid = 3;
             let l_piece = 0
             while (l_piece < 4) {
-                if (p[l][l_piece] == "#")
-                    room.players[i].grid[l][l_grid] = c
+                if (p[l][l_piece] != ".")
+                    room.players[i].grid[l][l_grid] = randColor(p[l][l_piece])
                 l_grid += 1;
                 l_piece += 1
             }
@@ -128,7 +166,6 @@ export function setNewPieceInGridForAll(room) {
 
 export function setNewPieceInGrid(player, piece) {
     let p = epurPiece(piece)
-    let c = randColor()
 
     for (let l in p) {
         let l_grid = 3;
@@ -138,8 +175,8 @@ export function setNewPieceInGrid(player, piece) {
                 player.loose = true
                 return player
             }
-            else if (p[l][l_piece] == "#")
-                player.grid[l][l_grid] = c
+            else if (p[l][l_piece] != ".")
+                player.grid[l][l_grid] = randColor(p[l][l_piece])
             l_grid += 1;
             l_piece += 1
         }
