@@ -100,6 +100,26 @@ var initEngine = function (io) {
                 }, 500);
                 Game_2.updateRoomArray(room_2, rooms_array);
             }
+            if (action.type == 'server/keyleft') {
+                var room = Game_2.getGame(action.name, rooms_array);
+                console.log(action.name);
+                room = classPieces_1.moveLeft(room, socket.id);
+                //      for (let i in room.players) {
+                //        if (room.players[i].socketID == socket.id)
+                //          socket.emit('action', { type: 'GAME_START', room: room, grid: room.players[i].grid, next: room.Pieces[room.players[i].currentPiece + 1].piece })
+                //  }
+                Game_2.updateRoomArray(room, rooms_array);
+            }
+            if (action.type == 'server/keyRight') {
+                var room = Game_2.getGame(action.name, rooms_array);
+                console.log(action.name);
+                room = classPieces_1.moveRight(room, socket.id);
+                //      for (let i in room.players) {
+                //        if (room.players[i].socketID == socket.id)
+                //          socket.emit('action', { type: 'GAME_START', room: room, grid: room.players[i].grid, next: room.Pieces[room.players[i].currentPiece + 1].piece })
+                //  }
+                Game_2.updateRoomArray(room, rooms_array);
+            }
             if (action.type == 'server/gameStart') {
                 var room_3 = Game_2.getGame(action.playerName, rooms_array);
                 var socketRoom_1 = Game_2.getGameWithNameRoom(room_3.name, rooms_array);

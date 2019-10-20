@@ -1,6 +1,6 @@
 import fs from 'fs'
 import debug from 'debug'
-import { pieces, getPieces, setNewPieceInGridForAll, setNewPieceInGrid, fall_piece, floorPiece, featherDrop } from './pieces/classPieces'
+import { pieces, getPieces, setNewPieceInGridForAll, setNewPieceInGrid, fall_piece, floorPiece, featherDrop, moveLeft, moveRight } from './pieces/classPieces'
 import { getSearchResult } from './game/Game'
 import { Player } from './player/Player'
 import { Game, joinGame, getGame, removePlayer, getGameWithId, GameChangeParam, getGameWithNameRoom, updateRoomArray } from './game/Game'
@@ -76,6 +76,7 @@ const initEngine = io => {
                 if (room)
                     emit_to_room(room, io)
             }
+
             if (action.type == 'server/keyDown') {
                 let room = getGame(action.name, rooms_array);
                 room = featherDrop(room, socket.id)
@@ -106,6 +107,26 @@ const initEngine = io => {
                         io.to(room.players[i].socketID).emit('action', { type: 'GAME_START', room: room, grid: room.players[i].grid, next: room.Pieces[room.players[i].currentPiece + 1].piece })
                     }
                 }, 500);
+                updateRoomArray(room, rooms_array)
+            }
+            if (action.type == 'server/keyleft') {
+                let room = getGame(action.name, rooms_array);
+                console.log(action.name)
+                room = moveLeft(room, socket.id)
+                //      for (let i in room.players) {
+                //        if (room.players[i].socketID == socket.id)
+                //          socket.emit('action', { type: 'GAME_START', room: room, grid: room.players[i].grid, next: room.Pieces[room.players[i].currentPiece + 1].piece })
+                //  }
+                updateRoomArray(room, rooms_array)
+            }
+            if (action.type == 'server/keyRight') {
+                let room = getGame(action.name, rooms_array);
+                console.log(action.name)
+                room = moveRight(room, socket.id)
+                //      for (let i in room.players) {
+                //        if (room.players[i].socketID == socket.id)
+                //          socket.emit('action', { type: 'GAME_START', room: room, grid: room.players[i].grid, next: room.Pieces[room.players[i].currentPiece + 1].piece })
+                //  }
                 updateRoomArray(room, rooms_array)
             }
             if (action.type == 'server/gameStart') {

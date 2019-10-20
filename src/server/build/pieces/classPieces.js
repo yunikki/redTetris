@@ -214,7 +214,6 @@ function creatSpeactre(room) {
     var save = [];
     var c = "P";
     for (var i in room.players) {
-        console.log(room.players[0].grid);
         while (x >= 0) {
             var y = 9;
             while (y >= 0) {
@@ -422,3 +421,79 @@ function featherDrop(room, id) {
     return (room);
 }
 exports.featherDrop = featherDrop;
+function okForMoveLeft(grid) {
+    var x = 19;
+    var ret = true;
+    while (x >= 0) {
+        var y = 9;
+        while (y >= 0) {
+            if (grid[x][y][0] == "P" && (grid[x][y - 1] == undefined || (grid[x][y - 1] && grid[x][y - 1] != "." && grid[x][y - 1] != "S" && grid[x][y - 1][0] != "P")))
+                return false;
+            y -= 1;
+        }
+        x -= 1;
+    }
+    return ret;
+}
+function moveLeft(room, id) {
+    for (var i in room.players) {
+        if (room.players[i].loose)
+            continue;
+        if (room.players[i].socketID == id && okForMoveLeft(room.players[i].grid)) {
+            var x = 0;
+            while (x < 20) {
+                var y = 0;
+                console.log('boucle');
+                while (y < 10) {
+                    if (room.players[i].grid[x][y][0] == "P") {
+                        room.players[i].grid[x][y - 1] = room.players[i].grid[x][y];
+                        room.players[i].grid[x][y] = '.';
+                    }
+                    y += 1;
+                }
+                x += 1;
+            }
+        }
+    }
+    console.log(room.players[0].grid);
+    return (room);
+}
+exports.moveLeft = moveLeft;
+function okForMoveRight(grid) {
+    var x = 19;
+    var ret = true;
+    while (x >= 0) {
+        var y = 9;
+        while (y >= 0) {
+            if (grid[x][y][0] == "P" && (grid[x][y + 1] == undefined || (grid[x][y + 1] && grid[x][y + 1] != "." && grid[x][y + 1] != "S" && grid[x][y + 1][0] != "P")))
+                return false;
+            y -= 1;
+        }
+        x -= 1;
+    }
+    return ret;
+}
+function moveRight(room, id) {
+    for (var i in room.players) {
+        if (room.players[i].loose)
+            continue;
+        if (room.players[i].socketID == id && okForMoveRight(room.players[i].grid)) {
+            var x = 0;
+            while (x < 20) {
+                var y = 9;
+                console.log('boucle');
+                while (y >= 0) {
+                    if (room.players[i].grid[x][y] && room.players[i].grid[x][y][0] == "P") {
+                        room.players[i].grid[x][y + 1] = room.players[i].grid[x][y];
+                        room.players[i].grid[x][y] = '.';
+                    }
+                    y -= 1;
+                }
+                x += 1;
+            }
+        }
+    }
+    console.log(room.players[0].grid);
+    return (room);
+}
+exports.moveRight = moveRight;
