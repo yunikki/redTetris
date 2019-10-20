@@ -172,7 +172,7 @@ function tetriZ3() {
 function tetriZ4() {
     return ([
         "....",
-        ".z.",
+        ".z..",
         "zz..",
         "z..."
     ])

@@ -161,6 +161,7 @@ export function setNewPieceInGridForAll(room) {
             }
         }
     }
+    room = creatSpeactre(room)
     return room
 }
 
@@ -203,16 +204,72 @@ export function getPieces() {
 
 function okForFall(grid) {
     let x = 19
+    let ret = true
     while (x >= 0) {
         let y = 9
         while (y >= 0) {
-            if (grid[x][y][0] == "P" && (grid[x + 1] == undefined || (grid[x + 1][y] != "." && grid[x + 1][y][0] != "P")))
+            if (grid[x][y][0] == "P" && (grid[x + 1] == undefined || (grid[x + 1][y] != "." && grid[x + 1][y] != "S" && grid[x + 1][y][0] != "P")))
                 return false
             y -= 1
         }
         x -= 1
     }
-    return true
+    return ret
+}
+
+function creatSpeactre(room) {
+    let x = 19
+    let save = []
+    let c = "P"
+    for (let i in room.players) {
+        console.log(room.players[0].grid)
+        while (x >= 0) {
+            let y = 9
+            while (y >= 0) {
+                if (room.players[i].grid[x][y][0] == "S")
+                    room.players[i].grid[x][y] = "."
+                if (room.players[i].grid[x][y][0] == "P") {
+                    save.push([x, y])
+                    c = room.players[i].grid[x][y]
+                }
+                y -= 1
+            }
+            x -= 1
+        }
+        while (okForFall(room.players[i].grid)) {
+            x = 19
+            while (x >= 0) {
+                y = 9
+                while (y >= 0) {
+                    if (room.players[i].grid[x + 1] && room.players[i].grid[x][y][0] == "P") {
+                        room.players[i].grid[x + 1][y] = room.players[i].grid[x][y]
+                        room.players[i].grid[x][y] = "."
+
+                    }
+                    y -= 1
+                }
+                x -= 1
+            }
+        }
+
+        x = 19
+        while (x >= 0) {
+            y = 9
+            while (y >= 0) {
+                if (room.players[i].grid[x] && room.players[i].grid[x][y][0] == "P") {
+                    room.players[i].grid[x][y] = "S"
+                }
+                y -= 1
+            }
+            x -= 1
+        }
+        x = 0;
+        while (x < 4 && save[x]) {
+            room.players[i].grid[save[x][0]][save[x][1]] = c
+            x += 1
+        }
+    }
+    return room
 }
 
 export function fall_piece(room) {
@@ -257,11 +314,13 @@ export function fall_piece(room) {
             if (room.Pieces[room.players[i].currentPiece + 1]) {
                 let new_pices = room.Pieces[room.players[i].currentPiece].piece
                 room.players[i] = setNewPieceInGrid(room.players[i], new_pices)
+                room = creatSpeactre(room)
             }
             else {
                 room.Pieces.push(new pieces())
                 let new_pices = room.Pieces[room.players[i].currentPiece].piece
                 room.players[i] = setNewPieceInGrid(room.players[i], new_pices)
+                room = creatSpeactre(room)
 
             }
 
@@ -269,6 +328,7 @@ export function fall_piece(room) {
 
         }
     }
+    room = creatSpeactre(room)
     return (room)
 }
 
@@ -311,11 +371,13 @@ export function floorPiece(room, id) {
             if (room.Pieces[room.players[i].currentPiece + 1]) {
                 let new_pices = room.Pieces[room.players[i].currentPiece].piece
                 room.players[i] = setNewPieceInGrid(room.players[i], new_pices)
+                room = creatSpeactre(room)
             }
             else {
                 room.Pieces.push(new pieces())
                 let new_pices = room.Pieces[room.players[i].currentPiece].piece
                 room.players[i] = setNewPieceInGrid(room.players[i], new_pices)
+                room = creatSpeactre(room)
             }
             break
         }
@@ -366,11 +428,13 @@ export function featherDrop(room, id) {
                 if (room.Pieces[room.players[i].currentPiece + 1]) {
                     let new_pices = room.Pieces[room.players[i].currentPiece].piece
                     room.players[i] = setNewPieceInGrid(room.players[i], new_pices)
+                    room = creatSpeactre(room)
                 }
                 else {
                     room.Pieces.push(new pieces())
                     let new_pices = room.Pieces[room.players[i].currentPiece].piece
                     room.players[i] = setNewPieceInGrid(room.players[i], new_pices)
+                    room = creatSpeactre(room)
                 }
             }
             break

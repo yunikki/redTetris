@@ -31,6 +31,9 @@ function chooseColor(c) {
         case "z":
             return ('rgb(204, 8, 18)');
 
+
+        case "S":
+            return ('rgb(48, 47, 51)');
         default:
             return ('#505050');
     }
