@@ -218,10 +218,10 @@ function okForFall(grid) {
 }
 
 function creatSpeactre(room) {
-    let x = 19
-    let save = []
     let c = "P"
     for (let i in room.players) {
+        let save = []
+        let x = 19
         while (x >= 0) {
             let y = 9
             while (y >= 0) {
@@ -320,7 +320,6 @@ export function fall_piece(room) {
                 let new_pices = room.Pieces[room.players[i].currentPiece].piece
                 room.players[i] = setNewPieceInGrid(room.players[i], new_pices)
                 room = creatSpeactre(room)
-
             }
 
 
@@ -381,6 +380,7 @@ export function floorPiece(room, id) {
             break
         }
     }
+    room = creatSpeactre(room)
     return (room)
 }
 
@@ -462,10 +462,10 @@ export function moveLeft(room, id) {
         if (room.players[i].loose)
             continue;
         if (room.players[i].socketID == id && okForMoveLeft(room.players[i].grid)) {
+            console.log(id)
             let x = 0
             while (x < 20) {
                 let y = 0
-                console.log('boucle')
                 while (y < 10) {
                     if (room.players[i].grid[x][y][0] == "P") {
                         room.players[i].grid[x][y - 1] = room.players[i].grid[x][y]
@@ -475,9 +475,9 @@ export function moveLeft(room, id) {
                 }
                 x += 1
             }
+            break
         }
     }
-    console.log(room.players[0].grid)
     return (room)
 }
 
@@ -504,7 +504,6 @@ export function moveRight(room, id) {
             let x = 0
             while (x < 20) {
                 let y = 9
-                console.log('boucle')
                 while (y >= 0) {
                     if (room.players[i].grid[x][y] && room.players[i].grid[x][y][0] == "P") {
                         room.players[i].grid[x][y + 1] = room.players[i].grid[x][y]
@@ -514,8 +513,9 @@ export function moveRight(room, id) {
                 }
                 x += 1
             }
+            break
         }
     }
-    console.log(room.players[0].grid)
+    //console.log(room.players[0].grid)
     return (room)
 }
