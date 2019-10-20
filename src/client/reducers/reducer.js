@@ -45,9 +45,14 @@ function reducer(state = initialState, action) {
                 nameSearch: action.data
             }
         case 'GAME_START':
+            let player = getPlayer(action.room, state)
+            if (player.loose) {
+                clearInterval(state.inter)
+            }
             return {
                 ...state,
                 location: 'game',
+                loose: player.loose,
                 piece: getPieceWithRoom(action.room, state),
                 grid: getGridWithRoom(action.room, state),
                 room: action.room
@@ -67,6 +72,14 @@ function reducer(state = initialState, action) {
             }
         default:
             return state;
+    }
+}
+
+export function getPlayer(room, state) {
+    for (let i in room.players) {
+        if (room.players[i].socketID == state.socketID) {
+            return (room.players[i])
+        }
     }
 }
 

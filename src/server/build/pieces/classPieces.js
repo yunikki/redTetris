@@ -265,7 +265,7 @@ function fall_piece(room, id) {
     for (i in room.players) {
         if (room.players[i].socketID == id) {
             if (room.players[i].loose)
-                continue;
+                return (room);
             if (okForFall(room.players[i].grid)) {
                 room.players[i].hit = false;
                 var x = 19;

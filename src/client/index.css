@@ -259,3 +259,20 @@ body {
     display: inline-block;
     width: 0px;
 }
+
+.overlay {
+    background-color: pink;
+    width: 500px;
+    height: 1000px;
+    opacity: 0.2;
+    /* margin: -1024px 30px; */
+    position: absolute;
+}
+
+.custom_overlay {
+    position: absolute;
+    margin: 217px 0px;
+    width: 500px;
+    color: black;
+    font-size: 50px;
+}
