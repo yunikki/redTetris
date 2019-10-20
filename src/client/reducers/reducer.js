@@ -51,7 +51,6 @@ function reducer(state = initialState, action) {
             }
             return {
                 ...state,
-                location: 'game',
                 loose: player.loose,
                 piece: getPieceWithRoom(action.room, state),
                 grid: getGridWithRoom(action.room, state),
@@ -61,6 +60,7 @@ function reducer(state = initialState, action) {
             return {
                 ...state,
                 location: 'game',
+                loose: false,
                 piece: getPieceWithRoom(action.room, state),
                 grid: getGridWithRoom(action.room, state),
                 room: action.room

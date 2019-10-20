@@ -133,7 +133,8 @@ function getSearchResult(rooms_array) {
             search_result.push({
                 "roomName": rooms_array[i].name,
                 "players": rooms_array[i].players.length,
-                "gameMaster": rooms_array[i].getGM()
+                "gameMaster": rooms_array[i].getGM(),
+                "status": rooms_array[i].status
             });
     }
     return search_result;

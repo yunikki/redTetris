@@ -160,23 +160,32 @@ function setNewPieceInGridForAll(room) {
     return room;
 }
 exports.setNewPieceInGridForAll = setNewPieceInGridForAll;
-function setNewPieceInGrid(player, piece) {
+function allLoose(room) {
+    for (var i in room.players) {
+        if (room.players[i].loose == false)
+            return false;
+    }
+    return (true);
+}
+function setNewPieceInGrid(room, i, piece) {
     var p = epurPiece(piece);
     for (var l in p) {
         var l_grid = 3;
         var l_piece = 0;
         while (l_piece < 4) {
-            if (player.grid[l][l_grid] != ".") {
-                player.loose = true;
-                return player;
+            if (room.players[i].grid[l][l_grid] != ".") {
+                room.players[i].loose = true;
+                if (allLoose(room))
+                    room.status = "waiting";
+                break;
             }
             else if (p[l][l_piece] != ".")
-                player.grid[l][l_grid] = randColor(p[l][l_piece]);
+                room.players[i].grid[l][l_grid] = randColor(p[l][l_piece]);
             l_grid += 1;
             l_piece += 1;
         }
     }
-    return player;
+    return room;
 }
 exports.setNewPieceInGrid = setNewPieceInGrid;
 var pieces = /** @class */ (function () {
@@ -300,13 +309,13 @@ function fall_piece(room, id) {
                 room.players[i].currentPiece += 1;
                 if (room.Pieces[room.players[i].currentPiece + 1]) {
                     var new_pices = room.Pieces[room.players[i].currentPiece].piece;
-                    room.players[i] = setNewPieceInGrid(room.players[i], new_pices);
+                    room = setNewPieceInGrid(room, i, new_pices);
                     room = creatSpeactre(room);
                 }
                 else {
                     room.Pieces.push(new pieces());
                     var new_pices = room.Pieces[room.players[i].currentPiece].piece;
-                    room.players[i] = setNewPieceInGrid(room.players[i], new_pices);
+                    room = setNewPieceInGrid(room, i, new_pices);
                     room = creatSpeactre(room);
                 }
             }
@@ -352,13 +361,13 @@ function floorPiece(room, id) {
             room.players[i].currentPiece += 1;
             if (room.Pieces[room.players[i].currentPiece + 1]) {
                 var new_pices = room.Pieces[room.players[i].currentPiece].piece;
-                room.players[i] = setNewPieceInGrid(room.players[i], new_pices);
+                room = setNewPieceInGrid(room, i, new_pices);
                 room = creatSpeactre(room);
             }
             else {
                 room.Pieces.push(new pieces());
                 var new_pices = room.Pieces[room.players[i].currentPiece].piece;
-                room.players[i] = setNewPieceInGrid(room.players[i], new_pices);
+                room = setNewPieceInGrid(room, i, new_pices);
                 room = creatSpeactre(room);
             }
             break;
@@ -408,13 +417,13 @@ function featherDrop(room, id) {
                 room.players[i].currentPiece += 1;
                 if (room.Pieces[room.players[i].currentPiece + 1]) {
                     var new_pices = room.Pieces[room.players[i].currentPiece].piece;
-                    room.players[i] = setNewPieceInGrid(room.players[i], new_pices);
+                    room = setNewPieceInGrid(room, i, new_pices);
                     room = creatSpeactre(room);
                 }
                 else {
                     room.Pieces.push(new pieces());
                     var new_pices = room.Pieces[room.players[i].currentPiece].piece;
-                    room.players[i] = setNewPieceInGrid(room.players[i], new_pices);
+                    room = setNewPieceInGrid(room, i, new_pices);
                     room = creatSpeactre(room);
                 }
             }
@@ -502,3 +511,30 @@ function moveRight(room, id) {
     return (room);
 }
 exports.moveRight = moveRight;
+function resetParty(room) {
+    for (var i in room.players) {
+        room.players[i].loose = false;
+        room.players[i].grid = [[".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."]];
+    }
+    return room;
+}
+exports.resetParty = resetParty;

@@ -165,25 +165,36 @@ export function setNewPieceInGridForAll(room) {
     return room
 }
 
-export function setNewPieceInGrid(player, piece) {
+function allLoose(room) {
+    for (let i in room.players) {
+        if (room.players[i].loose == false)
+            return false
+    }
+    return (true)
+}
+
+export function setNewPieceInGrid(room, i, piece) {
     let p = epurPiece(piece)
 
     for (let l in p) {
         let l_grid = 3;
         let l_piece = 0
         while (l_piece < 4) {
-            if (player.grid[l][l_grid] != ".") {
-                player.loose = true
-                return player
+            if (room.players[i].grid[l][l_grid] != ".") {
+                room.players[i].loose = true
+                if (allLoose(room))
+                    room.status = "waiting"
+                break
             }
             else if (p[l][l_piece] != ".")
-                player.grid[l][l_grid] = randColor(p[l][l_piece])
+                room.players[i].grid[l][l_grid] = randColor(p[l][l_piece])
+
             l_grid += 1;
             l_piece += 1
         }
     }
 
-    return player
+    return room
 }
 
 export class pieces {
@@ -313,13 +324,13 @@ export function fall_piece(room, id) {
                 room.players[i].currentPiece += 1
                 if (room.Pieces[room.players[i].currentPiece + 1]) {
                     let new_pices = room.Pieces[room.players[i].currentPiece].piece
-                    room.players[i] = setNewPieceInGrid(room.players[i], new_pices)
+                    room = setNewPieceInGrid(room, i, new_pices)
                     room = creatSpeactre(room)
                 }
                 else {
                     room.Pieces.push(new pieces())
                     let new_pices = room.Pieces[room.players[i].currentPiece].piece
-                    room.players[i] = setNewPieceInGrid(room.players[i], new_pices)
+                    room = setNewPieceInGrid(room, i, new_pices)
                     room = creatSpeactre(room)
                 }
 
@@ -370,13 +381,13 @@ export function floorPiece(room, id) {
             room.players[i].currentPiece += 1
             if (room.Pieces[room.players[i].currentPiece + 1]) {
                 let new_pices = room.Pieces[room.players[i].currentPiece].piece
-                room.players[i] = setNewPieceInGrid(room.players[i], new_pices)
+                room = setNewPieceInGrid(room, i, new_pices)
                 room = creatSpeactre(room)
             }
             else {
                 room.Pieces.push(new pieces())
                 let new_pices = room.Pieces[room.players[i].currentPiece].piece
-                room.players[i] = setNewPieceInGrid(room.players[i], new_pices)
+                room = setNewPieceInGrid(room, i, new_pices)
                 room = creatSpeactre(room)
             }
             break
@@ -428,13 +439,13 @@ export function featherDrop(room, id) {
                 room.players[i].currentPiece += 1
                 if (room.Pieces[room.players[i].currentPiece + 1]) {
                     let new_pices = room.Pieces[room.players[i].currentPiece].piece
-                    room.players[i] = setNewPieceInGrid(room.players[i], new_pices)
+                    room = setNewPieceInGrid(room, i, new_pices)
                     room = creatSpeactre(room)
                 }
                 else {
                     room.Pieces.push(new pieces())
                     let new_pices = room.Pieces[room.players[i].currentPiece].piece
-                    room.players[i] = setNewPieceInGrid(room.players[i], new_pices)
+                    room = setNewPieceInGrid(room, i, new_pices)
                     room = creatSpeactre(room)
                 }
             }
@@ -522,4 +533,32 @@ export function moveRight(room, id) {
     room = creatSpeactre(room)
     //console.log(room.players[0].grid)
     return (room)
+}
+
+
+export function resetParty(room) {
+    for (let i in room.players) {
+        room.players[i].loose = false
+        room.players[i].grid = [[".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."]]
+    }
+    return room
 }

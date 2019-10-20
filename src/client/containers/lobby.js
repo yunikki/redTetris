@@ -5,6 +5,27 @@ import { chargePageSolo, chargePageHome } from '../components/action'
 import { OptionRoom, NameEnnemy } from '../components/optionRoom'
 import { removePlayerFromRoom, startGame } from '../actions/server'
 
+
+function getGoodRoom(room, state) {
+    for (let i in room) {
+        for (let j in room[i].players) {
+            if (room[i].players[j].socketID == state.socketID)
+                return (room[i])
+        }
+    }
+}
+
+function ButtonStartGame({ room, state, chargeGame }) {
+    let r = getGoodRoom(r, state)
+    if (!room || room.status == "runing")
+        return <div></div>
+    return (
+        <Router>
+            <Link style={{ display: state.master ? "inline-block" : "none" }} id="button-1player" className="btn" to="/solo" onClick={() => chargeGame(state)}>start the game</Link>
+        </Router>
+    )
+}
+
 function Lobby({ chargeGame, leaveLobby, state, room, dispatch }) {
     if (state.location && state.location == 'game')
         dispatch(chargePageSolo(dispatch))
@@ -23,7 +44,7 @@ function Lobby({ chargeGame, leaveLobby, state, room, dispatch }) {
                     <OptionRoom state={state} dispatch={dispatch} />
                     <div id="container-selec-quick">
                         <Link id="button-2player" className="btn" to="/" onClick={() => leaveLobby(state)}>leave the room</Link>
-                        <Link style={{ display: state.master ? "inline-block" : "none" }} id="button-1player" className="btn" to="/solo" onClick={() => chargeGame(state)}>start the game</Link>
+                        <ButtonStartGame room={room} state={state} chargeGame={chargeGame} />
                     </div>
                 </div>
 

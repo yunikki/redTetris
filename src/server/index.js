@@ -1,6 +1,6 @@
 import fs from 'fs'
 import debug from 'debug'
-import { pieces, getPieces, setNewPieceInGridForAll, setNewPieceInGrid, fall_piece, floorPiece, featherDrop, moveLeft, moveRight } from './pieces/classPieces'
+import { resetParty, pieces, getPieces, setNewPieceInGridForAll, setNewPieceInGrid, fall_piece, floorPiece, featherDrop, moveLeft, moveRight } from './pieces/classPieces'
 import { getSearchResult } from './game/Game'
 import { Player } from './player/Player'
 import { Game, joinGame, getGame, removePlayer, getGameWithId, GameChangeParam, getGameWithNameRoom, updateRoomArray } from './game/Game'
@@ -111,14 +111,15 @@ const initEngine = io => {
                 let room = getGame(action.playerName, rooms_array);
                 let socketRoom = getGameWithNameRoom(room.name, rooms_array)
                 let new_room = []
-                room.Pieces.push(new pieces())
-                room.Pieces.push(new pieces())
-                if (!room)
+                socketRoom.Pieces.push(new pieces())
+                socketRoom.Pieces.push(new pieces())
+                if (!socketRoom)
                     return (undefined)
-                socketRoom = setNewPieceInGridForAll(room)
-                io.sockets.in(room.name).emit('action', { type: 'GAME_START_', room: room })
+                socketRoom = resetParty(socketRoom)
+                socketRoom = setNewPieceInGridForAll(socketRoom)
                 socketRoom.status = "runing"
                 updateRoomArray(socketRoom, rooms_array)
+                io.sockets.in(room.name).emit('action', { type: 'GAME_START_', room: socketRoom })
             }
             if (action.type == 'server/boucle') {
                 let room = getGame(action.name, rooms_array);

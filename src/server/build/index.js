@@ -101,14 +101,15 @@ var initEngine = function (io) {
                 var room = Game_2.getGame(action.playerName, rooms_array);
                 var socketRoom = Game_2.getGameWithNameRoom(room.name, rooms_array);
                 var new_room = [];
-                room.Pieces.push(new classPieces_1.pieces());
-                room.Pieces.push(new classPieces_1.pieces());
-                if (!room)
+                socketRoom.Pieces.push(new classPieces_1.pieces());
+                socketRoom.Pieces.push(new classPieces_1.pieces());
+                if (!socketRoom)
                     return (undefined);
-                socketRoom = classPieces_1.setNewPieceInGridForAll(room);
-                io.sockets.in(room.name).emit('action', { type: 'GAME_START_', room: room });
+                socketRoom = classPieces_1.resetParty(socketRoom);
+                socketRoom = classPieces_1.setNewPieceInGridForAll(socketRoom);
                 socketRoom.status = "runing";
                 Game_2.updateRoomArray(socketRoom, rooms_array);
+                io.sockets.in(room.name).emit('action', { type: 'GAME_START_', room: socketRoom });
             }
             if (action.type == 'server/boucle') {
                 var room = Game_2.getGame(action.name, rooms_array);
