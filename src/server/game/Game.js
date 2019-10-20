@@ -151,8 +151,6 @@ export function removePlayer(playerName = "", socketID = "", games_array) {
             i++;
         else {
             if (games_array[i].players.length == 0) {
-                if (games_array[i].stop)
-                    clearInterval(games_array[i].stop)
                 games_array.shift(i, 1);
             }
             return player

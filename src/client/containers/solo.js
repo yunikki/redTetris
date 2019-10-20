@@ -3,18 +3,18 @@ import SpectreSolo from './spectreSolo'
 import Makebord from '../components/makebord'
 import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } from "react-router-dom";
 import { dipatcherOnNewPiece, chargePageHome } from "../components/action"
-import { removePlayerFromRoom } from "../actions/server"
-import { dataChangeHome } from "../actions/"
+import { removePlayerFromRoom, dataBoucle } from "../actions/server"
+import { dataChangeHome, dataLoadInter } from "../actions/"
 import MakeNewPiece from './makeMewPiece'
 import { connect } from 'react-redux';
 import { func } from 'prop-types';
 
-function Solo({ onClickt, pageHome, state }) {
+function Solo({ onClickt, pageHome, state, boucle }) {
     var name = []
 
     return (
         <Router>
-            <div id="container-party-solo">
+            <div id="container-party-solo" onLoad={boucle}>
                 <div className="content-bord-solo">
                     <div id="bord">
                         <Makebord state={state} />
@@ -52,9 +52,17 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch) => ({
     onClickt: dipatcherOnNewPiece(dispatch),
     pageHome: (state) => {
+        clearInterval(state.inter)
         dispatch(dataChangeHome())
         dispatch(removePlayerFromRoom(state))
         console.log('ok', state)
+    },
+    boucle: (state) => {
+        let inter = setInterval((state) => {
+            dispatch(dataBoucle())
+        }, 500, state);
+        dispatch(dataLoadInter(inter))
+
     }
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Solo)

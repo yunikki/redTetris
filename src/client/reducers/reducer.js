@@ -4,6 +4,7 @@ import io from 'socket.io-client';
 import React from 'react'
 import ReactDOM from 'react-dom';
 import App from '../containers/app.js';
+import { dataBoucle } from '../actions/server'
 
 function reducer(state = initialState, action) {
     console.log(action.type)
@@ -50,6 +51,19 @@ function reducer(state = initialState, action) {
                 piece: getPieceWithRoom(action.room, state),
                 grid: getGridWithRoom(action.room, state),
                 room: action.room
+            }
+        case 'GAME_START_':
+            return {
+                ...state,
+                location: 'game',
+                piece: getPieceWithRoom(action.room, state),
+                grid: getGridWithRoom(action.room, state),
+                room: action.room
+            }
+        case 'SET_INTER':
+            return {
+                ...state,
+                inter: action.data
             }
         default:
             return state;

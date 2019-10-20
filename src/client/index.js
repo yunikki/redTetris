@@ -33,7 +33,7 @@ socket.on('connect', function () {
 let socketIoMiddleware = createSocketIoMiddleware(socket, "server/");
 // var store = applyMiddleware(socketIoMiddleware)(createStore)(reducer);
 
-const store = createStore(
+export const store = createStore(
     reducer.reducer,
     initialState,
     applyMiddleware(

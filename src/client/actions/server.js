@@ -1,4 +1,4 @@
-import { strRandom } from "../components/action"
+import { store } from '../index'
 
 export const SERVEUR_PIECESSOLO = 'server/piecesSolo'
 export const SERVEUR_CREAT_ROOM = 'server/creatRoom'
@@ -13,6 +13,7 @@ export const SERVER_KEY_LEFT = 'server/keyleft'
 export const SERVER_KEY_RIGHT = 'server/keyRight'
 export const CHANGE_PARAM_ROOM = 'server/changeParamRoom'
 export const SERVER_KEY_SPACE = 'server/keySpace'
+export const SERVER_BOUCLE = "server/boucle"
 
 export const dataPiecesSolo = () => {
     return {
@@ -114,6 +115,14 @@ export const DataKeySpace = (name) => {
     }
 }
 
+export const dataBoucle = () => {
+    let state = store.getState()
+    return {
+        type: SERVER_BOUCLE,
+        name: state.inputName,
+        id: state.socketID
+    }
+}
 
 export function keyTetris(e, dispatch, state) {
     if (state.location == "game" && (e.key == 'w' || e.key == 'ArrowUp'))

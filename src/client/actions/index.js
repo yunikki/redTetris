@@ -59,3 +59,10 @@ export const saveResearch = (val) => {
         data: val
     }
 }
+
+export const dataLoadInter = (inter) => {
+    return {
+        type: "SET_INTER",
+        data: inter
+    }
+}
