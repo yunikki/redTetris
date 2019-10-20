@@ -457,6 +457,7 @@ function moveLeft(room, id) {
             break;
         }
     }
+    room = creatSpeactre(room);
     return (room);
 }
 exports.moveLeft = moveLeft;
@@ -494,6 +495,7 @@ function moveRight(room, id) {
             break;
         }
     }
+    room = creatSpeactre(room);
     //console.log(room.players[0].grid)
     return (room);
 }

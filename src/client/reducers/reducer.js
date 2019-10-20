@@ -47,12 +47,28 @@ function reducer(state = initialState, action) {
             return {
                 ...state,
                 location: 'game',
-                piece: action.next,
-                grid: action.grid,
+                piece: getPieceWithRoom(action.room, state),
+                grid: getGridWithRoom(action.room, state),
                 room: action.room
             }
         default:
             return state;
+    }
+}
+
+function getPieceWithRoom(room, state) {
+    for (let i in room.players) {
+        if (room.players[i].socketID == state.socketID) {
+            return (room.Pieces[room.players[i].currentPiece + 1].piece)
+        }
+    }
+}
+
+function getGridWithRoom(room, state) {
+    for (let i in room.players) {
+        if (room.players[i].socketID == state.socketID) {
+            return (room.players[i].grid)
+        }
     }
 }
 

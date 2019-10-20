@@ -52,6 +52,8 @@ const initEngine = io => {
             if (action.type === 'server/creatRoom') {
                 rooms_array = joinGame(action.roomName, action.playerName, action.socketID, rooms_array, action.priv);
                 let room = getGame(action.playerName, rooms_array)
+                socket.join(room.name)
+
                 socket.emit('action', { type: 'joinRoom', room: room, master: 2 })
                 socket.broadcast.emit('action', { type: 'joinRoom', room: room, master: 2 })
                 socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
@@ -62,6 +64,8 @@ const initEngine = io => {
             }
             if (action.type == 'server/removePlayerFromRoom') {
                 let room = getGame(action.playerName, rooms_array)
+                if (room)
+                    socket.leave(room.name)
                 let removedPlayer = removePlayer(action.playerName, "", rooms_array);
                 socket.emit('action', { type: 'joinRoom', room: undefined, master: false })
                 if (room)
@@ -81,15 +85,11 @@ const initEngine = io => {
                 let room = getGame(action.name, rooms_array);
                 room = featherDrop(room, socket.id)
 
-                for (let i in room.players) {
-                    io.to(room.players[i].socketID).emit('action', { type: 'GAME_START', room: room, grid: room.players[i].grid, next: room.Pieces[room.players[i].currentPiece + 1].piece })
-                }
+                io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
                 room.stop = setInterval(() => {
                     room = fall_piece(room)
                     updateRoomArray(room, rooms_array)
-                    for (let i in room.players) {
-                        io.to(room.players[i].socketID).emit('action', { type: 'GAME_START', room: room, grid: room.players[i].grid, next: room.Pieces[room.players[i].currentPiece + 1].piece })
-                    }
+                    io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
                 }, 500);
                 updateRoomArray(room, rooms_array)
             }
@@ -97,37 +97,38 @@ const initEngine = io => {
                 let room = getGame(action.name, rooms_array);
                 room = floorPiece(room, socket.id)
 
-                for (let i in room.players) {
-                    io.to(room.players[i].socketID).emit('action', { type: 'GAME_START', room: room, grid: room.players[i].grid, next: room.Pieces[room.players[i].currentPiece + 1].piece })
-                }
+                io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
                 room.stop = setInterval(() => {
                     room = fall_piece(room)
                     updateRoomArray(room, rooms_array)
-                    for (let i in room.players) {
-                        io.to(room.players[i].socketID).emit('action', { type: 'GAME_START', room: room, grid: room.players[i].grid, next: room.Pieces[room.players[i].currentPiece + 1].piece })
-                    }
+                    io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
                 }, 500);
                 updateRoomArray(room, rooms_array)
             }
             if (action.type == 'server/keyleft') {
                 let room = getGame(action.name, rooms_array);
-                console.log(action.name)
                 room = moveLeft(room, socket.id)
-                //      for (let i in room.players) {
-                //        if (room.players[i].socketID == socket.id)
-                //          socket.emit('action', { type: 'GAME_START', room: room, grid: room.players[i].grid, next: room.Pieces[room.players[i].currentPiece + 1].piece })
-                //  }
                 updateRoomArray(room, rooms_array)
+                clearInterval(room.stop)
+                io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
+
+                room.stop = setInterval(() => {
+                    room = fall_piece(room)
+                    updateRoomArray(room, rooms_array)
+                    io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
+                }, 500);
             }
             if (action.type == 'server/keyRight') {
                 let room = getGame(action.name, rooms_array);
-                console.log(action.name)
                 room = moveRight(room, socket.id)
-                //      for (let i in room.players) {
-                //        if (room.players[i].socketID == socket.id)
-                //          socket.emit('action', { type: 'GAME_START', room: room, grid: room.players[i].grid, next: room.Pieces[room.players[i].currentPiece + 1].piece })
-                //  }
                 updateRoomArray(room, rooms_array)
+                clearInterval(room.stop)
+                io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
+                room.stop = setInterval(() => {
+                    room = fall_piece(room)
+                    updateRoomArray(room, rooms_array)
+                    io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
+                }, 500);
             }
             if (action.type == 'server/gameStart') {
                 let room = getGame(action.playerName, rooms_array);
@@ -139,18 +140,13 @@ const initEngine = io => {
                     return (undefined)
                 socketRoom = setNewPieceInGridForAll(room)
                 if (room) {
-                    for (let i in socketRoom.players) {
-                        io.to(socketRoom.players[i].socketID).emit('action', { type: 'GAME_START', room: room, grid: socketRoom.players[i].grid, next: socketRoom.Pieces[socketRoom.players[i].currentPiece + 1].piece })
-                        //n'emit rien
-                    }
+                    io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
                 }
                 socketRoom.status = "runing"
                 socketRoom.stop = setInterval(() => {
                     socketRoom = fall_piece(socketRoom)
                     updateRoomArray(socketRoom, rooms_array)
-                    for (let i in socketRoom.players) {
-                        io.to(socketRoom.players[i].socketID).emit('action', { type: 'GAME_START', room: room, grid: socketRoom.players[i].grid, next: socketRoom.Pieces[socketRoom.players[i].currentPiece + 1].piece })
-                    }
+                    io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
                 }, 500);
                 updateRoomArray(socketRoom, rooms_array)
             }
@@ -158,6 +154,8 @@ const initEngine = io => {
 
         socket.on('disconnect', function () {
             let room = getGameWithId(socket.id, rooms_array)
+            if (room)
+                socket.leave(room.name)
             let player = removePlayer("", socket.id, rooms_array)
             console.log(room, player);
             if (room)

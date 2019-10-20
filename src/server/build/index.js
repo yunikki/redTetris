@@ -47,6 +47,7 @@ var initEngine = function (io) {
             if (action.type === 'server/creatRoom') {
                 rooms_array = Game_2.joinGame(action.roomName, action.playerName, action.socketID, rooms_array, action.priv);
                 var room = Game_2.getGame(action.playerName, rooms_array);
+                socket.join(room.name);
                 socket.emit('action', { type: 'joinRoom', room: room, master: 2 });
                 socket.broadcast.emit('action', { type: 'joinRoom', room: room, master: 2 });
                 socket.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
@@ -57,6 +58,8 @@ var initEngine = function (io) {
             }
             if (action.type == 'server/removePlayerFromRoom') {
                 var room = Game_2.getGame(action.playerName, rooms_array);
+                if (room)
+                    socket.leave(room.name);
                 var removedPlayer = Game_2.removePlayer(action.playerName, "", rooms_array);
                 socket.emit('action', { type: 'joinRoom', room: undefined, master: false });
                 if (room)
@@ -73,81 +76,74 @@ var initEngine = function (io) {
             if (action.type == 'server/keyDown') {
                 var room_1 = Game_2.getGame(action.name, rooms_array);
                 room_1 = classPieces_1.featherDrop(room_1, socket.id);
-                for (var i in room_1.players) {
-                    io.to(room_1.players[i].socketID).emit('action', { type: 'GAME_START', room: room_1, grid: room_1.players[i].grid, next: room_1.Pieces[room_1.players[i].currentPiece + 1].piece });
-                }
+                io.sockets.in(room_1.name).emit('action', { type: 'GAME_START', room: room_1 });
                 room_1.stop = setInterval(function () {
                     room_1 = classPieces_1.fall_piece(room_1);
                     Game_2.updateRoomArray(room_1, rooms_array);
-                    for (var i in room_1.players) {
-                        io.to(room_1.players[i].socketID).emit('action', { type: 'GAME_START', room: room_1, grid: room_1.players[i].grid, next: room_1.Pieces[room_1.players[i].currentPiece + 1].piece });
-                    }
+                    io.sockets.in(room_1.name).emit('action', { type: 'GAME_START', room: room_1 });
                 }, 500);
                 Game_2.updateRoomArray(room_1, rooms_array);
             }
             if (action.type == 'server/keySpace') {
                 var room_2 = Game_2.getGame(action.name, rooms_array);
                 room_2 = classPieces_1.floorPiece(room_2, socket.id);
-                for (var i in room_2.players) {
-                    io.to(room_2.players[i].socketID).emit('action', { type: 'GAME_START', room: room_2, grid: room_2.players[i].grid, next: room_2.Pieces[room_2.players[i].currentPiece + 1].piece });
-                }
+                io.sockets.in(room_2.name).emit('action', { type: 'GAME_START', room: room_2 });
                 room_2.stop = setInterval(function () {
                     room_2 = classPieces_1.fall_piece(room_2);
                     Game_2.updateRoomArray(room_2, rooms_array);
-                    for (var i in room_2.players) {
-                        io.to(room_2.players[i].socketID).emit('action', { type: 'GAME_START', room: room_2, grid: room_2.players[i].grid, next: room_2.Pieces[room_2.players[i].currentPiece + 1].piece });
-                    }
+                    io.sockets.in(room_2.name).emit('action', { type: 'GAME_START', room: room_2 });
                 }, 500);
                 Game_2.updateRoomArray(room_2, rooms_array);
             }
             if (action.type == 'server/keyleft') {
-                var room = Game_2.getGame(action.name, rooms_array);
-                console.log(action.name);
-                room = classPieces_1.moveLeft(room, socket.id);
-                //      for (let i in room.players) {
-                //        if (room.players[i].socketID == socket.id)
-                //          socket.emit('action', { type: 'GAME_START', room: room, grid: room.players[i].grid, next: room.Pieces[room.players[i].currentPiece + 1].piece })
-                //  }
-                Game_2.updateRoomArray(room, rooms_array);
+                var room_3 = Game_2.getGame(action.name, rooms_array);
+                room_3 = classPieces_1.moveLeft(room_3, socket.id);
+                Game_2.updateRoomArray(room_3, rooms_array);
+                clearInterval(room_3.stop);
+                io.sockets.in(room_3.name).emit('action', { type: 'GAME_START', room: room_3 });
+                room_3.stop = setInterval(function () {
+                    room_3 = classPieces_1.fall_piece(room_3);
+                    Game_2.updateRoomArray(room_3, rooms_array);
+                    io.sockets.in(room_3.name).emit('action', { type: 'GAME_START', room: room_3 });
+                }, 500);
             }
             if (action.type == 'server/keyRight') {
-                var room = Game_2.getGame(action.name, rooms_array);
-                console.log(action.name);
-                room = classPieces_1.moveRight(room, socket.id);
-                //      for (let i in room.players) {
-                //        if (room.players[i].socketID == socket.id)
-                //          socket.emit('action', { type: 'GAME_START', room: room, grid: room.players[i].grid, next: room.Pieces[room.players[i].currentPiece + 1].piece })
-                //  }
-                Game_2.updateRoomArray(room, rooms_array);
+                var room_4 = Game_2.getGame(action.name, rooms_array);
+                room_4 = classPieces_1.moveRight(room_4, socket.id);
+                Game_2.updateRoomArray(room_4, rooms_array);
+                clearInterval(room_4.stop);
+                io.sockets.in(room_4.name).emit('action', { type: 'GAME_START', room: room_4 });
+                room_4.stop = setInterval(function () {
+                    room_4 = classPieces_1.fall_piece(room_4);
+                    Game_2.updateRoomArray(room_4, rooms_array);
+                    io.sockets.in(room_4.name).emit('action', { type: 'GAME_START', room: room_4 });
+                }, 500);
             }
             if (action.type == 'server/gameStart') {
-                var room_3 = Game_2.getGame(action.playerName, rooms_array);
-                var socketRoom_1 = Game_2.getGameWithNameRoom(room_3.name, rooms_array);
+                var room_5 = Game_2.getGame(action.playerName, rooms_array);
+                var socketRoom_1 = Game_2.getGameWithNameRoom(room_5.name, rooms_array);
                 var new_room = [];
-                room_3.Pieces.push(new classPieces_1.pieces());
-                room_3.Pieces.push(new classPieces_1.pieces());
-                if (!room_3)
+                room_5.Pieces.push(new classPieces_1.pieces());
+                room_5.Pieces.push(new classPieces_1.pieces());
+                if (!room_5)
                     return (undefined);
-                socketRoom_1 = classPieces_1.setNewPieceInGridForAll(room_3);
-                if (room_3) {
-                    for (var i in socketRoom_1.players) {
-                        io.to(socketRoom_1.players[i].socketID).emit('action', { type: 'GAME_START', room: room_3, grid: socketRoom_1.players[i].grid, next: socketRoom_1.Pieces[socketRoom_1.players[i].currentPiece + 1].piece });
-                        //n'emit rien
-                    }
+                socketRoom_1 = classPieces_1.setNewPieceInGridForAll(room_5);
+                if (room_5) {
+                    io.sockets.in(room_5.name).emit('action', { type: 'GAME_START', room: room_5 });
                 }
                 socketRoom_1.status = "runing";
                 socketRoom_1.stop = setInterval(function () {
                     socketRoom_1 = classPieces_1.fall_piece(socketRoom_1);
                     Game_2.updateRoomArray(socketRoom_1, rooms_array);
-                    for (var i in socketRoom_1.players) {
-                        io.to(socketRoom_1.players[i].socketID).emit('action', { type: 'GAME_START', room: room_3, grid: socketRoom_1.players[i].grid, next: socketRoom_1.Pieces[socketRoom_1.players[i].currentPiece + 1].piece });
-                    }
+                    io.sockets.in(room_5.name).emit('action', { type: 'GAME_START', room: room_5 });
                 }, 500);
                 Game_2.updateRoomArray(socketRoom_1, rooms_array);
             }
         });
         socket.on('disconnect', function () {
             var room = Game_2.getGameWithId(socket.id, rooms_array);
+            if (room)
+                socket.leave(room.name);
             var player = Game_2.removePlayer("", socket.id, rooms_array);
             console.log(room, player);
             if (room)

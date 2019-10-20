@@ -8,7 +8,7 @@ function SpectreSolo_(grid, name, nb) {
     while (x < 20) {
         const y = 0;
         while (y < 10) {
-            if (grid[x][y] == ".") {
+            if (grid[x][y] == "." || grid[x][y] == "S" || grid[x][y][0] == "P") {
                 container.push(<div className="case-spectre-solo" key={key} col={x} row={y}>{grid[x][y]}</div>)
             }
             else
