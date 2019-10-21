@@ -21,6 +21,14 @@ function getGoodRoom(room, state) {
     }
 }
 
+function chooseWin(room, id) {
+    for (let i in room.players) {
+        if (room.players[i].socketID != id && room.players[i].loose == false)
+            return ("you loose")
+    }
+    return ("you win")
+}
+
 function MakeOverlay({ golobby, goHome }) {
     let state = store.getState()
     let room = state.room
@@ -29,7 +37,7 @@ function MakeOverlay({ golobby, goHome }) {
         return ([<div className="overlay" key="1">
         </div>,
         <div className="custom_overlay" key="2">
-            <p>you loose</p>
+            <p>{chooseWin(room, state.socketID)}</p>
             <a id="return-menu" className="btn" onClick={room && room.priv == false ? golobby : goHome}> {room && room.priv == false ? "back to lobby" : "Back to menu"}</a>
         </div>])
     }
