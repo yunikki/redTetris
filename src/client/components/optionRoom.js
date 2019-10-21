@@ -6,7 +6,11 @@ import { dataChangeParamRoom } from '../actions/server'
 function test(state, e, dispatch, name) {
     dispatch(dataChangeParamRoom(e.target.checked, e.target.getAttribute('option'), name))
 }
-export function OptionRoom({ state, dispatch }) {
+export function OptionRoom({ state, dispatch, room }) {
+    let run = false
+    if (!room || room.status == "runing")
+        run = true
+
     var NameOption = [];
     var option = [];
     if (!state.room || !state.room.rules)
@@ -15,7 +19,7 @@ export function OptionRoom({ state, dispatch }) {
     NameOption.push('junior board')
     NameOption.push('scord mode')
     NameOption.push('bubble tiles')
-    if (state.master) {
+    if (state.master && room.status != "runing") {
         for (var i in NameOption) {
             option.push(
                 <div className="container_option" key={i}>

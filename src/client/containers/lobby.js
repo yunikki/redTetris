@@ -41,7 +41,7 @@ function Lobby({ chargeGame, leaveLobby, state, room, dispatch }) {
                     <p className="list_name_lobby">you: ({state.inputName})</p>
                     <NameEnnemy state={state} />
                     <h3>mode enabel:</h3>
-                    <OptionRoom state={state} dispatch={dispatch} />
+                    <OptionRoom state={state} dispatch={dispatch} room={room} />
                     <div id="container-selec-quick">
                         <Link id="button-2player" className="btn" to="/" onClick={() => leaveLobby(state)}>leave the room</Link>
                         <ButtonStartGame room={room} state={state} chargeGame={chargeGame} />
