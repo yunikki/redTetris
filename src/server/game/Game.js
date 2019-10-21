@@ -62,7 +62,7 @@ export class Game {
                         master = true;
                     }
                     player = this.players[i];
-                    this.players.shift(i, 1)
+                    this.players.splice(i, 1)
                     if (master && this.players.length != 0)
                         this.players[0].gameMaster = 1
 
@@ -77,7 +77,7 @@ export class Game {
                         master = true;
                     }
                     player = this.players[j];
-                    this.players.shift(j, 1)
+                    this.players.splice(j, 1)
                     if (master && this.players.length != 0)
                         this.players[0].gameMaster = 1
                     return player
