@@ -53,12 +53,7 @@ const mapDispatchToProps = (dispatch) => {
     return ({
         dispatch: dispatch,
         pageSolo: (state) => {
-            let str = strRandom({
-                includeUpperCase: true,
-                includeNumbers: true,
-                length: 20,
-                startsWithLowerCase: true
-            });
+            let str = state.socketID
             dispatch(dataChangeInputName(str))
             state.inputName = str
             dispatch(dataCreateRoomSolo(state, str))

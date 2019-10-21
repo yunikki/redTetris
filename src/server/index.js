@@ -86,6 +86,7 @@ const initEngine = io => {
                 room = featherDrop(room, socket.id)
 
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
+                socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
                 updateRoomArray(room, rooms_array)
             }
             if (action.type == 'server/keySpace') {
@@ -93,6 +94,7 @@ const initEngine = io => {
                 room = floorPiece(room, socket.id)
 
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
+                socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
                 updateRoomArray(room, rooms_array)
             }
             if (action.type == 'server/keyleft') {
@@ -100,12 +102,14 @@ const initEngine = io => {
                 room = moveLeft(room, socket.id)
                 updateRoomArray(room, rooms_array)
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
+                socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
             }
             if (action.type == 'server/keyRight') {
                 let room = getGame(action.name, rooms_array);
                 room = moveRight(room, socket.id)
                 updateRoomArray(room, rooms_array)
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
+                socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
             }
             if (action.type == 'server/gameStart') {
                 let room = getGame(action.playerName, rooms_array);
@@ -120,12 +124,14 @@ const initEngine = io => {
                 socketRoom.status = "runing"
                 updateRoomArray(socketRoom, rooms_array)
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START_', room: socketRoom })
+                socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
             }
             if (action.type == 'server/boucle') {
                 let room = getGame(action.name, rooms_array);
                 room = fall_piece(room, action.id)
                 updateRoomArray(room, rooms_array)
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
+                socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
             }
         })
 

@@ -77,12 +77,14 @@ var initEngine = function (io) {
                 var room = Game_2.getGame(action.name, rooms_array);
                 room = classPieces_1.featherDrop(room, socket.id);
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
+                socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
                 Game_2.updateRoomArray(room, rooms_array);
             }
             if (action.type == 'server/keySpace') {
                 var room = Game_2.getGame(action.name, rooms_array);
                 room = classPieces_1.floorPiece(room, socket.id);
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
+                socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
                 Game_2.updateRoomArray(room, rooms_array);
             }
             if (action.type == 'server/keyleft') {
@@ -90,12 +92,14 @@ var initEngine = function (io) {
                 room = classPieces_1.moveLeft(room, socket.id);
                 Game_2.updateRoomArray(room, rooms_array);
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
+                socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
             }
             if (action.type == 'server/keyRight') {
                 var room = Game_2.getGame(action.name, rooms_array);
                 room = classPieces_1.moveRight(room, socket.id);
                 Game_2.updateRoomArray(room, rooms_array);
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
+                socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
             }
             if (action.type == 'server/gameStart') {
                 var room = Game_2.getGame(action.playerName, rooms_array);
@@ -110,12 +114,14 @@ var initEngine = function (io) {
                 socketRoom.status = "runing";
                 Game_2.updateRoomArray(socketRoom, rooms_array);
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START_', room: socketRoom });
+                socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
             }
             if (action.type == 'server/boucle') {
                 var room = Game_2.getGame(action.name, rooms_array);
                 room = classPieces_1.fall_piece(room, action.id);
                 Game_2.updateRoomArray(room, rooms_array);
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
+                socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
             }
         });
         socket.on('disconnect', function () {
