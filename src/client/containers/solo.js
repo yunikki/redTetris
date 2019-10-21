@@ -4,7 +4,7 @@ import Makebord from '../components/makebord'
 import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } from "react-router-dom";
 import { dipatcherOnNewPiece, chargePageHome, chargeLobby } from "../components/action"
 import { removePlayerFromRoom, dataBoucle } from "../actions/server"
-import { dataChangeHome, dataLoadInter } from "../actions/"
+import { dataChangeHome, dataLoadInter, dataChargeLobby } from "../actions/"
 import MakeNewPiece from './makeMewPiece'
 import { connect } from 'react-redux';
 import { func } from 'prop-types';
@@ -32,8 +32,7 @@ function chooseWin(room, id) {
 function MakeOverlay({ golobby, goHome }) {
     let state = store.getState()
     let room = state.room
-    console.log('la stp', room)
-    if (state.loose) {
+    if (state.loose && !state.spec) {
         return ([<div className="overlay" key="1">
         </div>,
         <div className="custom_overlay" key="2">
@@ -46,12 +45,16 @@ function MakeOverlay({ golobby, goHome }) {
     }
 }
 
+function rien() {
+
+}
+
 function Solo({ onClickt, pageHome, state, boucle, golobby, goHome }) {
     var name = []
 
     return (
         <Router>
-            <div id="container-party-solo" onLoad={boucle}>
+            <div id="container-party-solo" onLoad={state.spec ? rien() : boucle}>
                 <div className="content-bord-solo">
                     <div id="bord">
                         <Makebord state={state} />
@@ -88,6 +91,7 @@ const mapStateToProps = (state, ownProps) => ({
 })
 //server/removePlayerFromRoom
 const mapDispatchToProps = (dispatch) => ({
+    dispatch: dispatch,
     onClickt: dipatcherOnNewPiece(dispatch),
     pageHome: (state) => {
         clearInterval(state.inter)

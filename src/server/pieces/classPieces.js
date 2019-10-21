@@ -214,17 +214,24 @@ export function getPieces() {
 }
 
 function okForFall(grid) {
+    if (!grid)
+        return (false)
     let x = 19
     let ret = true
+    let c = 0
     while (x >= 0) {
         let y = 9
         while (y >= 0) {
+            if (grid[x][y][0] == "P")
+                c += 1
             if (grid[x][y][0] == "P" && (grid[x + 1] == undefined || (grid[x + 1][y] != "." && grid[x + 1][y] != "S" && grid[x + 1][y][0] != "P")))
                 return false
             y -= 1
         }
         x -= 1
     }
+    if (c != 4)
+        return false
     return ret
 }
 
@@ -475,7 +482,6 @@ export function moveLeft(room, id) {
         if (room.players[i].loose)
             continue;
         if (room.players[i].socketID == id && okForMoveLeft(room.players[i].grid)) {
-            console.log(id)
             let x = 0
             while (x < 20) {
                 let y = 0
@@ -531,7 +537,6 @@ export function moveRight(room, id) {
         }
     }
     room = creatSpeactre(room)
-    //console.log(room.players[0].grid)
     return (room)
 }
 

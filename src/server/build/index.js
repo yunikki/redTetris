@@ -49,7 +49,7 @@ var initEngine = function (io) {
                 var room = Game_2.getGame(action.playerName, rooms_array);
                 socket.join(room.name);
                 socket.emit('action', { type: 'joinRoom', room: room, master: 2 });
-                socket.broadcast.emit('action', { type: 'joinRoom', room: room, master: 2 });
+                socket.broadcast.emit('action', { type: 'joinRoom_', room: room, master: 2 });
                 socket.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
                 socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
             }
@@ -64,6 +64,10 @@ var initEngine = function (io) {
                 socket.emit('action', { type: 'joinRoom', room: undefined, master: false });
                 if (room)
                     emit_to_room(room, io);
+                if (isEndGame(room)) {
+                    room = resetRoomSpec(room);
+                    io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room });
+                }
                 socket.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
                 socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
             }
@@ -79,6 +83,11 @@ var initEngine = function (io) {
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
                 socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
                 Game_2.updateRoomArray(room, rooms_array);
+                if (isEndGame(room)) {
+                    console.log("endGame");
+                    room = resetRoomSpec(room);
+                    io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room });
+                }
             }
             if (action.type == 'server/keySpace') {
                 var room = Game_2.getGame(action.name, rooms_array);
@@ -86,6 +95,11 @@ var initEngine = function (io) {
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
                 socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
                 Game_2.updateRoomArray(room, rooms_array);
+                if (isEndGame(room)) {
+                    console.log("endGame");
+                    room = resetRoomSpec(room);
+                    io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room });
+                }
             }
             if (action.type == 'server/keyleft') {
                 var room = Game_2.getGame(action.name, rooms_array);
@@ -93,6 +107,11 @@ var initEngine = function (io) {
                 Game_2.updateRoomArray(room, rooms_array);
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
                 socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
+                if (isEndGame(room)) {
+                    console.log("endGame");
+                    room = resetRoomSpec(room);
+                    io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room });
+                }
             }
             if (action.type == 'server/keyRight') {
                 var room = Game_2.getGame(action.name, rooms_array);
@@ -100,6 +119,11 @@ var initEngine = function (io) {
                 Game_2.updateRoomArray(room, rooms_array);
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
                 socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
+                if (isEndGame(room)) {
+                    console.log("endGame");
+                    room = resetRoomSpec(room);
+                    io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room });
+                }
             }
             if (action.type == 'server/gameStart') {
                 var room = Game_2.getGame(action.playerName, rooms_array);
@@ -122,6 +146,11 @@ var initEngine = function (io) {
                 Game_2.updateRoomArray(room, rooms_array);
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
                 socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
+                if (isEndGame(room)) {
+                    console.log("endGame");
+                    room = resetRoomSpec(room);
+                    io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room });
+                }
             }
         });
         socket.on('disconnect', function () {
@@ -129,6 +158,10 @@ var initEngine = function (io) {
             if (room)
                 socket.leave(room.name);
             var player = Game_2.removePlayer("", socket.id, rooms_array);
+            if (room && isEndGame(room)) {
+                room = resetRoomSpec(room);
+                io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room });
+            }
             console.log(room, player);
             if (room)
                 emit_to_room(room, io);
@@ -141,6 +174,24 @@ var initEngine = function (io) {
         });
     });
 };
+function resetRoomSpec(room) {
+    room.status = "waiting";
+    for (var i in room.players) {
+        room.players[i].hit = false;
+        room.players[i].spec = false;
+        room.players[i].loose = false;
+        room.players[i].currentPiece = 0;
+    }
+    return room;
+}
+function isEndGame(room) {
+    for (var i in room.players) {
+        console.log(room.players[i]);
+        if (room.players[i].loose == false)
+            return false;
+    }
+    return true;
+}
 function create(params) {
     var promise = new Promise(function (resolve, reject) {
         var app = require('http').createServer();

@@ -14,7 +14,25 @@ function reducer(state = initialState, action) {
         case 'newPiece':
             return { ...state, piece: { ...action.piece } };
         case 'joinRoom':
-            return { ...state, room: { ...action.room }, master: action.master == 1 ? true : action.master == 2 ? state.master : false };
+            let v = false
+            console.log("JOINROOM ------------------------")
+            if (action.room)
+                v = action.room.status == "runing"
+            return {
+                ...state,
+                room: { ...action.room },
+                spec: v,
+                location: v ? "game" : state.location,
+                piece: v ? getPieceWithRoom(action.room, state) : state.piece,
+                grid: v ? getGridWithRoom(action.room, state) : state.grid,
+                master: action.master == 1 ? true : action.master == 2 ? state.master : false
+            };
+        case 'joinRoom_':
+            return {
+                ...state,
+                room: { ...action.room },
+                master: action.master == 1 ? true : action.master == 2 ? state.master : false
+            };
         case 'searchResult':
             return { ...state, searchResult: { ...action.results } }
         case 'chargeHome':
@@ -27,6 +45,15 @@ function reducer(state = initialState, action) {
             return { ...state, master: false }
         case 'DO_MASTER':
             return { ...state, master: true }
+        case 'END_GAME':
+            console.log("ENDGAME ------------------------")
+            return {
+                ...state,
+                spec: false,
+                location: state.master ? state.location : "Lobby",
+                //loose: false,
+                room: action.room
+            }
         case 'CHANGE_INPUT_NAME':
             return {
                 ...state,
@@ -61,6 +88,7 @@ function reducer(state = initialState, action) {
                 ...state,
                 location: 'game',
                 loose: false,
+                spec: false,
                 piece: getPieceWithRoom(action.room, state),
                 grid: getGridWithRoom(action.room, state),
                 room: action.room
@@ -85,7 +113,13 @@ export function getPlayer(room, state) {
 
 function getPieceWithRoom(room, state) {
     for (let i in room.players) {
-        if (room.players[i].socketID == state.socketID) {
+        if (room.players[i].socketID == state.socketID && !state.spec) {
+            return (room.Pieces[room.players[i].currentPiece + 1].piece)
+        }
+    }
+
+    for (let i in room.players) {
+        if (room.players[i].gameMaster == 1 && state.spec) {
             return (room.Pieces[room.players[i].currentPiece + 1].piece)
         }
     }
@@ -93,7 +127,13 @@ function getPieceWithRoom(room, state) {
 
 function getGridWithRoom(room, state) {
     for (let i in room.players) {
-        if (room.players[i].socketID == state.socketID) {
+        if (room.players[i].socketID == state.socketID && !state.spec) {
+            return (room.players[i].grid)
+        }
+    }
+
+    for (let i in room.players) {
+        if (room.players[i].gameMaster == 1 && state.spec) {
             return (room.players[i].grid)
         }
     }

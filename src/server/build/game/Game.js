@@ -86,15 +86,15 @@ var Game = /** @class */ (function () {
 exports.Game = Game;
 function joinGame(roomName, playerName, playerSocket, games_array, priv) {
     if (games_array.length == 0)
-        games_array[0] = new Game(roomName, new Player_1.Player(playerName, playerSocket, [], 1), priv);
+        games_array[0] = new Game(roomName, new Player_1.Player(playerName, playerSocket, [], 1, false), priv);
     else {
         for (var i = 0; i < games_array.length; i++) {
             if (games_array[i].name == roomName) {
-                games_array[i].addPlayer(new Player_1.Player(playerName, playerSocket, [], 0));
+                games_array[i].addPlayer(new Player_1.Player(playerName, playerSocket, [], 0, games_array[i].status == "runing" ? true : false));
                 return games_array;
             }
         }
-        games_array.push(new Game(roomName, new Player_1.Player(playerName, playerSocket, [], 1), priv));
+        games_array.push(new Game(roomName, new Player_1.Player(playerName, playerSocket, [], 1, false), priv));
     }
     return games_array;
 }
@@ -128,7 +128,6 @@ function getSearchResult(rooms_array) {
         return null;
     var search_result = [];
     for (var i = 0; i < rooms_array.length; i++) {
-        console.log(rooms_array[i].priv);
         if (rooms_array[i].priv == false)
             search_result.push({
                 "roomName": rooms_array[i].name,

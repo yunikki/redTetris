@@ -33,24 +33,67 @@ function SpectreSolo_(grid, name, nb) {
     )
 }
 
-function SpectreSolo({ state }) {
-    var container = []
-    var key = 0
-    if (!state.room || !state.room.players)
-        return (<div></div>)
-    var nb = state.room.players.length
-    while (nb) {
-        if (state.room.players[nb - 1].name != state.inputName)
-            container.push(SpectreSolo_(state.room.players[nb - 1].grid, state.room.players[nb - 1].name, nb))
-        nb -= 1
-        key += 1
+function nbSpec(room) {
+    let nb = 0
+    for (let i in room.players) {
+        if (room.players[i].spec == true)
+            nb += 1
     }
+    return nb
+}
 
-    return (
-        <div className="wrapper-carrou" style={{ width: (state.room.players.length - 2) * 300 + "px" }}>
-            {container}
-        </div>
-    )
+function getNameMaster(room) {
+    let nb = 0
+    for (let i in room.players) {
+        if (room.players[i].gameMaster == 1)
+            return (room.players[i].name)
+    }
+    return nb
+}
+
+function ft_abs(nb) {
+    return (nb > 0 ? nb : -nb)
+}
+
+function SpectreSolo({ state }) {
+
+    if (state.spec == true) {
+        let name = getNameMaster(state.room)
+        var container = []
+        let key = 0
+        if (!state.room || !state.room.players)
+            return (<div></div>)
+        var nb = ft_abs(state.room.players.length - nbSpec(state.room))
+        while (nb) {
+            if (state.room.players[nb - 1].name != name && state.room.players[nb - 1].spec == false)
+                container.push(SpectreSolo_(state.room.players[nb - 1].grid, state.room.players[nb - 1].name, nb))
+            nb -= 1
+            key += 1
+        }
+        return (
+            <div className="wrapper-carrou" style={{ width: (ft_abs(state.room.players.length - nbSpec(state.room)) - 2) * 300 + "px" }}>
+                {container}
+            </div>
+        )
+    }
+    else {
+        let key = 0
+        var container = []
+        if (!state.room || !state.room.players)
+            return (<div></div>)
+        var nb = ft_abs(state.room.players.length - nbSpec(state.room))
+        while (nb) {
+            if (state.room.players[nb - 1].name != state.inputName && state.room.players[nb - 1].spec == false)
+                container.push(SpectreSolo_(state.room.players[nb - 1].grid, state.room.players[nb - 1].name, nb))
+            nb -= 1
+            key += 1
+        }
+        return (
+            <div className="wrapper-carrou" style={{ width: (ft_abs(state.room.players.length - nbSpec(state.room)) - 2) * 300 + "px" }}>
+                {container}
+            </div>
+        )
+    }
 }
 
 

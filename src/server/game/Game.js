@@ -90,15 +90,15 @@ export class Game {
 
 export function joinGame(roomName, playerName, playerSocket, games_array, priv) {
     if (games_array.length == 0)
-        games_array[0] = new Game(roomName, new Player(playerName, playerSocket, [], 1), priv);
+        games_array[0] = new Game(roomName, new Player(playerName, playerSocket, [], 1, false), priv);
     else {
         for (let i = 0; i < games_array.length; i++) {
             if (games_array[i].name == roomName) {
-                games_array[i].addPlayer(new Player(playerName, playerSocket, [], 0))
+                games_array[i].addPlayer(new Player(playerName, playerSocket, [], 0, games_array[i].status == "runing" ? true : false))
                 return games_array;
             }
         }
-        games_array.push(new Game(roomName, new Player(playerName, playerSocket, [], 1), priv))
+        games_array.push(new Game(roomName, new Player(playerName, playerSocket, [], 1, false), priv))
     }
     return games_array;
 }
@@ -132,7 +132,6 @@ export function getSearchResult(rooms_array) {
         return null;
     let search_result = [];
     for (let i = 0; i < rooms_array.length; i++) {
-        console.log(rooms_array[i].priv)
         if (rooms_array[i].priv == false)
             search_result.push({
                 "roomName": rooms_array[i].name,

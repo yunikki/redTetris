@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Player = /** @class */ (function () {
-    function Player(playerName, playerSocketID, grid, gameMaster) {
+    function Player(playerName, playerSocketID, grid, gameMaster, spec) {
         this.currentPiece = 0;
-        this.loose = false;
+        this.loose = spec ? true : false;
         this.hit = false;
+        this.spec = spec;
         this.name = playerName;
         this.socketID = playerSocketID;
         this.grid = [[".", ".", ".", ".", ".", ".", ".", ".", ".", "."],

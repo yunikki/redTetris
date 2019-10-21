@@ -205,17 +205,24 @@ function getPieces() {
 }
 exports.getPieces = getPieces;
 function okForFall(grid) {
+    if (!grid)
+        return (false);
     var x = 19;
     var ret = true;
+    var c = 0;
     while (x >= 0) {
         var y = 9;
         while (y >= 0) {
+            if (grid[x][y][0] == "P")
+                c += 1;
             if (grid[x][y][0] == "P" && (grid[x + 1] == undefined || (grid[x + 1][y] != "." && grid[x + 1][y] != "S" && grid[x + 1][y][0] != "P")))
                 return false;
             y -= 1;
         }
         x -= 1;
     }
+    if (c != 4)
+        return false;
     return ret;
 }
 function creatSpeactre(room) {
@@ -452,7 +459,6 @@ function moveLeft(room, id) {
         if (room.players[i].loose)
             continue;
         if (room.players[i].socketID == id && okForMoveLeft(room.players[i].grid)) {
-            console.log(id);
             var x = 0;
             while (x < 20) {
                 var y = 0;
@@ -507,7 +513,6 @@ function moveRight(room, id) {
         }
     }
     room = creatSpeactre(room);
-    //console.log(room.players[0].grid)
     return (room);
 }
 exports.moveRight = moveRight;
