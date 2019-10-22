@@ -1,6 +1,6 @@
 import React from 'react'
 
-function SpectreSolo_(grid, name, nb) {
+function SpectreSolo_(grid, player, nb, state) {
     var container = []
     var key = 1
     var x = 0;
@@ -28,7 +28,7 @@ function SpectreSolo_(grid, name, nb) {
             <div id="spectre-border-container">
                 {container}
             </div>
-            <div>{name}</div>
+            {state.room.rules[2] ? <div>{player.name + " : " + player.score}</div> : <div>{player.name}</div>}
         </div>
     )
 }
@@ -66,7 +66,7 @@ function SpectreSolo({ state }) {
         var nb = ft_abs(state.room.players.length - nbSpec(state.room))
         while (nb) {
             if (state.room.players[nb - 1].name != name && state.room.players[nb - 1].spec == false)
-                container.push(SpectreSolo_(state.room.players[nb - 1].grid, state.room.players[nb - 1].name, nb))
+                container.push(SpectreSolo_(state.room.players[nb - 1].grid, state.room.players[nb - 1], nb, state))
             nb -= 1
             key += 1
         }
@@ -84,7 +84,7 @@ function SpectreSolo({ state }) {
         var nb = ft_abs(state.room.players.length - nbSpec(state.room))
         while (nb) {
             if (state.room.players[nb - 1].name != state.inputName && state.room.players[nb - 1].spec == false)
-                container.push(SpectreSolo_(state.room.players[nb - 1].grid, state.room.players[nb - 1].name, nb))
+                container.push(SpectreSolo_(state.room.players[nb - 1].grid, state.room.players[nb - 1], nb, state))
             nb -= 1
             key += 1
         }

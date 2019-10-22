@@ -49,12 +49,13 @@ function rien() {
 
 }
 
+
 function Solo({ onClickt, pageHome, state, boucle, golobby, goHome }) {
     var name = []
-
+    let player = getPlayer(state.room, state)
     return (
         <Router>
-            <div id="container-party-solo" onLoad={state.spec ? rien() : boucle}>
+            <div id="container-party-solo" onLoad={state.spec ? rien() : () => boucle(state)}>
                 <div className="content-bord-solo">
                     <div id="bord">
                         <Makebord state={state} />
@@ -67,7 +68,7 @@ function Solo({ onClickt, pageHome, state, boucle, golobby, goHome }) {
                             <MakeNewPiece piece={state.piece} />
                         </div>
                     </div>
-                    <p>Your Score :</p>
+                    {state.room.rules[2] ? <p>Your Score : {player.score} </p> : <p></p>}
                     <img id="title-img" src="./assets/images/title.png"></img>
                     <div id="container-spectre-solo">
 
@@ -102,9 +103,9 @@ const mapDispatchToProps = (dispatch) => ({
     golobby: chargeLobby(dispatch),
     goHome: chargePageHome(dispatch),
     boucle: (state) => {
-        let inter = setInterval((state) => {
+        let inter = setInterval(() => {
             dispatch(dataBoucle())
-        }, 500, state);
+        }, state.room.rules[0] ? 500 : 1000);
         dispatch(dataLoadInter(inter))
 
     }

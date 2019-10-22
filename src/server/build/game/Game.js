@@ -9,8 +9,8 @@ var Game = /** @class */ (function () {
         this.Pieces = [];
         this.players = [];
         this.rules = [
-            false,
             true,
+            false,
             false,
             false //bubbleTiles:
         ];

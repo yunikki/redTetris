@@ -9,8 +9,8 @@ export class Game {
         this.Pieces = [];
         this.players = [];
         this.rules = [
-            false, //speedrun:
-            true, //juniorBoard:
+            true, //speedrun:
+            false, //juniorBoard:
             false, //scoremode:
             false //bubbleTiles:
         ];

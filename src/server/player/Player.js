@@ -5,6 +5,7 @@ export class Player {
         this.loose = spec ? true : false;
         this.hit = false;
         this.spec = spec
+        this.score = 0;
         this.name = playerName;
         this.socketID = playerSocketID;
         this.grid = [[".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
