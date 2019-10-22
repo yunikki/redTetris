@@ -142,6 +142,7 @@ const initEngine = io => {
                 socketRoom = resetParty(socketRoom)
                 socketRoom = setNewPieceInGridForAll(socketRoom)
                 socketRoom.status = "runing"
+                socketRoom.Pieces = []
                 updateRoomArray(socketRoom, rooms_array)
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START_', room: socketRoom })
                 socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
@@ -194,6 +195,7 @@ const initEngine = io => {
 
 function resetRoomSpec(room) {
     room.status = "waiting"
+    room.Pieces = []
     for (let i in room.players) {
         room.players[i].hit = false
         room.players[i].spec = false
