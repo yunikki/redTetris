@@ -20,9 +20,7 @@ function ButtonStartGame({ room, state, chargeGame }) {
     if (!room || room.status == "runing")
         return <div></div>
     return (
-        <Router>
-            <Link style={{ display: state.master ? "inline-block" : "none" }} id="button-1player" className="btn" to="/solo" onClick={() => chargeGame(state)}>start the game</Link>
-        </Router>
+        <div style={{ display: state.master ? "inline-block" : "none" }} id="button-1player" className="btn" onClick={() => chargeGame(state)}>start the game</div>
     )
 }
 
