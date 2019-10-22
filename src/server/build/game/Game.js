@@ -11,7 +11,7 @@ var Game = /** @class */ (function () {
         this.rules = [
             true,
             false,
-            false,
+            true,
             false //bubbleTiles:
         ];
         this.players.push(player);

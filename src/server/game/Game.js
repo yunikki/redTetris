@@ -11,7 +11,7 @@ export class Game {
         this.rules = [
             true, //speedrun:
             false, //juniorBoard:
-            false, //scoremode:
+            true, //scoremode:
             false //bubbleTiles:
         ];
         this.players.push(player)

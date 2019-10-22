@@ -50,7 +50,7 @@ function reducer(state = initialState, action) {
             return {
                 ...state,
                 spec: false,
-                location: state.master ? state.location : "Lobby",
+                location: state.master || state.room.priv ? state.location : "Lobby",
                 //loose: false,
                 room: action.room
             }

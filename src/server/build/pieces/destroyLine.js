@@ -32,7 +32,15 @@ function destroyLine(room, player, i) {
         }
         x -= 1;
     }
-    addline -= 1;
+    if (addLine == 1)
+        room.players[i].score += 40;
+    else if (addLine == 2)
+        room.players[i].score += 100;
+    else if (addLine == 3)
+        room.players[i].score += 300;
+    else if (addLine == 4)
+        room.players[i].score += 1200;
+    addLine -= 1;
     if (addLine > 0) {
         room = addLineForAll(addLine, room, player.socketID);
     }
