@@ -14,7 +14,7 @@ function addLineForAll(addLine, room, id) {
         if (room.players[i].socketID != id) {
             while (s > 0) {
                 room.players[i].grid.shift();
-                room.players[i].grid.push(room.rules[1] ? ["B", "B", "B", "B", "B", "B", "B", "B"] : ["B", "B", "B", "B", "B", "B", "B", "B", "B", "B"]);
+                room.players[i].grid.push(room.rules[1] ? ["b", "b", "b", "b", "b", "b", "b", "b"] : ["b", "b", "b", "b", "b", "b", "b", "b", "b", "b"]);
             }
         }
     }
@@ -25,7 +25,7 @@ function destroyLine(room, player, i) {
     var x = room.rules[1] ? 11 : 19;
     while (x > 0) {
         var y = 0;
-        if (lineComplet(player.grid[x])) {
+        if (lineComplet(room.players[i].grid[x])) {
             room.players[i].grid.splice(x, 1);
             room.players[i].grid.unshift(room.rules[1] ? [".", ".", ".", ".", ".", ".", ".", "."] : [".", ".", ".", ".", ".", ".", ".", ".", ".", "."]);
             addLine += 1;

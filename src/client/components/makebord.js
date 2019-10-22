@@ -34,7 +34,7 @@ function chooseColor(c) {
 
         case "S":
             return ('rgb(48, 47, 51)');
-        case "B":
+        case "b":
             return ('#FFFFFF');
         default:
             return ('#505050');
