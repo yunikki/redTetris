@@ -1,4 +1,5 @@
 import p from "./piece"
+import { destroyLine } from "./destroyLine"
 
 export function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
@@ -174,8 +175,8 @@ function allLoose(room) {
 }
 
 export function setNewPieceInGrid(room, i, piece) {
+    room = destroyLine(room)
     let p = epurPiece(piece)
-
     for (let l in p) {
         let l_grid = 3;
         let l_piece = 0

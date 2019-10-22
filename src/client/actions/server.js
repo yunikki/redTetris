@@ -81,9 +81,10 @@ export const startGame = (state) => {
     }
 }
 
-export const DataKeyUp = () => {
+export const DataKeyUp = (name) => {
     return {
-        type: SERVER_KEY_UP
+        type: SERVER_KEY_UP,
+        name: name
     }
 }
 
@@ -126,7 +127,7 @@ export const dataBoucle = () => {
 
 export function keyTetris(e, dispatch, state) {
     if (state.location == "game" && (e.key == 'w' || e.key == 'ArrowUp'))
-        dispatch(DataKeyUp())
+        dispatch(DataKeyUp(state.inputName))
     else if (state.location == "game" && (e.key == 's' || e.key == 'ArrowDown'))
         dispatch(DataKeyDown(state.inputName))
     else if (state.location == "game" && (e.key == 'a' || e.key == 'ArrowLeft'))

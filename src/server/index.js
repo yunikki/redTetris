@@ -4,6 +4,7 @@ import { resetParty, pieces, getPieces, setNewPieceInGridForAll, setNewPieceInGr
 import { getSearchResult } from './game/Game'
 import { Player } from './player/Player'
 import { Game, joinGame, getGame, removePlayer, getGameWithId, GameChangeParam, getGameWithNameRoom, updateRoomArray } from './game/Game'
+import { keyUp } from "./pieces/keyUp"
 
 
 const logerror = debug('tetris:error')
@@ -155,6 +156,19 @@ const initEngine = io => {
                 updateRoomArray(room, rooms_array)
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
                 socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
+                if (isEndGame(room)) {
+                    console.log("endGame")
+                    room = resetRoomSpec(room)
+                    io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room })
+                }
+            }
+            if (action.type == "server/keyUp") {
+                let room = getGame(action.name, rooms_array);
+                room = keyUp(room, socket.id)
+
+                io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
+                socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
+                updateRoomArray(room, rooms_array)
                 if (isEndGame(room)) {
                     console.log("endGame")
                     room = resetRoomSpec(room)

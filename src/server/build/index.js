@@ -8,6 +8,7 @@ var debug_1 = __importDefault(require("debug"));
 var classPieces_1 = require("./pieces/classPieces");
 var Game_1 = require("./game/Game");
 var Game_2 = require("./game/Game");
+var keyUp_1 = require("./pieces/keyUp");
 var logerror = debug_1.default('tetris:error'), loginfo = debug_1.default('tetris:info');
 var initApp = function (app, params, cb) {
     var host = params.host, port = params.port;
@@ -146,6 +147,18 @@ var initEngine = function (io) {
                 Game_2.updateRoomArray(room, rooms_array);
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
                 socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
+                if (isEndGame(room)) {
+                    console.log("endGame");
+                    room = resetRoomSpec(room);
+                    io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room });
+                }
+            }
+            if (action.type == "server/keyUp") {
+                var room = Game_2.getGame(action.name, rooms_array);
+                room = keyUp_1.keyUp(room, socket.id);
+                io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
+                socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
+                Game_2.updateRoomArray(room, rooms_array);
                 if (isEndGame(room)) {
                     console.log("endGame");
                     room = resetRoomSpec(room);

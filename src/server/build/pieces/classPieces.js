@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var piece_1 = __importDefault(require("./piece"));
+var destroyLine_1 = require("./destroyLine");
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
 }
@@ -168,6 +169,7 @@ function allLoose(room) {
     return (true);
 }
 function setNewPieceInGrid(room, i, piece) {
+    room = destroyLine_1.destroyLine(room);
     var p = epurPiece(piece);
     for (var l in p) {
         var l_grid = 3;
