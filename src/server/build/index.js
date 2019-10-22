@@ -133,7 +133,6 @@ var initEngine = function (io) {
                 socketRoom = classPieces_1.resetParty(socketRoom);
                 socketRoom = classPieces_1.setNewPieceInGridForAll(socketRoom);
                 socketRoom.status = "runing";
-                socketRoom.Pieces = [];
                 Game_2.updateRoomArray(socketRoom, rooms_array);
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START_', room: socketRoom });
                 socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
