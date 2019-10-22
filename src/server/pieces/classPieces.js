@@ -175,7 +175,7 @@ function allLoose(room) {
 }
 
 export function setNewPieceInGrid(room, i, piece) {
-    room = destroyLine(room)
+    room = destroyLine(room, room.players[i], i)
     let p = epurPiece(piece)
     for (let l in p) {
         let l_grid = 3;

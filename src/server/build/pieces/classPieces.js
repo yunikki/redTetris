@@ -169,7 +169,7 @@ function allLoose(room) {
     return (true);
 }
 function setNewPieceInGrid(room, i, piece) {
-    room = destroyLine_1.destroyLine(room);
+    room = destroyLine_1.destroyLine(room, room.players[i], i);
     var p = epurPiece(piece);
     for (var l in p) {
         var l_grid = 3;

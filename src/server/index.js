@@ -93,7 +93,6 @@ const initEngine = io => {
                 socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
                 updateRoomArray(room, rooms_array)
                 if (isEndGame(room)) {
-                    console.log("endGame")
                     room = resetRoomSpec(room)
                     io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room })
                 }
@@ -106,7 +105,6 @@ const initEngine = io => {
                 socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
                 updateRoomArray(room, rooms_array)
                 if (isEndGame(room)) {
-                    console.log("endGame")
                     room = resetRoomSpec(room)
                     io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room })
                 }
@@ -118,7 +116,6 @@ const initEngine = io => {
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
                 socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
                 if (isEndGame(room)) {
-                    console.log("endGame")
                     room = resetRoomSpec(room)
                     io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room })
                 }
@@ -130,7 +127,6 @@ const initEngine = io => {
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
                 socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
                 if (isEndGame(room)) {
-                    console.log("endGame")
                     room = resetRoomSpec(room)
                     io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room })
                 }
@@ -157,7 +153,6 @@ const initEngine = io => {
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
                 socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
                 if (isEndGame(room)) {
-                    console.log("endGame")
                     room = resetRoomSpec(room)
                     io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room })
                 }
@@ -170,7 +165,6 @@ const initEngine = io => {
                 socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
                 updateRoomArray(room, rooms_array)
                 if (isEndGame(room)) {
-                    console.log("endGame")
                     room = resetRoomSpec(room)
                     io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room })
                 }
@@ -186,7 +180,6 @@ const initEngine = io => {
                 room = resetRoomSpec(room)
                 io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room })
             }
-            console.log(room, player);
             if (room)
                 emit_to_room(room, io)
             socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
@@ -212,7 +205,6 @@ function resetRoomSpec(room) {
 
 function isEndGame(room) {
     for (let i in room.players) {
-        console.log(room.players[i])
         if (room.players[i].loose == false)
             return false
     }
