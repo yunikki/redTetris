@@ -1,6 +1,6 @@
 function lineComplet(line) {
     for (let i in line) {
-        if (line[i] == "." || line[i] == "S" || line[i][0] == "P" || line[i][0] == "B") {
+        if (line[i] == "." || line[i] == "S" || line[i][0] == "P" || line[i][0] == "b") {
             return false
         }
     }
