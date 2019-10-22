@@ -33,7 +33,7 @@ function MakeOverlay({ golobby, goHome }) {
     let state = store.getState()
     let room = state.room
     if (state.loose && !state.spec) {
-        return ([<div className="overlay" key="1">
+        return ([<div className={state.room.rules[1] ? "mini_custom_overlay" : "overlay"} key="1">
         </div>,
         <div className="custom_overlay" key="2">
             <p>{chooseWin(room, state.socketID)}</p>
@@ -57,7 +57,7 @@ function Solo({ onClickt, pageHome, state, boucle, golobby, goHome }) {
         <Router>
             <div id="container-party-solo" onLoad={state.spec ? rien() : () => boucle(state)}>
                 <div className="content-bord-solo">
-                    <div id="bord">
+                    <div id={state.room.rules[1] ? "minibord" : "bord"}>
                         <Makebord state={state} />
                         <MakeOverlay state={state} golobby={golobby} goHome={goHome} />
                     </div>

@@ -206,14 +206,14 @@ function getPieces() {
     return (randPiece());
 }
 exports.getPieces = getPieces;
-function okForFall(grid) {
+function okForFall(grid, room) {
     if (!grid)
         return (false);
-    var x = 19;
+    var x = room.rules[1] ? 11 : 19;
     var ret = true;
     var c = 0;
     while (x >= 0) {
-        var y = 9;
+        var y = room.rules[1] ? 7 : 9;
         while (y >= 0) {
             if (grid[x][y][0] == "P")
                 c += 1;
@@ -231,9 +231,9 @@ function creatSpeactre(room) {
     var c = "P";
     for (var i in room.players) {
         var save = [];
-        var x = 19;
+        var x = room.rules[1] ? 11 : 19;
         while (x >= 0) {
-            var y = 9;
+            var y = room.rules[1] ? 7 : 9;
             while (y >= 0) {
                 if (room.players[i].grid[x][y][0] == "S")
                     room.players[i].grid[x][y] = ".";
@@ -245,10 +245,10 @@ function creatSpeactre(room) {
             }
             x -= 1;
         }
-        while (okForFall(room.players[i].grid)) {
-            x = 19;
+        while (okForFall(room.players[i].grid, room)) {
+            x = room.rules[1] ? 11 : 19;
             while (x >= 0) {
-                y = 9;
+                y = room.rules[1] ? 7 : 9;
                 while (y >= 0) {
                     if (room.players[i].grid[x + 1] && room.players[i].grid[x][y][0] == "P") {
                         room.players[i].grid[x + 1][y] = room.players[i].grid[x][y];
@@ -259,9 +259,9 @@ function creatSpeactre(room) {
                 x -= 1;
             }
         }
-        x = 19;
+        x = room.rules[1] ? 11 : 19;
         while (x >= 0) {
-            y = 9;
+            y = room.rules[1] ? 7 : 9;
             while (y >= 0) {
                 if (room.players[i].grid[x] && room.players[i].grid[x][y][0] == "P") {
                     room.players[i].grid[x][y] = "S";
@@ -284,11 +284,11 @@ function fall_piece(room, id) {
         if (room.players[i].socketID == id) {
             if (room.players[i].loose)
                 return (room);
-            if (okForFall(room.players[i].grid)) {
+            if (okForFall(room.players[i].grid, room)) {
                 room.players[i].hit = false;
-                var x = 19;
+                var x = room.rules[1] ? 11 : 19;
                 while (x >= 0) {
-                    var y = 9;
+                    var y = room.rules[1] ? 7 : 9;
                     while (y >= 0) {
                         if (room.players[i].grid[x + 1] && room.players[i].grid[x][y][0] == "P") {
                             room.players[i].grid[x + 1][y] = room.players[i].grid[x][y];
@@ -304,9 +304,9 @@ function fall_piece(room, id) {
             }
             else {
                 room.players[i].hit = false;
-                var x = 19;
+                var x = room.rules[1] ? 11 : 19;
                 while (x >= 0) {
-                    var y = 9;
+                    var y = room.rules[1] ? 7 : 9;
                     while (y >= 0) {
                         if (room.players[i].grid[x][y][0] == "P") {
                             room.players[i].grid[x][y] = room.players[i].grid[x][y].substring(1, 2);
@@ -341,10 +341,10 @@ function floorPiece(room, id) {
         if (room.players[i].loose)
             continue;
         if (room.players[i].socketID == id) {
-            while (okForFall(room.players[i].grid)) {
-                var x_1 = 19;
+            while (okForFall(room.players[i].grid, room)) {
+                var x_1 = room.rules[1] ? 11 : 19;
                 while (x_1 >= 0) {
-                    var y = 9;
+                    var y = room.rules[1] ? 7 : 9;
                     while (y >= 0) {
                         if (room.players[i].grid[x_1 + 1] && room.players[i].grid[x_1][y][0] == "P") {
                             room.players[i].grid[x_1 + 1][y] = room.players[i].grid[x_1][y];
@@ -356,9 +356,9 @@ function floorPiece(room, id) {
                 }
             }
             room.players[i].hit = false;
-            var x = 19;
+            var x = room.rules[1] ? 11 : 19;
             while (x >= 0) {
-                var y = 9;
+                var y = room.rules[1] ? 7 : 9;
                 while (y >= 0) {
                     if (room.players[i].grid[x][y][0] == "P") {
                         room.players[i].grid[x][y] = room.players[i].grid[x][y].substring(1, 2);
@@ -393,10 +393,10 @@ function featherDrop(room, id) {
         if (room.players[i].loose)
             continue;
         if (room.players[i].socketID == id) {
-            if (okForFall(room.players[i].grid)) {
-                var x = 19;
+            if (okForFall(room.players[i].grid, room)) {
+                var x = room.rules[1] ? 11 : 19;
                 while (x >= 0) {
-                    var y = 9;
+                    var y = room.rules[1] ? 7 : 9;
                     while (y >= 0) {
                         if (room.players[i].grid[x + 1] && room.players[i].grid[x][y][0] == "P") {
                             room.players[i].grid[x + 1][y] = room.players[i].grid[x][y];
@@ -412,9 +412,9 @@ function featherDrop(room, id) {
             }
             else {
                 room.players[i].hit = false;
-                var x = 19;
+                var x = room.rules[1] ? 11 : 19;
                 while (x >= 0) {
-                    var y = 9;
+                    var y = room.rules[1] ? 7 : 9;
                     while (y >= 0) {
                         if (room.players[i].grid[x][y][0] == "P") {
                             room.players[i].grid[x][y] = room.players[i].grid[x][y].substring(1, 2);
@@ -442,11 +442,11 @@ function featherDrop(room, id) {
     return (room);
 }
 exports.featherDrop = featherDrop;
-function okForMoveLeft(grid) {
-    var x = 19;
+function okForMoveLeft(grid, room) {
+    var x = room.rules[1] ? 11 : 19;
     var ret = true;
     while (x >= 0) {
-        var y = 9;
+        var y = room.rules[1] ? 7 : 9;
         while (y >= 0) {
             if (grid[x][y][0] == "P" && (grid[x][y - 1] == undefined || (grid[x][y - 1] && grid[x][y - 1] != "." && grid[x][y - 1] != "S" && grid[x][y - 1][0] != "P")))
                 return false;
@@ -460,11 +460,13 @@ function moveLeft(room, id) {
     for (var i in room.players) {
         if (room.players[i].loose)
             continue;
-        if (room.players[i].socketID == id && okForMoveLeft(room.players[i].grid)) {
+        if (room.players[i].socketID == id && okForMoveLeft(room.players[i].grid, room)) {
             var x = 0;
-            while (x < 20) {
+            var compar = room.rules[1] ? 12 : 20;
+            while (x < compar) {
                 var y = 0;
-                while (y < 10) {
+                var compar2 = room.rules[1] ? 8 : 10;
+                while (y < compar2) {
                     if (room.players[i].grid[x][y][0] == "P") {
                         room.players[i].grid[x][y - 1] = room.players[i].grid[x][y];
                         room.players[i].grid[x][y] = '.';
@@ -480,11 +482,11 @@ function moveLeft(room, id) {
     return (room);
 }
 exports.moveLeft = moveLeft;
-function okForMoveRight(grid) {
-    var x = 19;
+function okForMoveRight(grid, room) {
+    var x = room.rules[1] ? 11 : 19;
     var ret = true;
     while (x >= 0) {
-        var y = 9;
+        var y = room.rules[1] ? 7 : 9;
         while (y >= 0) {
             if (grid[x][y][0] == "P" && (grid[x][y + 1] == undefined || (grid[x][y + 1] && grid[x][y + 1] != "." && grid[x][y + 1] != "S" && grid[x][y + 1][0] != "P")))
                 return false;
@@ -498,10 +500,11 @@ function moveRight(room, id) {
     for (var i in room.players) {
         if (room.players[i].loose)
             continue;
-        if (room.players[i].socketID == id && okForMoveRight(room.players[i].grid)) {
+        if (room.players[i].socketID == id && okForMoveRight(room.players[i].grid, room)) {
             var x = 0;
-            while (x < 20) {
-                var y = 9;
+            var compar = room.rules[1] ? 12 : 20;
+            while (x < compar) {
+                var y = room.rules[1] ? 7 : 9;
                 while (y >= 0) {
                     if (room.players[i].grid[x][y] && room.players[i].grid[x][y][0] == "P") {
                         room.players[i].grid[x][y + 1] = room.players[i].grid[x][y];
@@ -519,30 +522,43 @@ function moveRight(room, id) {
 }
 exports.moveRight = moveRight;
 function resetParty(room) {
+    var smallBoard = [[".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", "."]];
+    var extandBoard = [[".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."]];
     for (var i in room.players) {
         room.players[i].loose = false;
         room.players[i].spec = false;
         room.players[i].score = 0;
-        room.players[i].grid = [[".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-            [".", ".", ".", ".", ".", ".", ".", ".", ".", "."]];
+        room.players[i].grid = room.rules[1] ? smallBoard : extandBoard;
     }
     return room;
 }

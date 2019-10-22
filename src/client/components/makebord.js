@@ -43,9 +43,11 @@ function Makebord({ state }) {
     var container = []
     var key = 1
     var x = 0;
-    while (x < 20) {
+    let compar1 = state.room.rules[1] ? 12 : 20
+    while (x < compar1) {
         const y = 0;
-        while (y < 10) {
+        let compar2 = state.room.rules[1] ? 8 : 10
+        while (y < compar2) {
             if (state.grid) {
                 container.push(<div className={state.room.rules[3] ? "caseBoardBuble" : "caseBord"
                 } key={key} col={x} row={y} style={{ backgroundColor: chooseColor(state.grid[x][y]) }}></div >)

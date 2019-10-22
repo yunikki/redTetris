@@ -136,6 +136,14 @@ body {
     background-color: #505050;
 }
 
+#minibord {
+    width: 400px;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 30px;
+    background-color: #505050;
+}
+
 .caseBord {
     width: 50px;
     height: 50px;
@@ -282,4 +290,13 @@ body {
     width: 500px;
     color: black;
     font-size: 50px;
+}
+
+.mini_custom_overlay {
+    background-color: pink;
+    width: 400px;
+    height: 600px;
+    opacity: 0.2;
+    /* margin: -1024px 30px; */
+    position: absolute;
 }

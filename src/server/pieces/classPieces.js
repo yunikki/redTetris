@@ -214,14 +214,14 @@ export function getPieces() {
     return (randPiece())
 }
 
-function okForFall(grid) {
+function okForFall(grid, room) {
     if (!grid)
         return (false)
-    let x = 19
+    let x = room.rules[1] ? 11 : 19
     let ret = true
     let c = 0
     while (x >= 0) {
-        let y = 9
+        let y = room.rules[1] ? 7 : 9
         while (y >= 0) {
             if (grid[x][y][0] == "P")
                 c += 1
@@ -240,9 +240,9 @@ function creatSpeactre(room) {
     let c = "P"
     for (let i in room.players) {
         let save = []
-        let x = 19
+        let x = room.rules[1] ? 11 : 19
         while (x >= 0) {
-            let y = 9
+            let y = room.rules[1] ? 7 : 9
             while (y >= 0) {
                 if (room.players[i].grid[x][y][0] == "S")
                     room.players[i].grid[x][y] = "."
@@ -254,10 +254,10 @@ function creatSpeactre(room) {
             }
             x -= 1
         }
-        while (okForFall(room.players[i].grid)) {
-            x = 19
+        while (okForFall(room.players[i].grid, room)) {
+            x = room.rules[1] ? 11 : 19
             while (x >= 0) {
-                y = 9
+                y = room.rules[1] ? 7 : 9
                 while (y >= 0) {
                     if (room.players[i].grid[x + 1] && room.players[i].grid[x][y][0] == "P") {
                         room.players[i].grid[x + 1][y] = room.players[i].grid[x][y]
@@ -270,9 +270,9 @@ function creatSpeactre(room) {
             }
         }
 
-        x = 19
+        x = room.rules[1] ? 11 : 19
         while (x >= 0) {
-            y = 9
+            y = room.rules[1] ? 7 : 9
             while (y >= 0) {
                 if (room.players[i].grid[x] && room.players[i].grid[x][y][0] == "P") {
                     room.players[i].grid[x][y] = "S"
@@ -296,11 +296,11 @@ export function fall_piece(room, id) {
         if (room.players[i].socketID == id) {
             if (room.players[i].loose)
                 return (room);
-            if (okForFall(room.players[i].grid)) {
+            if (okForFall(room.players[i].grid, room)) {
                 room.players[i].hit = false
-                let x = 19
+                let x = room.rules[1] ? 11 : 19
                 while (x >= 0) {
-                    let y = 9
+                    let y = room.rules[1] ? 7 : 9
                     while (y >= 0) {
                         if (room.players[i].grid[x + 1] && room.players[i].grid[x][y][0] == "P") {
                             room.players[i].grid[x + 1][y] = room.players[i].grid[x][y]
@@ -317,9 +317,9 @@ export function fall_piece(room, id) {
             }
             else {
                 room.players[i].hit = false
-                let x = 19
+                let x = room.rules[1] ? 11 : 19
                 while (x >= 0) {
-                    let y = 9
+                    let y = room.rules[1] ? 7 : 9
                     while (y >= 0) {
                         if (room.players[i].grid[x][y][0] == "P") {
                             room.players[i].grid[x][y] = room.players[i].grid[x][y].substring(1, 2)
@@ -358,10 +358,10 @@ export function floorPiece(room, id) {
         if (room.players[i].loose)
             continue;
         if (room.players[i].socketID == id) {
-            while (okForFall(room.players[i].grid)) {
-                let x = 19
+            while (okForFall(room.players[i].grid, room)) {
+                let x = room.rules[1] ? 11 : 19
                 while (x >= 0) {
-                    let y = 9
+                    let y = room.rules[1] ? 7 : 9
                     while (y >= 0) {
                         if (room.players[i].grid[x + 1] && room.players[i].grid[x][y][0] == "P") {
                             room.players[i].grid[x + 1][y] = room.players[i].grid[x][y]
@@ -374,9 +374,9 @@ export function floorPiece(room, id) {
                 }
             }
             room.players[i].hit = false
-            let x = 19
+            let x = room.rules[1] ? 11 : 19
             while (x >= 0) {
-                let y = 9
+                let y = room.rules[1] ? 7 : 9
                 while (y >= 0) {
                     if (room.players[i].grid[x][y][0] == "P") {
                         room.players[i].grid[x][y] = room.players[i].grid[x][y].substring(1, 2)
@@ -412,10 +412,10 @@ export function featherDrop(room, id) {
         if (room.players[i].loose)
             continue;
         if (room.players[i].socketID == id) {
-            if (okForFall(room.players[i].grid)) {
-                let x = 19
+            if (okForFall(room.players[i].grid, room)) {
+                let x = room.rules[1] ? 11 : 19
                 while (x >= 0) {
-                    let y = 9
+                    let y = room.rules[1] ? 7 : 9
                     while (y >= 0) {
                         if (room.players[i].grid[x + 1] && room.players[i].grid[x][y][0] == "P") {
                             room.players[i].grid[x + 1][y] = room.players[i].grid[x][y]
@@ -432,9 +432,9 @@ export function featherDrop(room, id) {
             }
             else {
                 room.players[i].hit = false
-                let x = 19
+                let x = room.rules[1] ? 11 : 19
                 while (x >= 0) {
-                    let y = 9
+                    let y = room.rules[1] ? 7 : 9
                     while (y >= 0) {
                         if (room.players[i].grid[x][y][0] == "P") {
                             room.players[i].grid[x][y] = room.players[i].grid[x][y].substring(1, 2)
@@ -463,11 +463,11 @@ export function featherDrop(room, id) {
     return (room)
 }
 
-function okForMoveLeft(grid) {
-    let x = 19
+function okForMoveLeft(grid, room) {
+    let x = room.rules[1] ? 11 : 19
     let ret = true
     while (x >= 0) {
-        let y = 9
+        let y = room.rules[1] ? 7 : 9
         while (y >= 0) {
             if (grid[x][y][0] == "P" && (grid[x][y - 1] == undefined || (grid[x][y - 1] && grid[x][y - 1] != "." && grid[x][y - 1] != "S" && grid[x][y - 1][0] != "P")))
                 return false
@@ -482,11 +482,13 @@ export function moveLeft(room, id) {
     for (let i in room.players) {
         if (room.players[i].loose)
             continue;
-        if (room.players[i].socketID == id && okForMoveLeft(room.players[i].grid)) {
+        if (room.players[i].socketID == id && okForMoveLeft(room.players[i].grid, room)) {
             let x = 0
-            while (x < 20) {
+            let compar = room.rules[1] ? 12 : 20
+            while (x < compar) {
                 let y = 0
-                while (y < 10) {
+                let compar2 = room.rules[1] ? 8 : 10
+                while (y < compar2) {
                     if (room.players[i].grid[x][y][0] == "P") {
                         room.players[i].grid[x][y - 1] = room.players[i].grid[x][y]
                         room.players[i].grid[x][y] = '.'
@@ -502,11 +504,11 @@ export function moveLeft(room, id) {
     return (room)
 }
 
-function okForMoveRight(grid) {
-    let x = 19
+function okForMoveRight(grid, room) {
+    let x = room.rules[1] ? 11 : 19
     let ret = true
     while (x >= 0) {
-        let y = 9
+        let y = room.rules[1] ? 7 : 9
         while (y >= 0) {
             if (grid[x][y][0] == "P" && (grid[x][y + 1] == undefined || (grid[x][y + 1] && grid[x][y + 1] != "." && grid[x][y + 1] != "S" && grid[x][y + 1][0] != "P")))
                 return false
@@ -521,10 +523,11 @@ export function moveRight(room, id) {
     for (let i in room.players) {
         if (room.players[i].loose)
             continue;
-        if (room.players[i].socketID == id && okForMoveRight(room.players[i].grid)) {
+        if (room.players[i].socketID == id && okForMoveRight(room.players[i].grid, room)) {
             let x = 0
-            while (x < 20) {
-                let y = 9
+            let compar = room.rules[1] ? 12 : 20
+            while (x < compar) {
+                let y = room.rules[1] ? 7 : 9
                 while (y >= 0) {
                     if (room.players[i].grid[x][y] && room.players[i].grid[x][y][0] == "P") {
                         room.players[i].grid[x][y + 1] = room.players[i].grid[x][y]
@@ -541,32 +544,50 @@ export function moveRight(room, id) {
     return (room)
 }
 
-
 export function resetParty(room) {
+
+    let smallBoard = [[".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."]]
+
+    let extandBoard = [[".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", ".", ".", "."]]
+
+
+
+
     for (let i in room.players) {
         room.players[i].loose = false
         room.players[i].spec = false
         room.players[i].score = 0
-        room.players[i].grid = [[".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."]]
+        room.players[i].grid = room.rules[1] ? smallBoard : extandBoard
     }
     return room
 }
