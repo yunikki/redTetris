@@ -42,12 +42,11 @@ var initEngine = function (io) {
         console.log("Socket connected: " + socket.id);
         socket.on('action', function (action) {
             console.log(action.type);
-            if (action.type === 'server/piecesSolo') {
-                socket.emit('action', { type: 'newPiece', piece: classPieces_1.getPieces() });
-            }
             if (action.type === 'server/creatRoom') {
                 rooms_array = Game_2.joinGame(action.roomName, action.playerName, action.socketID, rooms_array, action.priv);
                 var room = Game_2.getGame(action.playerName, rooms_array);
+                if (!room)
+                    return (false);
                 socket.join(room.name);
                 socket.emit('action', { type: 'joinRoom', room: room, master: 2 });
                 socket.broadcast.emit('action', { type: 'joinRoom_', room: room, master: 2 });
@@ -59,6 +58,8 @@ var initEngine = function (io) {
             }
             if (action.type == 'server/removePlayerFromRoom') {
                 var room = Game_2.getGame(action.playerName, rooms_array);
+                if (!room)
+                    return (false);
                 if (room)
                     socket.leave(room.name);
                 var removedPlayer = Game_2.removePlayer(action.playerName, "", rooms_array);
@@ -80,6 +81,8 @@ var initEngine = function (io) {
             }
             if (action.type == 'server/keyDown') {
                 var room = Game_2.getGame(action.name, rooms_array);
+                if (!room)
+                    return (false);
                 room = classPieces_1.featherDrop(room, socket.id);
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
                 socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
@@ -91,6 +94,8 @@ var initEngine = function (io) {
             }
             if (action.type == 'server/keySpace') {
                 var room = Game_2.getGame(action.name, rooms_array);
+                if (!room)
+                    return (false);
                 room = classPieces_1.floorPiece(room, socket.id);
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
                 socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
@@ -102,6 +107,8 @@ var initEngine = function (io) {
             }
             if (action.type == 'server/keyleft') {
                 var room = Game_2.getGame(action.name, rooms_array);
+                if (!room)
+                    return (false);
                 room = classPieces_1.moveLeft(room, socket.id);
                 Game_2.updateRoomArray(room, rooms_array);
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
@@ -113,6 +120,8 @@ var initEngine = function (io) {
             }
             if (action.type == 'server/keyRight') {
                 var room = Game_2.getGame(action.name, rooms_array);
+                if (!room)
+                    return (false);
                 room = classPieces_1.moveRight(room, socket.id);
                 Game_2.updateRoomArray(room, rooms_array);
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
@@ -124,6 +133,8 @@ var initEngine = function (io) {
             }
             if (action.type == 'server/gameStart') {
                 var room = Game_2.getGame(action.playerName, rooms_array);
+                if (!room)
+                    return (false);
                 var socketRoom = Game_2.getGameWithNameRoom(room.name, rooms_array);
                 var new_room = [];
                 socketRoom.Pieces.push(new classPieces_1.pieces());
@@ -139,6 +150,8 @@ var initEngine = function (io) {
             }
             if (action.type == 'server/boucle') {
                 var room = Game_2.getGame(action.name, rooms_array);
+                if (!room)
+                    return (false);
                 room = classPieces_1.fall_piece(room, action.id);
                 Game_2.updateRoomArray(room, rooms_array);
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
@@ -150,6 +163,8 @@ var initEngine = function (io) {
             }
             if (action.type == "server/keyUp") {
                 var room = Game_2.getGame(action.name, rooms_array);
+                if (!room)
+                    return (false);
                 room = keyUp_1.keyUp(room, socket.id);
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
                 socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });

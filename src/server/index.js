@@ -47,12 +47,11 @@ const initEngine = io => {
         console.log("Socket connected: " + socket.id)
         socket.on('action', (action) => {
             console.log(action.type)
-            if (action.type === 'server/piecesSolo') {
-                socket.emit('action', { type: 'newPiece', piece: getPieces() })
-            }
             if (action.type === 'server/creatRoom') {
                 rooms_array = joinGame(action.roomName, action.playerName, action.socketID, rooms_array, action.priv);
                 let room = getGame(action.playerName, rooms_array)
+                if (!room)
+                    return (false)
                 socket.join(room.name)
 
                 socket.emit('action', { type: 'joinRoom', room: room, master: 2 })
@@ -65,6 +64,8 @@ const initEngine = io => {
             }
             if (action.type == 'server/removePlayerFromRoom') {
                 let room = getGame(action.playerName, rooms_array)
+                if (!room)
+                    return (false)
                 if (room)
                     socket.leave(room.name)
                 let removedPlayer = removePlayer(action.playerName, "", rooms_array);
@@ -87,6 +88,8 @@ const initEngine = io => {
 
             if (action.type == 'server/keyDown') {
                 let room = getGame(action.name, rooms_array);
+                if (!room)
+                    return (false)
                 room = featherDrop(room, socket.id)
 
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
@@ -99,6 +102,8 @@ const initEngine = io => {
             }
             if (action.type == 'server/keySpace') {
                 let room = getGame(action.name, rooms_array);
+                if (!room)
+                    return (false)
                 room = floorPiece(room, socket.id)
 
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
@@ -111,6 +116,8 @@ const initEngine = io => {
             }
             if (action.type == 'server/keyleft') {
                 let room = getGame(action.name, rooms_array);
+                if (!room)
+                    return (false)
                 room = moveLeft(room, socket.id)
                 updateRoomArray(room, rooms_array)
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
@@ -122,6 +129,8 @@ const initEngine = io => {
             }
             if (action.type == 'server/keyRight') {
                 let room = getGame(action.name, rooms_array);
+                if (!room)
+                    return (false)
                 room = moveRight(room, socket.id)
                 updateRoomArray(room, rooms_array)
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
@@ -133,6 +142,8 @@ const initEngine = io => {
             }
             if (action.type == 'server/gameStart') {
                 let room = getGame(action.playerName, rooms_array);
+                if (!room)
+                    return (false)
                 let socketRoom = getGameWithNameRoom(room.name, rooms_array)
                 let new_room = []
                 socketRoom.Pieces.push(new pieces())
@@ -148,6 +159,8 @@ const initEngine = io => {
             }
             if (action.type == 'server/boucle') {
                 let room = getGame(action.name, rooms_array);
+                if (!room)
+                    return (false)
                 room = fall_piece(room, action.id)
                 updateRoomArray(room, rooms_array)
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
@@ -159,6 +172,8 @@ const initEngine = io => {
             }
             if (action.type == "server/keyUp") {
                 let room = getGame(action.name, rooms_array);
+                if (!room)
+                    return (false)
                 room = keyUp(room, socket.id)
 
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room })
