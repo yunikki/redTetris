@@ -80,7 +80,7 @@ function T_Rotate(grid, t_info, max_x, max_y) {
     if (t_info[0] == '###.' && t_info[1] == '.#..') {
         console.log("T bas");
         if (rot_x > 0) {
-            if (grid[rot_x - 1][rot_y] == '.') {
+            if (grid[rot_x - 1][rot_y] == '.' || grid[rot_x - 1][rot_y] == 'S') {
                 console.log("Place dispo");
                 grid[rot_x - 1][rot_y] = 'PT';
                 grid[rot_x][rot_y + 1] = '.';
@@ -89,7 +89,7 @@ function T_Rotate(grid, t_info, max_x, max_y) {
     }
     else if (t_info[0] == '.#..' && t_info[1] == '###.') {
         if (rot_x < max_x - 1) {
-            if (grid[rot_x + 1][rot_y] == '.') {
+            if (grid[rot_x + 1][rot_y] == '.' || grid[rot_x + 1][rot_y] == 'S') {
                 grid[rot_x + 1][rot_y] = 'PT';
                 grid[rot_x][rot_y - 1] = '.';
             }
@@ -97,7 +97,7 @@ function T_Rotate(grid, t_info, max_x, max_y) {
     }
     else if (t_info[0] == '#...' && t_info[1] == '##..' && t_info[2] == '#...') {
         if (rot_y > 0) {
-            if (grid[rot_x][rot_y - 1] == '.') {
+            if (grid[rot_x][rot_y - 1] == '.' || grid[rot_x][rot_y - 1] == 'S') {
                 grid[rot_x][rot_y - 1] = 'PT';
                 grid[rot_x - 1][rot_y] = '.';
             }
@@ -105,7 +105,7 @@ function T_Rotate(grid, t_info, max_x, max_y) {
     }
     else {
         if (rot_y < max_y - 1) {
-            if (grid[rot_x][rot_y + 1] == '.') {
+            if (grid[rot_x][rot_y + 1] == '.' || grid[rot_x][rot_y + 1] == 'S') {
                 grid[rot_x][rot_y + 1] = 'PT';
                 grid[rot_x + 1][rot_y] = '.';
             }
@@ -118,7 +118,9 @@ function L_Rotate(grid, L_info, max_x, max_y) {
     var rot_y = L_info[4][1];
     if (L_info[0] == '###.' && L_info[1] == '#...') {
         if (rot_x < max_x - 1 && rot_x > 0) {
-            if (grid[rot_x + 1][rot_y] == '.' && grid[rot_x - 1][rot_y] == '.' && grid[rot_x - 1][rot_y - 1] == '.') {
+            if ((grid[rot_x + 1][rot_y] == '.' || grid[rot_x + 1][rot_y] == 'S')
+                && (grid[rot_x - 1][rot_y] == '.' || grid[rot_x - 1][rot_y] == 'S')
+                && (grid[rot_x - 1][rot_y - 1] == '.' || grid[rot_x - 1][rot_y - 1] == 'S')) {
                 grid[rot_x + 1][rot_y] = 'PL';
                 grid[rot_x - 1][rot_y] = 'PL';
                 grid[rot_x - 1][rot_y - 1] = 'PL';
@@ -130,7 +132,9 @@ function L_Rotate(grid, L_info, max_x, max_y) {
     }
     else if (L_info[0] == '##..' && L_info[1] == '.#..' && L_info[2] == '.#..') {
         if (rot_y < max_y - 1 && rot_x > 0) {
-            if (grid[rot_x][rot_y - 1] == '.' && grid[rot_x][rot_y + 1] == '.' && grid[rot_x - 1][rot_y + 1] == '.') {
+            if ((grid[rot_x][rot_y - 1] == '.' || grid[rot_x][rot_y - 1] == 'S')
+                && (grid[rot_x][rot_y + 1] == '.' || grid[rot_x][rot_y + 1] == 'S')
+                && (grid[rot_x - 1][rot_y + 1] == '.' || grid[rot_x - 1][rot_y + 1] == 'S')) {
                 grid[rot_x][rot_y - 1] = 'PL';
                 grid[rot_x][rot_y + 1] = 'PL';
                 grid[rot_x - 1][rot_y + 1] = 'PL';
@@ -142,7 +146,9 @@ function L_Rotate(grid, L_info, max_x, max_y) {
     }
     else if (L_info[0] == '#...' && L_info[1] == '#...' && L_info[2] == '##..') {
         if (rot_y > 0 && rot_y < max_y - 1) {
-            if (grid[rot_x][rot_y + 1] == '.' && grid[rot_x][rot_y - 1] == '.' && grid[rot_x + 1][rot_y - 1] == '.') {
+            if ((grid[rot_x][rot_y + 1] == '.' || grid[rot_x][rot_y + 1] == 'S')
+                && (grid[rot_x][rot_y - 1] == '.' || grid[rot_x][rot_y - 1] == 'S')
+                && (grid[rot_x + 1][rot_y - 1] == '.' || grid[rot_x + 1][rot_y - 1] == 'S')) {
                 grid[rot_x][rot_y + 1] = 'PL';
                 grid[rot_x][rot_y - 1] = 'PL';
                 grid[rot_x + 1][rot_y - 1] = 'PL';
@@ -154,7 +160,9 @@ function L_Rotate(grid, L_info, max_x, max_y) {
     }
     else {
         if (rot_y < max_y - 1 && rot_x > 0) {
-            if (grid[rot_x - 1][rot_y] == '.' && grid[rot_x + 1][rot_y] == '.' && grid[rot_x + 1][rot_y + 1] == '.') {
+            if ((grid[rot_x - 1][rot_y] == '.' || grid[rot_x - 1][rot_y] == 'S')
+                && (grid[rot_x + 1][rot_y] == '.' || grid[rot_x + 1][rot_y] == 'S')
+                && (grid[rot_x + 1][rot_y + 1] == '.' || grid[rot_x + 1][rot_y + 1] == 'S')) {
                 grid[rot_x - 1][rot_y] = 'PL';
                 grid[rot_x + 1][rot_y] = 'PL';
                 grid[rot_x + 1][rot_y + 1] = 'PL';
@@ -170,7 +178,9 @@ function l_rotate(grid, l_info, max_x, max_y) {
     var rot_y = l_info[4][1];
     if (l_info[0] == '###.' && l_info[1] == '..#.') {
         if (rot_x > 0) {
-            if (grid[rot_x - 1][rot_y] == '.' && grid[rot_x + 1][rot_y] == '.' && grid[rot_x + 1][rot_y - 1] == '.') {
+            if ((grid[rot_x - 1][rot_y] == '.' || grid[rot_x - 1][rot_y] == 'S')
+                && (grid[rot_x + 1][rot_y] == '.' || grid[rot_x + 1][rot_y] == 'S')
+                && (grid[rot_x + 1][rot_y - 1] == '.' || grid[rot_x + 1][rot_y - 1] == 'S')) {
                 grid[rot_x - 1][rot_y] = 'Pl';
                 grid[rot_x + 1][rot_y] = 'Pl';
                 grid[rot_x + 1][rot_y - 1] = 'Pl';
@@ -182,7 +192,9 @@ function l_rotate(grid, l_info, max_x, max_y) {
     }
     else if (l_info[0] == '##..' && l_info[1] == '#...' && l_info[2] == '#...') {
         if (rot_y > 0) {
-            if (grid[rot_x][rot_y - 1] == '.' && grid[rot_x][rot_y + 1] == '.' && grid[rot_x + 1][rot_y + 1] == '.') {
+            if ((grid[rot_x][rot_y - 1] == '.' || grid[rot_x][rot_y - 1] == 'S')
+                && (grid[rot_x][rot_y + 1] == '.' || grid[rot_x][rot_y + 1] == 'S')
+                && (grid[rot_x + 1][rot_y + 1] == '.' || grid[rot_x + 1][rot_y + 1] == 'S')) {
                 grid[rot_x][rot_y - 1] = 'Pl';
                 grid[rot_x][rot_y + 1] = 'Pl';
                 grid[rot_x + 1][rot_y + 1] = 'Pl';
@@ -194,7 +206,9 @@ function l_rotate(grid, l_info, max_x, max_y) {
     }
     else if (l_info[0] == '.#..' && l_info[1] == '.#..' && l_info[2] == '##..') {
         if (rot_y < max_y - 1) {
-            if (grid[rot_x][rot_y + 1] == '.' && grid[rot_x][rot_y - 1] == '.' && grid[rot_x - 1][rot_y - 1] == '.') {
+            if ((grid[rot_x][rot_y + 1] == '.' || grid[rot_x][rot_y + 1] == 'S')
+                && (grid[rot_x][rot_y - 1] == '.' || grid[rot_x][rot_y - 1] == 'S')
+                && (grid[rot_x - 1][rot_y - 1] == '.' || grid[rot_x - 1][rot_y - 1] == 'S')) {
                 grid[rot_x][rot_y + 1] = 'Pl';
                 grid[rot_x][rot_y - 1] = 'Pl';
                 grid[rot_x - 1][rot_y - 1] = 'Pl';
@@ -206,7 +220,9 @@ function l_rotate(grid, l_info, max_x, max_y) {
     }
     else {
         if (rot_x < max_x - 1) {
-            if (grid[rot_x + 1][rot_y] == '.' && grid[rot_x - 1][rot_y] == '.' && grid[rot_x - 1][rot_y + 1]) {
+            if ((grid[rot_x + 1][rot_y] == '.' || grid[rot_x + 1][rot_y] == 'S')
+                && (grid[rot_x - 1][rot_y] == '.' || grid[rot_x - 1][rot_y] == 'S')
+                && (grid[rot_x - 1][rot_y + 1] == "." || grid[rot_x - 1][rot_y + 1] == "S")) {
                 grid[rot_x + 1][rot_y] = 'Pl';
                 grid[rot_x - 1][rot_y] = 'Pl';
                 grid[rot_x - 1][rot_y + 1] = 'Pl';
@@ -222,7 +238,8 @@ function Z_rotate(grid, Z_info, max_x, max_y) {
     var rot_y = Z_info[4][1];
     if (Z_info[0] == '##..' && Z_info[1] == ".##.") {
         if (rot_x < max_x - 1) {
-            if (grid[rot_x + 1][rot_y] == '.' && grid[rot_x - 1][rot_y + 1] == '.') {
+            if ((grid[rot_x + 1][rot_y] == '.' || grid[rot_x + 1][rot_y] == 'S')
+                && (grid[rot_x - 1][rot_y + 1] == '.' || grid[rot_x - 1][rot_y + 1] == 'S')) {
                 grid[rot_x + 1][rot_y] = 'PZ';
                 grid[rot_x - 1][rot_y + 1] = 'PZ';
                 grid[rot_x - 1][rot_y] = '.';
@@ -232,7 +249,8 @@ function Z_rotate(grid, Z_info, max_x, max_y) {
     }
     else {
         if (rot_y > 0) {
-            if (grid[rot_x - 1][rot_y] == '.' && grid[rot_x - 1][rot_y - 1] == '.') {
+            if ((grid[rot_x - 1][rot_y] == '.' || grid[rot_x - 1][rot_y] == 'S')
+                && (grid[rot_x - 1][rot_y - 1] == '.' || grid[rot_x - 1][rot_y - 1] == 'S')) {
                 grid[rot_x - 1][rot_y] = 'PZ';
                 grid[rot_x - 1][rot_y - 1] = 'PZ';
                 grid[rot_x + 1][rot_y] = '.';
@@ -246,7 +264,8 @@ function z_rotate(grid, z_info, max_x, max_y) {
     var rot_y = z_info[4][1];
     if (z_info[0] == '.##.' && z_info[1] == '##..') {
         if (rot_x < max_x - 1) {
-            if (grid[rot_x - 1][rot_y - 1] == '.' && grid[rot_x + 1][rot_y] == '.') {
+            if ((grid[rot_x - 1][rot_y - 1] == '.' || grid[rot_x - 1][rot_y - 1] == 'S')
+                && (grid[rot_x + 1][rot_y] == '.' || grid[rot_x + 1][rot_y] == 'S')) {
                 grid[rot_x - 1][rot_y - 1] = 'Pz';
                 grid[rot_x + 1][rot_y] = 'Pz';
                 grid[rot_x - 1][rot_y] = '.';
@@ -255,7 +274,8 @@ function z_rotate(grid, z_info, max_x, max_y) {
         }
     }
     else {
-        if (grid[rot_x - 1][rot_y] == '.' && grid[rot_x - 1][rot_y + 1] == '.') {
+        if ((grid[rot_x - 1][rot_y] == '.' || grid[rot_x - 1][rot_y] == 'S')
+            && (grid[rot_x - 1][rot_y + 1] == '.' || grid[rot_x - 1][rot_y + 1] == 'S')) {
             grid[rot_x - 1][rot_y] = 'Pz';
             grid[rot_x - 1][rot_y + 1] = 'Pz';
             grid[rot_x - 1][rot_y - 1] = '.';
@@ -268,7 +288,9 @@ function B_rotate(grid, B_info, max_x, max_y) {
     var rot_y = B_info[4][1];
     if (B_info[0] == '####') {
         if (rot_x > 1 && rot_x < max_x - 1) {
-            if (grid[rot_x + 1][rot_y] == '.' && grid[rot_x - 1][rot_y] == '.' && grid[rot_x - 2][rot_y] == '.') {
+            if ((grid[rot_x + 1][rot_y] == '.' || grid[rot_x + 1][rot_y] == '.')
+                && (grid[rot_x - 1][rot_y] == '.' || grid[rot_x - 1][rot_y] == '.')
+                && (grid[rot_x - 2][rot_y] == '.' || grid[rot_x - 2][rot_y] == '.')) {
                 grid[rot_x + 1][rot_y] = 'PB';
                 grid[rot_x - 1][rot_y] = 'PB';
                 grid[rot_x - 2][rot_y] = 'PB';
@@ -280,7 +302,9 @@ function B_rotate(grid, B_info, max_x, max_y) {
     }
     else {
         if (rot_y > 0 && rot_y < max_y - 1) {
-            if (grid[rot_x][rot_y - 1] == '.' && grid[rot_x][rot_y + 1] == '.' && grid[rot_x][rot_y + 2] == '.') {
+            if ((grid[rot_x][rot_y - 1] == '.' || grid[rot_x][rot_y - 1] == 'S')
+                && (grid[rot_x][rot_y + 1] == '.' || grid[rot_x][rot_y + 1] == 'S')
+                && (grid[rot_x][rot_y + 2] == '.' || grid[rot_x][rot_y + 2] == '.')) {
                 grid[rot_x + 1][rot_y] = '.';
                 grid[rot_x - 1][rot_y] = '.';
                 grid[rot_x - 2][rot_y] = '.';
@@ -297,7 +321,7 @@ function getPos(grid, max_x, max_y) {
     while (x < max_x) {
         y = 0;
         while (y < max_y) {
-            if (grid[x][y].length != 1 && grid[x][y][0] == 'P')
+            if (grid[x][y].length != 1 && (grid[x][y][0] == 'P' || grid[x][y][0] == 'S'))
                 return ([x, y]);
             y += 1;
         }
@@ -306,6 +330,10 @@ function getPos(grid, max_x, max_y) {
 }
 function keyUp(room, socketID) {
     var grid = room.players[0].grid;
+    for (var i in room.players) {
+        if (room.players[i].socketID == socketID)
+            grid = room.players[i].grid;
+    }
     console.log(grid);
     var max_x = room.rules[1] ? 12 : 20;
     var max_y = room.rules[1] ? 8 : 10;
