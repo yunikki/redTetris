@@ -83,10 +83,8 @@ function T_Rotate(grid, t_info, max_x, max_y) {
     let rot_x = t_info[4][0]
     let rot_y = t_info[4][1]
     if (t_info[0] == '###.' && t_info[1] == '.#..') {
-        console.log("T bas")
         if (rot_x > 0) {
             if (grid[rot_x - 1][rot_y] == '.' || grid[rot_x - 1][rot_y] == 'S') {
-                console.log("Place dispo")
                 grid[rot_x - 1][rot_y] = 'PT'
                 grid[rot_x][rot_y + 1] = '.'
             }
@@ -346,7 +344,6 @@ export function keyUp(room, socketID) {
         if (room.players[i].socketID == socketID)
             grid = room.players[i].grid;
     }
-    console.log(grid)
     let max_x = room.rules[1] ? 12 : 20
     let max_y = room.rules[1] ? 8 : 10
     let coor = getPos(grid, max_x, max_y);
