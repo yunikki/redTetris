@@ -278,6 +278,7 @@ function creatSpeactre(room) {
     }
     return room;
 }
+exports.creatSpeactre = creatSpeactre;
 function fall_piece(room, id) {
     var i = 0;
     for (i in room.players) {

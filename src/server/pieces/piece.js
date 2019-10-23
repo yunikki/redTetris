@@ -145,9 +145,9 @@ function tetriL8() {
 function tetriZ() {
     return ([
         "....",
-        ".Z..",
+        "..Z.",
         ".ZZ.",
-        "..Z."
+        ".Z.."
     ])
 }
 
@@ -172,9 +172,9 @@ function tetriZ3() {
 function tetriZ4() {
     return ([
         "....",
-        ".z..",
+        "z...",
         "zz..",
-        "z..."
+        ".z.."
     ])
 }
 

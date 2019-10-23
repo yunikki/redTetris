@@ -236,7 +236,7 @@ function okForFall(grid, room) {
     return ret
 }
 
-function creatSpeactre(room) {
+export function creatSpeactre(room) {
     let c = "P"
     for (let i in room.players) {
         let save = []

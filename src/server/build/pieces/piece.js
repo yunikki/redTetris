@@ -131,9 +131,9 @@ function tetriL8() {
 function tetriZ() {
     return ([
         "....",
-        ".Z..",
+        "..Z.",
         ".ZZ.",
-        "..Z."
+        ".Z.."
     ]);
 }
 function tetriZ2() {
@@ -155,9 +155,9 @@ function tetriZ3() {
 function tetriZ4() {
     return ([
         "....",
-        ".z..",
+        "z...",
         "zz..",
-        "z..."
+        ".z.."
     ]);
 }
 console.log('lol');
