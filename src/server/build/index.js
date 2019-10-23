@@ -58,14 +58,12 @@ var initEngine = function (io) {
             }
             if (action.type == 'server/removePlayerFromRoom') {
                 var room = Game_2.getGame(action.playerName, rooms_array);
+                Game_2.removePlayer(action.playerName, "", rooms_array);
                 if (!room)
                     return (false);
-                if (room)
-                    socket.leave(room.name);
-                var removedPlayer = Game_2.removePlayer(action.playerName, "", rooms_array);
+                socket.leave(room.name);
                 socket.emit('action', { type: 'joinRoom', room: undefined, master: false });
-                if (room)
-                    emit_to_room(room, io);
+                emit_to_room(room, io);
                 if (isEndGame(room)) {
                     room = resetRoomSpec(room);
                     io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room });
@@ -177,9 +175,9 @@ var initEngine = function (io) {
         });
         socket.on('disconnect', function () {
             var room = Game_2.getGameWithId(socket.id, rooms_array);
+            var player = Game_2.removePlayer("", socket.id, rooms_array);
             if (room)
                 socket.leave(room.name);
-            var player = Game_2.removePlayer("", socket.id, rooms_array);
             if (room && isEndGame(room)) {
                 room = resetRoomSpec(room);
                 io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room });

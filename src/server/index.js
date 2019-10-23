@@ -64,14 +64,12 @@ const initEngine = io => {
             }
             if (action.type == 'server/removePlayerFromRoom') {
                 let room = getGame(action.playerName, rooms_array)
+                removePlayer(action.playerName, "", rooms_array);
                 if (!room)
                     return (false)
-                if (room)
-                    socket.leave(room.name)
-                let removedPlayer = removePlayer(action.playerName, "", rooms_array);
+                socket.leave(room.name)
                 socket.emit('action', { type: 'joinRoom', room: undefined, master: false })
-                if (room)
-                    emit_to_room(room, io)
+                emit_to_room(room, io)
                 if (isEndGame(room)) {
                     room = resetRoomSpec(room)
                     io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room })
@@ -188,9 +186,9 @@ const initEngine = io => {
 
         socket.on('disconnect', function () {
             let room = getGameWithId(socket.id, rooms_array)
+            let player = removePlayer("", socket.id, rooms_array)
             if (room)
                 socket.leave(room.name)
-            let player = removePlayer("", socket.id, rooms_array)
             if (room && isEndGame(room)) {
                 room = resetRoomSpec(room)
                 io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room })
