@@ -1,7 +1,5 @@
-import { okForFall } from "./okForFall"
 import { creatSpeactre } from "./creatSpectre"
-import { pieces } from "./classPieces"
-import { setNewPieceInGrid } from "./setNewPiece"
+import { falling_piece, end_fall, okForFall } from "./lib"
 
 export function fall_piece(room, id) {
     let i = 0
@@ -11,53 +9,12 @@ export function fall_piece(room, id) {
                 return (room);
             if (okForFall(room.players[i].grid, room)) {
                 room.players[i].hit = false
-                let x = room.rules[1] ? 11 : 19
-                while (x >= 0) {
-                    let y = room.rules[1] ? 7 : 9
-                    while (y >= 0) {
-                        if (room.players[i].grid[x + 1] && room.players[i].grid[x][y][0] == "P") {
-                            room.players[i].grid[x + 1][y] = room.players[i].grid[x][y]
-                            room.players[i].grid[x][y] = "."
-
-                        }
-                        y -= 1
-                    }
-                    x -= 1
-                }
+                falling_piece(room, i)
             }
-            else if (room.players[i].hit == false) {
+            else if (room.players[i].hit == false)
                 room.players[i].hit = true;
-            }
-            else {
-                room.players[i].hit = false
-                let x = room.rules[1] ? 11 : 19
-                while (x >= 0) {
-                    let y = room.rules[1] ? 7 : 9
-                    while (y >= 0) {
-                        if (room.players[i].grid[x][y][0] == "P") {
-                            room.players[i].grid[x][y] = room.players[i].grid[x][y].substring(1, 2)
-
-                        }
-                        y -= 1
-                    }
-                    x -= 1
-                }
-                room.players[i].currentPiece += 1
-                if (room.Pieces[room.players[i].currentPiece + 1]) {
-                    let new_pices = room.Pieces[room.players[i].currentPiece].piece
-                    room = setNewPieceInGrid(room, i, new_pices)
-                    room = creatSpeactre(room)
-                }
-                else {
-                    room.Pieces.push(new pieces())
-                    let new_pices = room.Pieces[room.players[i].currentPiece].piece
-                    room = setNewPieceInGrid(room, i, new_pices)
-                    room = creatSpeactre(room)
-                }
-
-
-
-            }
+            else
+                room = end_fall(room, i)
         }
     }
     room = creatSpeactre(room)

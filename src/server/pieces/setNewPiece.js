@@ -26,10 +26,6 @@ function randColor(p) {
             return ('PZ');
         case "z":
             return ('Pz');
-
-
-
-
         default:
             return ('PV');
             break;
@@ -77,11 +73,9 @@ export function setNewPieceInGrid(room, i, piece) {
             }
             else if (p[l][l_piece] != ".")
                 room.players[i].grid[l][l_grid] = randColor(p[l][l_piece])
-
             l_grid += 1;
             l_piece += 1
         }
     }
-
     return room
 }
