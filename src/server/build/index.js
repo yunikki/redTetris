@@ -16,6 +16,7 @@ var keyLeft_1 = require("./pieces/keyLeft");
 var resetParty_1 = require("./pieces/resetParty");
 var Game_2 = require("./game/Game");
 var keyUp_1 = require("./pieces/keyUp");
+var lib_1 = require("./pieces/lib");
 var logerror = debug_1.default('tetris:error'), loginfo = debug_1.default('tetris:info');
 var initApp = function (app, params, cb) {
     var host = params.host, port = params.port;
@@ -38,30 +39,6 @@ var initApp = function (app, params, cb) {
     });
 };
 var rooms_array = [];
-function updateRoomFoorAll(room, io) {
-    if (room)
-        for (var i in room.players) {
-            io.to(room.players[i].socketID).emit('action', { type: 'joinRoom', room: room, master: room.players[i].gameMaster });
-        }
-}
-function resetRoomSpec(room) {
-    room.status = "waiting";
-    room.Pieces = [];
-    for (var i in room.players) {
-        room.players[i].hit = false;
-        room.players[i].spec = false;
-        room.players[i].loose = false;
-        room.players[i].currentPiece = 0;
-    }
-    return room;
-}
-function isEndGame(room) {
-    for (var i in room.players) {
-        if (room.players[i].loose == false)
-            return false;
-    }
-    return true;
-}
 var initEngine = function (io) {
     io.on('connection', function (socket) {
         function key(f, action) {
@@ -72,8 +49,8 @@ var initEngine = function (io) {
             Game_2.updateRoomArray(room, rooms_array);
             io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
             socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
-            if (isEndGame(room)) {
-                room = resetRoomSpec(room);
+            if (lib_1.isEndGame(room)) {
+                room = lib_1.resetRoomSpec(room);
                 io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room });
             }
         }
@@ -101,9 +78,9 @@ var initEngine = function (io) {
                     return (false);
                 socket.leave(room.name);
                 socket.emit('action', { type: 'joinRoom', room: undefined, master: false });
-                updateRoomFoorAll(room, io);
-                if (isEndGame(room)) {
-                    room = resetRoomSpec(room);
+                lib_1.updateRoomFoorAll(room, io);
+                if (lib_1.isEndGame(room)) {
+                    room = lib_1.resetRoomSpec(room);
                     io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room });
                 }
                 socket.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
@@ -113,7 +90,7 @@ var initEngine = function (io) {
                 Game_2.GameChangeParam(action.val, action.id, action.name, rooms_array);
                 var room = Game_2.getGameWithNameRoom(action.name, rooms_array);
                 if (room)
-                    updateRoomFoorAll(room, io);
+                    lib_1.updateRoomFoorAll(room, io);
             }
             else if (action.type == 'server/gameStart') {
                 var room = Game_2.getGame(action.playerName, rooms_array);
@@ -154,13 +131,13 @@ var initEngine = function (io) {
         socket.on('disconnect', function () {
             var room = Game_2.getGameWithId(socket.id, rooms_array);
             var player = Game_2.removePlayer("", socket.id, rooms_array);
-            if (room && isEndGame(room)) {
-                room = resetRoomSpec(room);
+            if (room && lib_1.isEndGame(room)) {
+                room = lib_1.resetRoomSpec(room);
                 io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room });
             }
             if (room) {
                 socket.leave(room.name);
-                updateRoomFoorAll(room, io);
+                lib_1.updateRoomFoorAll(room, io);
             }
             socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
         });

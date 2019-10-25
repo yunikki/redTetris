@@ -73,7 +73,7 @@ function reducer(state = initialState, action) {
             }
             return {
                 ...state,
-                konami: state.master || action.room.rules[4],
+                konami: (state.master && state.konami) || action.room.rules[4],
                 loose: player.loose,
                 piece: getPieceWithRoom(action.room, state),
                 grid: getGridWithRoom(action.room, state),

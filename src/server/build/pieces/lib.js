@@ -32,12 +32,12 @@ function end_fall(room, i) {
         x -= 1;
     }
     room.players[i].currentPiece += 1;
-    if (room.Pieces[room.players[i].currentPiece + 1]) {
+    if (room.Pieces[room.players[i].currentPiece] && room.Pieces[room.players[i].currentPiece + 1]) {
         var new_pices = room.Pieces[room.players[i].currentPiece].piece;
         room = setNewPiece_1.setNewPieceInGrid(room, i, new_pices);
         room = creatSpectre_1.creatSpeactre(room);
     }
-    else {
+    else if (room.Pieces[room.players[i].currentPiece]) {
         room.Pieces.push(new classPieces_1.pieces());
         var new_pices = room.Pieces[room.players[i].currentPiece].piece;
         room = setNewPiece_1.setNewPieceInGrid(room, i, new_pices);
@@ -85,3 +85,30 @@ function okForMoveLateral(grid, room, nb) {
     return ret;
 }
 exports.okForMoveLateral = okForMoveLateral;
+function updateRoomFoorAll(room, io) {
+    if (room)
+        for (var i in room.players) {
+            io.to(room.players[i].socketID).emit('action', { type: 'joinRoom', room: room, master: room.players[i].gameMaster });
+        }
+}
+exports.updateRoomFoorAll = updateRoomFoorAll;
+function resetRoomSpec(room) {
+    room.status = "waiting";
+    room.Pieces = [];
+    for (var i in room.players) {
+        room.players[i].hit = false;
+        room.players[i].spec = false;
+        room.players[i].loose = false;
+        room.players[i].currentPiece = 0;
+    }
+    return room;
+}
+exports.resetRoomSpec = resetRoomSpec;
+function isEndGame(room) {
+    for (var i in room.players) {
+        if (room.players[i].loose == false)
+            return false;
+    }
+    return true;
+}
+exports.isEndGame = isEndGame;

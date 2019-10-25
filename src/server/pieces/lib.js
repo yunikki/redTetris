@@ -32,12 +32,12 @@ export function end_fall(room, i) {
         x -= 1
     }
     room.players[i].currentPiece += 1
-    if (room.Pieces[room.players[i].currentPiece + 1]) {
+    if (room.Pieces[room.players[i].currentPiece] && room.Pieces[room.players[i].currentPiece + 1]) {
         let new_pices = room.Pieces[room.players[i].currentPiece].piece
         room = setNewPieceInGrid(room, i, new_pices)
         room = creatSpeactre(room)
     }
-    else {
+    else if (room.Pieces[room.players[i].currentPiece]) {
         room.Pieces.push(new pieces())
         let new_pices = room.Pieces[room.players[i].currentPiece].piece
         room = setNewPieceInGrid(room, i, new_pices)
@@ -84,4 +84,32 @@ export function okForMoveLateral(grid, room, nb) {
         x -= 1
     }
     return ret
+}
+
+
+export function updateRoomFoorAll(room, io) {
+    if (room)
+        for (var i in room.players) {
+            io.to(room.players[i].socketID).emit('action', { type: 'joinRoom', room: room, master: room.players[i].gameMaster })
+        }
+}
+
+export function resetRoomSpec(room) {
+    room.status = "waiting"
+    room.Pieces = []
+    for (let i in room.players) {
+        room.players[i].hit = false
+        room.players[i].spec = false
+        room.players[i].loose = false
+        room.players[i].currentPiece = 0
+    }
+    return room
+}
+
+export function isEndGame(room) {
+    for (let i in room.players) {
+        if (room.players[i].loose == false)
+            return false
+    }
+    return true
 }

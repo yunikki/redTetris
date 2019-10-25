@@ -5,7 +5,7 @@ export function moveRight(room, id) {
     for (let i in room.players) {
         if (room.players[i].loose)
             continue;
-        if (room.players[i].socketID == id && okForMoveLateral(room.players[i].grid, room, 1)) {
+        if (room.players[i].socketID == id && okForMoveLateral(room.players[i].grid, room, -1)) {
             let x = 0
             let compar = room.rules[1] ? 12 : 20
             while (x < compar) {

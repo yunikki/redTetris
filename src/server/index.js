@@ -11,7 +11,7 @@ import { moveLeft } from './pieces/keyLeft'
 import { resetParty } from './pieces/resetParty'
 import { joinGame, getGame, removePlayer, getGameWithId, GameChangeParam, getGameWithNameRoom, updateRoomArray } from './game/Game'
 import { keyUp } from "./pieces/keyUp"
-
+import { isEndGame, resetRoomSpec, updateRoomFoorAll } from "./pieces/lib"
 
 const logerror = debug('tetris:error')
     , loginfo = debug('tetris:info')
@@ -39,33 +39,6 @@ const initApp = (app, params, cb) => {
 }
 
 let rooms_array = [];
-
-function updateRoomFoorAll(room, io) {
-    if (room)
-        for (var i in room.players) {
-            io.to(room.players[i].socketID).emit('action', { type: 'joinRoom', room: room, master: room.players[i].gameMaster })
-        }
-}
-
-function resetRoomSpec(room) {
-    room.status = "waiting"
-    room.Pieces = []
-    for (let i in room.players) {
-        room.players[i].hit = false
-        room.players[i].spec = false
-        room.players[i].loose = false
-        room.players[i].currentPiece = 0
-    }
-    return room
-}
-
-function isEndGame(room) {
-    for (let i in room.players) {
-        if (room.players[i].loose == false)
-            return false
-    }
-    return true
-}
 
 const initEngine = io => {
 

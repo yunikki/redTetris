@@ -329,8 +329,12 @@ function getPos(grid, max_x, max_y) {
 function keyUp(room, socketID) {
     var grid = room.players[0].grid;
     for (var i in room.players) {
-        if (room.players[i].socketID == socketID)
+        if (room.players[i].socketID == socketID) {
             grid = room.players[i].grid;
+            if (room.players[i].loose)
+                return room;
+            break;
+        }
     }
     var max_x = room.rules[1] ? 12 : 20;
     var max_y = room.rules[1] ? 8 : 10;

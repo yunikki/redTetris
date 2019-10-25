@@ -6,7 +6,7 @@ function moveLeft(room, id) {
     for (var i in room.players) {
         if (room.players[i].loose)
             continue;
-        if (room.players[i].socketID == id && lib_1.okForMoveLateral(room.players[i].grid, room, -1)) {
+        if (room.players[i].socketID == id && lib_1.okForMoveLateral(room.players[i].grid, room, 1)) {
             var x = 0;
             var compar = room.rules[1] ? 12 : 20;
             while (x < compar) {
