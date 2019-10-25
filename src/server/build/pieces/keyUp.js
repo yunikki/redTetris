@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var classPieces_1 = require("./classPieces");
+var creatSpectre_1 = require("./creatSpectre");
 function getBarShape(grid, x, y, max_x, max_y) {
     var local_pos;
     if ((x > 0 && grid[x - 1][y][0] == 'P') || x < max_x && grid[x + 1][y][0] == 'P')
@@ -367,7 +367,7 @@ function keyUp(room, socketID) {
         default:
             console.log("Error, piece not found");
     }
-    room = classPieces_1.creatSpeactre(room);
+    room = creatSpectre_1.creatSpeactre(room);
     return room;
 }
 exports.keyUp = keyUp;

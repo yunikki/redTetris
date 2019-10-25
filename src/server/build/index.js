@@ -6,7 +6,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var fs_1 = __importDefault(require("fs"));
 var debug_1 = __importDefault(require("debug"));
 var classPieces_1 = require("./pieces/classPieces");
+var keySpace_1 = require("./pieces/keySpace");
+var setNewPiece_1 = require("./pieces/setNewPiece");
+var fallPiece_1 = require("./pieces/fallPiece");
 var Game_1 = require("./game/Game");
+var keyDown_1 = require("./pieces/keyDown");
+var keyRigth_1 = require("./pieces/keyRigth");
+var keyLeft_1 = require("./pieces/keyLeft");
+var resetParty_1 = require("./pieces/resetParty");
 var Game_2 = require("./game/Game");
 var keyUp_1 = require("./pieces/keyUp");
 var logerror = debug_1.default('tetris:error'), loginfo = debug_1.default('tetris:info');
@@ -81,7 +88,7 @@ var initEngine = function (io) {
                 var room = Game_2.getGame(action.name, rooms_array);
                 if (!room)
                     return (false);
-                room = classPieces_1.featherDrop(room, socket.id);
+                room = keyDown_1.featherDrop(room, socket.id);
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
                 socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
                 Game_2.updateRoomArray(room, rooms_array);
@@ -94,7 +101,7 @@ var initEngine = function (io) {
                 var room = Game_2.getGame(action.name, rooms_array);
                 if (!room)
                     return (false);
-                room = classPieces_1.floorPiece(room, socket.id);
+                room = keySpace_1.floorPiece(room, socket.id);
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
                 socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
                 Game_2.updateRoomArray(room, rooms_array);
@@ -107,7 +114,7 @@ var initEngine = function (io) {
                 var room = Game_2.getGame(action.name, rooms_array);
                 if (!room)
                     return (false);
-                room = classPieces_1.moveLeft(room, socket.id);
+                room = keyLeft_1.moveLeft(room, socket.id);
                 Game_2.updateRoomArray(room, rooms_array);
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
                 socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
@@ -120,7 +127,7 @@ var initEngine = function (io) {
                 var room = Game_2.getGame(action.name, rooms_array);
                 if (!room)
                     return (false);
-                room = classPieces_1.moveRight(room, socket.id);
+                room = keyRigth_1.moveRight(room, socket.id);
                 Game_2.updateRoomArray(room, rooms_array);
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
                 socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
@@ -139,8 +146,8 @@ var initEngine = function (io) {
                 socketRoom.Pieces.push(new classPieces_1.pieces());
                 if (!socketRoom)
                     return (undefined);
-                socketRoom = classPieces_1.resetParty(socketRoom);
-                socketRoom = classPieces_1.setNewPieceInGridForAll(socketRoom);
+                socketRoom = resetParty_1.resetParty(socketRoom);
+                socketRoom = setNewPiece_1.setNewPieceInGridForAll(socketRoom);
                 socketRoom.status = "runing";
                 Game_2.updateRoomArray(socketRoom, rooms_array);
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START_', room: socketRoom });
@@ -150,7 +157,7 @@ var initEngine = function (io) {
                 var room = Game_2.getGame(action.name, rooms_array);
                 if (!room)
                     return (false);
-                room = classPieces_1.fall_piece(room, action.id);
+                room = fallPiece_1.fall_piece(room, action.id);
                 Game_2.updateRoomArray(room, rooms_array);
                 io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
                 socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });

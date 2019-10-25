@@ -1,7 +1,14 @@
 import fs from 'fs'
 import debug from 'debug'
-import { resetParty, pieces, getPieces, setNewPieceInGridForAll, setNewPieceInGrid, fall_piece, floorPiece, featherDrop, moveLeft, moveRight } from './pieces/classPieces'
+import { pieces, getPieces, setNewPieceInGrid } from './pieces/classPieces'
+import { floorPiece } from "./pieces/keySpace"
+import { setNewPieceInGridForAll } from "./pieces/setNewPiece"
+import { fall_piece } from "./pieces/fallPiece"
 import { getSearchResult } from './game/Game'
+import { featherDrop } from './pieces/keyDown'
+import { moveRight } from './pieces/keyRigth'
+import { moveLeft } from './pieces/keyLeft'
+import { resetParty } from './pieces/resetParty'
 import { Player } from './player/Player'
 import { Game, joinGame, getGame, removePlayer, getGameWithId, GameChangeParam, getGameWithNameRoom, updateRoomArray } from './game/Game'
 import { keyUp } from "./pieces/keyUp"

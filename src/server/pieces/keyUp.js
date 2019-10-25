@@ -1,4 +1,4 @@
-import { creatSpeactre } from './classPieces'
+import { creatSpeactre } from "./creatSpectre"
 
 function getBarShape(grid, x, y, max_x, max_y) {
     let local_pos
