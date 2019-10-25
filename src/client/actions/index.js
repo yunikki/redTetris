@@ -9,6 +9,7 @@ export const CHARGE_LOBBY = 'CHARGE_LOBBY'
 export const SAVE_SEARCH = 'SAVE_SEARCH'
 export const NOT_MASTER = 'NOT_MASTER'
 export const DO_MASTER = 'DO_MASTER'
+export const SET_INTER = 'SET_INTER'
 
 export const dataChangeHome = () => {
     return {
@@ -62,7 +63,7 @@ export const saveResearch = (val) => {
 
 export const dataLoadInter = (inter) => {
     return {
-        type: "SET_INTER",
+        type: SET_INTER,
         data: inter
     }
 }

@@ -6,7 +6,7 @@ import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
 import App from './containers/app.js';
 import './index.css'
-import { keyTetris } from './actions/server'
+import { keyTetris } from './actions/key'
 // import { storeStateMiddleWare } from './middleware/storeStateMiddleWare'
 import reducer from './reducers'
 // import { alert } from './actions/alert'

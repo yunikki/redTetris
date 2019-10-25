@@ -30,8 +30,6 @@ function chooseColor(c, r) {
             return (r ? 'url("./assets/images/6.jpg")' : 'rgb(40, 235, 79)');
         case "z":
             return (r ? 'url("./assets/images/7.jpg")' : 'rgb(204, 8, 18)');
-
-
         case "S":
             return (r ? 'url("./assets/images/8.jpg")' : 'rgb(48, 47, 51)');
         case "b":

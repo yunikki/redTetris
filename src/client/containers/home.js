@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { chargePageSolo, inputYourName, inputYourNameRoom, chargeLobby, searchingRooms, saveSearch, strRandom } from '../components/action'
 import { dataChargeLobby, dataChangeInputName, dataTMaster, dataChangeInputNameRoom } from '../actions'
 import { dataCreateRoom, getRoomInfos, dataCreateRoomSolo, startGame } from '../actions/server'
+import { generique_dispatch_no_param } from "../components/action"
 
 function notChargeLobby() {
 }
@@ -63,7 +64,7 @@ const mapDispatchToProps = (dispatch) => {
         chargeLobby: (state) => {
             dispatch(dataTMaster())
             dispatch(dataCreateRoom(state))
-            dispatch(dataChargeLobby())
+            dispatch(generique_dispatch_no_param(dispatch, dataChargeLobby))
         },
         startSearch: (e) => {
             dispatch(dataChangeInputName(e.target.value))

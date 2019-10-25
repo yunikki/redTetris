@@ -2,8 +2,8 @@ import React from 'react'
 import SpectreSolo from './spectreSolo'
 import Makebord from '../components/makebord'
 import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } from "react-router-dom";
-import { dipatcherOnNewPiece, chargePageHome, chargeLobby } from "../components/action"
-import { removePlayerFromRoom, dataBoucle } from "../actions/server"
+import { generique_dispatch_no_param, chargePageHome, chargeLobby } from "../components/action"
+import { removePlayerFromRoom, dataBoucle, dataPiecesSolo } from "../actions/server"
 import { dataChangeHome, dataLoadInter, dataChargeLobby } from "../actions/"
 import MakeNewPiece from './makeMewPiece'
 import { connect } from 'react-redux';
@@ -45,17 +45,12 @@ function MakeOverlay({ golobby, goHome }) {
     }
 }
 
-function rien() {
-
-}
-
-
 function Solo({ onClickt, pageHome, state, boucle, golobby, goHome }) {
     var name = []
     let player = getPlayer(state.room, state)
     return (
         <Router>
-            <div id="container-party-solo" onLoad={state.spec ? rien() : () => boucle(state)}>
+            <div id="container-party-solo">
                 <div className="content-bord-solo">
                     <div id={state.room.rules[1] ? "minibord" : "bord"}>
                         <Makebord state={state} />
@@ -64,7 +59,7 @@ function Solo({ onClickt, pageHome, state, boucle, golobby, goHome }) {
                 </div>
                 <aside id="info-party-solo">
                     <div id="next-piece-container">
-                        <div id="solo-next-piece" onClick={onClickt}>
+                        <div id="solo-next-piece">
                             <MakeNewPiece piece={state.piece} />
                         </div>
                     </div>
@@ -93,22 +88,12 @@ const mapStateToProps = (state, ownProps) => ({
 //server/removePlayerFromRoom
 const mapDispatchToProps = (dispatch) => ({
     dispatch: dispatch,
-    onClickt: dipatcherOnNewPiece(dispatch),
     pageHome: (state) => {
         clearInterval(state.inter)
-        dispatch(dataChangeHome())
+        dispatch(generique_dispatch_no_param(dispatch, dataChangeHome))
         dispatch(removePlayerFromRoom(state))
-        console.log('ok', state)
     },
-    golobby: chargeLobby(dispatch),
-    goHome: chargePageHome(dispatch),
-    boucle: (state) => {
-        return
-        let inter = setInterval(() => {
-            dispatch(dataBoucle())
-        }, state.room.rules[0] ? 500 : 1000);
-        dispatch(dataLoadInter(inter))
-
-    }
+    golobby: generique_dispatch_no_param(dispatch, dataChargeLobby),
+    goHome: generique_dispatch_no_param(dispatch, dataChangeHome),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Solo)

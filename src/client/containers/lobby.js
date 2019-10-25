@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { chargePageSolo, chargePageHome } from '../components/action'
 import { OptionRoom, NameEnnemy } from '../components/optionRoom'
 import { removePlayerFromRoom, startGame } from '../actions/server'
+import { generique_dispatch_no_param } from "../components/action"
+import { dataChangeHome, dataChangeSolo, dataChangeInputName, dataChangeInputNameRoom, dataChargeLobby, saveResearch } from '../actions'
 
 
 function getGoodRoom(room, state) {
@@ -67,7 +69,7 @@ const mapDispatchToProps = (dispatch) => {
         pageSolo: chargePageSolo(dispatch),
         leaveLobby: (state) => {
             dispatch(removePlayerFromRoom(state))
-            dispatch(chargePageHome(dispatch))
+            dispatch(generique_dispatch_no_param(dispatch, dataChangeHome))
         }
     });
 }

@@ -1,15 +1,14 @@
 import React from 'react'
-import reducer from '../reducers'
-import { connect } from 'react-redux';
 import { dataChargeLobby, dataNotMaster } from '../actions'
 import { dataCreateRoom_bis } from '../actions/server'
-import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } from "react-router-dom";
+import { BrowserRouter as Router, Link } from "react-router-dom";
+import { generique_dispatch_no_param } from "./action"
 
 
 function join(state, dispatch, e) {
     dispatch(dataCreateRoom_bis(state, e.target.getAttribute('roomname')))
     dispatch(dataNotMaster(state, e.target.getAttribute('roomname')))
-    dispatch(dataChargeLobby())
+    dispatch(generique_dispatch_no_param(dispatch, dataChargeLobby))
 }
 
 function StatusRoom({ state, dispatch, i }) {
