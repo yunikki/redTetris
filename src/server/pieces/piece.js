@@ -1,12 +1,3 @@
-function dsfsd() {
-    return ([
-        "....",
-        "....",
-        "....",
-        "...."
-    ])
-}
-
 function square() {
     return ([
         "....",

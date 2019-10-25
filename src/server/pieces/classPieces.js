@@ -1,7 +1,4 @@
 import p from "./piece"
-import { destroyLine } from "./destroyLine"
-import { okForFall } from "./okForFall"
-import { creatSpeactre } from "./creatSpectre"
 
 export function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));

@@ -1,13 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-function dsfsd() {
-    return ([
-        "....",
-        "....",
-        "....",
-        "...."
-    ]);
-}
 function square() {
     return ([
         "....",

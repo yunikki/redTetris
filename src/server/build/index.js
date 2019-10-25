@@ -38,168 +38,12 @@ var initApp = function (app, params, cb) {
     });
 };
 var rooms_array = [];
-function emit_to_room(room, io) {
+function updateRoomFoorAll(room, io) {
     if (room)
         for (var i in room.players) {
             io.to(room.players[i].socketID).emit('action', { type: 'joinRoom', room: room, master: room.players[i].gameMaster });
         }
 }
-var initEngine = function (io) {
-    io.on('connection', function (socket) {
-        console.log("Socket connected: " + socket.id);
-        socket.on('action', function (action) {
-            console.log(action.type);
-            if (action.type === 'server/creatRoom') {
-                rooms_array = Game_2.joinGame(action.roomName, action.playerName, action.socketID, rooms_array, action.priv);
-                var room = Game_2.getGame(action.playerName, rooms_array);
-                if (!room)
-                    return (false);
-                socket.join(room.name);
-                socket.emit('action', { type: 'joinRoom', room: room, master: 2 });
-                socket.broadcast.emit('action', { type: 'joinRoom_', room: room, master: 2 });
-                socket.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
-                socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
-            }
-            if (action.type == 'server/searchRoom') {
-                socket.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
-            }
-            if (action.type == 'server/removePlayerFromRoom') {
-                var room = Game_2.getGame(action.playerName, rooms_array);
-                Game_2.removePlayer(action.playerName, "", rooms_array);
-                if (!room)
-                    return (false);
-                socket.leave(room.name);
-                socket.emit('action', { type: 'joinRoom', room: undefined, master: false });
-                emit_to_room(room, io);
-                if (isEndGame(room)) {
-                    room = resetRoomSpec(room);
-                    io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room });
-                }
-                socket.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
-                socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
-            }
-            if (action.type == 'server/changeParamRoom') {
-                Game_2.GameChangeParam(action.val, action.id, action.name, rooms_array);
-                var room = Game_2.getGameWithNameRoom(action.name, rooms_array);
-                if (room)
-                    emit_to_room(room, io);
-            }
-            if (action.type == 'server/keyDown') {
-                var room = Game_2.getGame(action.name, rooms_array);
-                if (!room)
-                    return (false);
-                room = keyDown_1.featherDrop(room, socket.id);
-                io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
-                socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
-                Game_2.updateRoomArray(room, rooms_array);
-                if (isEndGame(room)) {
-                    room = resetRoomSpec(room);
-                    io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room });
-                }
-            }
-            if (action.type == 'server/keySpace') {
-                var room = Game_2.getGame(action.name, rooms_array);
-                if (!room)
-                    return (false);
-                room = keySpace_1.floorPiece(room, socket.id);
-                io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
-                socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
-                Game_2.updateRoomArray(room, rooms_array);
-                if (isEndGame(room)) {
-                    room = resetRoomSpec(room);
-                    io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room });
-                }
-            }
-            if (action.type == 'server/keyleft') {
-                var room = Game_2.getGame(action.name, rooms_array);
-                if (!room)
-                    return (false);
-                room = keyLeft_1.moveLeft(room, socket.id);
-                Game_2.updateRoomArray(room, rooms_array);
-                io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
-                socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
-                if (isEndGame(room)) {
-                    room = resetRoomSpec(room);
-                    io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room });
-                }
-            }
-            if (action.type == 'server/keyRight') {
-                var room = Game_2.getGame(action.name, rooms_array);
-                if (!room)
-                    return (false);
-                room = keyRigth_1.moveRight(room, socket.id);
-                Game_2.updateRoomArray(room, rooms_array);
-                io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
-                socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
-                if (isEndGame(room)) {
-                    room = resetRoomSpec(room);
-                    io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room });
-                }
-            }
-            if (action.type == 'server/gameStart') {
-                var room = Game_2.getGame(action.playerName, rooms_array);
-                if (!room)
-                    return (false);
-                var socketRoom = Game_2.getGameWithNameRoom(room.name, rooms_array);
-                var new_room = [];
-                socketRoom.Pieces.push(new classPieces_1.pieces());
-                socketRoom.Pieces.push(new classPieces_1.pieces());
-                if (!socketRoom)
-                    return (undefined);
-                socketRoom = resetParty_1.resetParty(socketRoom);
-                socketRoom = setNewPiece_1.setNewPieceInGridForAll(socketRoom);
-                socketRoom.status = "runing";
-                Game_2.updateRoomArray(socketRoom, rooms_array);
-                io.sockets.in(room.name).emit('action', { type: 'GAME_START_', room: socketRoom });
-                socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
-            }
-            if (action.type == 'server/boucle') {
-                var room = Game_2.getGame(action.name, rooms_array);
-                if (!room)
-                    return (false);
-                room = fallPiece_1.fall_piece(room, action.id);
-                Game_2.updateRoomArray(room, rooms_array);
-                io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
-                socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
-                if (isEndGame(room)) {
-                    room = resetRoomSpec(room);
-                    io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room });
-                }
-            }
-            if (action.type == "server/keyUp") {
-                var room = Game_2.getGame(action.name, rooms_array);
-                if (!room)
-                    return (false);
-                room = keyUp_1.keyUp(room, socket.id);
-                io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
-                socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
-                Game_2.updateRoomArray(room, rooms_array);
-                if (isEndGame(room)) {
-                    room = resetRoomSpec(room);
-                    io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room });
-                }
-            }
-        });
-        socket.on('disconnect', function () {
-            var room = Game_2.getGameWithId(socket.id, rooms_array);
-            var player = Game_2.removePlayer("", socket.id, rooms_array);
-            if (room)
-                socket.leave(room.name);
-            if (room && isEndGame(room)) {
-                room = resetRoomSpec(room);
-                io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room });
-            }
-            if (room)
-                emit_to_room(room, io);
-            socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
-            if (player == null)
-                console.log("Unknown User Disconnected");
-            else
-                console.log("User disconnected : ", player);
-            console.log(rooms_array);
-        });
-    });
-};
 function resetRoomSpec(room) {
     room.status = "waiting";
     room.Pieces = [];
@@ -218,6 +62,110 @@ function isEndGame(room) {
     }
     return true;
 }
+var initEngine = function (io) {
+    io.on('connection', function (socket) {
+        function key(f, action) {
+            var room = Game_2.getGame(action.name, rooms_array);
+            if (!room)
+                return (false);
+            room = f(room, socket.id);
+            Game_2.updateRoomArray(room, rooms_array);
+            io.sockets.in(room.name).emit('action', { type: 'GAME_START', room: room });
+            socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
+            if (isEndGame(room)) {
+                room = resetRoomSpec(room);
+                io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room });
+            }
+        }
+        console.log("Socket connected: " + socket.id);
+        socket.on('action', function (action) {
+            console.log(action.type);
+            if (action.type === 'server/creatRoom') {
+                rooms_array = Game_2.joinGame(action.roomName, action.playerName, action.socketID, rooms_array, action.priv);
+                var room = Game_2.getGame(action.playerName, rooms_array);
+                if (!room)
+                    return (false);
+                socket.join(room.name);
+                socket.emit('action', { type: 'joinRoom', room: room, master: 2 });
+                socket.broadcast.emit('action', { type: 'joinRoom_', room: room, master: 2 });
+                socket.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
+                socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
+            }
+            else if (action.type == 'server/searchRoom') {
+                socket.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
+            }
+            else if (action.type == 'server/removePlayerFromRoom') {
+                var room = Game_2.getGame(action.playerName, rooms_array);
+                Game_2.removePlayer(action.playerName, "", rooms_array);
+                if (!room)
+                    return (false);
+                socket.leave(room.name);
+                socket.emit('action', { type: 'joinRoom', room: undefined, master: false });
+                updateRoomFoorAll(room, io);
+                if (isEndGame(room)) {
+                    room = resetRoomSpec(room);
+                    io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room });
+                }
+                socket.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
+                socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
+            }
+            else if (action.type == 'server/changeParamRoom') {
+                Game_2.GameChangeParam(action.val, action.id, action.name, rooms_array);
+                var room = Game_2.getGameWithNameRoom(action.name, rooms_array);
+                if (room)
+                    updateRoomFoorAll(room, io);
+            }
+            else if (action.type == 'server/gameStart') {
+                var room = Game_2.getGame(action.playerName, rooms_array);
+                if (!room)
+                    return (false);
+                var socketRoom = Game_2.getGameWithNameRoom(room.name, rooms_array);
+                var new_room = [];
+                socketRoom.Pieces.push(new classPieces_1.pieces());
+                socketRoom.Pieces.push(new classPieces_1.pieces());
+                if (!socketRoom)
+                    return (undefined);
+                socketRoom = resetParty_1.resetParty(socketRoom);
+                socketRoom = setNewPiece_1.setNewPieceInGridForAll(socketRoom);
+                socketRoom.status = "runing";
+                Game_2.updateRoomArray(socketRoom, rooms_array);
+                io.sockets.in(room.name).emit('action', { type: 'GAME_START_', room: socketRoom });
+                socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
+            }
+            else if (action.type == 'server/keyDown') {
+                key(keyDown_1.featherDrop, action);
+            }
+            else if (action.type == 'server/keySpace') {
+                key(keySpace_1.floorPiece, action);
+            }
+            else if (action.type == 'server/keyleft') {
+                key(keyLeft_1.moveLeft, action);
+            }
+            else if (action.type == 'server/keyRight') {
+                key(keyRigth_1.moveRight, action);
+            }
+            else if (action.type == 'server/boucle') {
+                key(fallPiece_1.fall_piece, action);
+            }
+            else if (action.type == "server/keyUp") {
+                key(keyUp_1.keyUp, action);
+            }
+        });
+        socket.on('disconnect', function () {
+            var room = Game_2.getGameWithId(socket.id, rooms_array);
+            var player = Game_2.removePlayer("", socket.id, rooms_array);
+            if (room && isEndGame(room)) {
+                room = resetRoomSpec(room);
+                io.sockets.in(room.name).emit('action', { type: 'END_GAME', room: room });
+            }
+            if (room) {
+                socket.leave(room.name);
+                updateRoomFoorAll(room, io);
+            }
+            socket.broadcast.emit('action', { type: 'searchResult', results: Game_1.getSearchResult(rooms_array) });
+        });
+    });
+};
 function create(params) {
     var promise = new Promise(function (resolve, reject) {
         var app = require('http').createServer();
