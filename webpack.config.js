@@ -56,7 +56,7 @@ let config = {
         inline: true,
         open: false,
         hot: true,
-        port: 8080
+        port: 3000
     },
     // devtool: "eval-source-map"
 }
