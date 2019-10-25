@@ -28,7 +28,7 @@ function ButtonStartGame({ room, state, chargeGame }) {
 
 function Lobby({ chargeGame, leaveLobby, state, room, dispatch }) {
     if (state.location && state.location == 'game')
-        dispatch(chargePageSolo(dispatch))
+        dispatch(generique_dispatch_no_param(dispatch, dataChangeSolo))
     return (
         <Router>
             <div id="menu">
@@ -63,10 +63,8 @@ const mapDispatchToProps = (dispatch) => {
     return ({
         dispatch: dispatch,
         chargeGame: (state) => {
-            //dispatch(chargePageSolo(dispatch)),
             dispatch(startGame(state))
         },
-        pageSolo: chargePageSolo(dispatch),
         leaveLobby: (state) => {
             dispatch(removePlayerFromRoom(state))
             dispatch(generique_dispatch_no_param(dispatch, dataChangeHome))
