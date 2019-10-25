@@ -51,10 +51,6 @@ function getNameMaster(room) {
     return nb
 }
 
-function ft_abs(nb) {
-    return (nb > 0 ? nb : -nb)
-}
-
 function SpectreSolo({ state }) {
 
     if (state.spec == true) {
@@ -63,7 +59,7 @@ function SpectreSolo({ state }) {
         let key = 0
         if (!state.room || !state.room.players)
             return (<div></div>)
-        var nb = ft_abs(state.room.players.length - nbSpec(state.room))
+        var nb = Math.abs(state.room.players.length - nbSpec(state.room))
         while (nb) {
             if (state.room.players[nb - 1].name != name && state.room.players[nb - 1].spec == false)
                 container.push(SpectreSolo_(state.room.players[nb - 1].grid, state.room.players[nb - 1], nb, state))
@@ -71,7 +67,7 @@ function SpectreSolo({ state }) {
             key += 1
         }
         return (
-            <div className="wrapper-carrou" style={{ width: (ft_abs(state.room.players.length - nbSpec(state.room)) - 2) * 300 + "px" }}>
+            <div className="wrapper-carrou" style={{ width: (Math.abs(state.room.players.length - nbSpec(state.room)) - 2) * 300 + "px" }}>
                 {container}
             </div>
         )
@@ -81,7 +77,7 @@ function SpectreSolo({ state }) {
         var container = []
         if (!state.room || !state.room.players)
             return (<div></div>)
-        var nb = ft_abs(state.room.players.length - nbSpec(state.room))
+        var nb = Math.abs(state.room.players.length - nbSpec(state.room))
         while (nb) {
             if (state.room.players[nb - 1].name != state.inputName && state.room.players[nb - 1].spec == false)
                 container.push(SpectreSolo_(state.room.players[nb - 1].grid, state.room.players[nb - 1], nb, state))
@@ -89,7 +85,7 @@ function SpectreSolo({ state }) {
             key += 1
         }
         return (
-            <div className="wrapper-carrou" style={{ width: (ft_abs(state.room.players.length - nbSpec(state.room)) - 2) * 300 + "px" }}>
+            <div className="wrapper-carrou" style={{ width: (Math.abs(state.room.players.length - nbSpec(state.room)) - 2) * 300 + "px" }}>
                 {container}
             </div>
         )
