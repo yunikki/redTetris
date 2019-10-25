@@ -4,7 +4,7 @@ import reducer from '../reducers'
 import { RoomDispo } from '../components/roomdispo'
 import { connect } from 'react-redux';
 import { chargePageSolo, inputYourName, inputYourNameRoom, chargeLobby, searchingRooms, saveSearch, strRandom } from '../components/action'
-import { dataChargeLobby, dataChangeInputName, dataTMaster, dataChangeInputNameRoom } from '../actions'
+import { dataChargeLobby, dataChangeInputName, dataTMaster, dataChangeInputNameRoom, saveResearch } from '../actions'
 import { dataCreateRoom, getRoomInfos, dataCreateRoomSolo, startGame } from '../actions/server'
 import { generique_dispatch_no_param } from "../components/action"
 
@@ -27,7 +27,7 @@ function Home({ pageSolo, dispatch, inputYourNameRoom, state, chargeLobby, start
                     <div id="creat-party">
                         <p>Create Game</p>
                         <input className="input-creat" value={state.inputName} id="your-name-creat-room" type="text" placeholder="Your Name" onChange={(e) => startSearch(e)} />
-                        <input className="input-creat" id="name-room-creat-room" type="text" placeholder="Room Name" onChange={inputYourNameRoom} />
+                        <input className="input-creat" id="name-room-creat-room" type="text" placeholder="Room Name" onChange={(e) => inputYourNameRoom(e)} />
                         <br></br>
                         <Link id="button-start-room" className="btn" to={!state.runRoom ? "" : "/#" + state.inputNameRoom + '[' + state.inputName + ']'} onClick={state.runRoom ? () => chargeLobby(state) : notChargeLobby} disabled={!state.runRoom}>Create Room</Link>
                     </div>
@@ -60,7 +60,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(dataCreateRoomSolo(state, str))
             dispatch(startGame(state))
         },
-        inputYourNameRoom: inputYourNameRoom(dispatch),
+        inputYourNameRoom: (e) => { dispatch(generique_dispatch_no_param(dispatch, dataChangeInputNameRoom, e.target.value)) },
         chargeLobby: (state) => {
             dispatch(dataTMaster())
             dispatch(dataCreateRoom(state))
@@ -68,7 +68,7 @@ const mapDispatchToProps = (dispatch) => {
         },
         startSearch: (e) => {
             dispatch(dataChangeInputName(e.target.value))
-            dispatch(saveSearch(dispatch, e))
+            dispatch(generique_dispatch_no_param(dispatch, saveResearch, e.target.value))
             dispatch(getRoomInfos())
         }
     });
