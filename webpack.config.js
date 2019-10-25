@@ -53,6 +53,7 @@ let config = {
     devServer: {
         contentBase: path.resolve(__dirname, "./public"),
         historyApiFallback: true,
+        //  host: "e1r8p9.42.fr",
         inline: true,
         open: false,
         hot: true,
