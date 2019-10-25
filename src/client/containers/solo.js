@@ -103,6 +103,7 @@ const mapDispatchToProps = (dispatch) => ({
     golobby: chargeLobby(dispatch),
     goHome: chargePageHome(dispatch),
     boucle: (state) => {
+        return
         let inter = setInterval(() => {
             dispatch(dataBoucle())
         }, state.room.rules[0] ? 500 : 1000);

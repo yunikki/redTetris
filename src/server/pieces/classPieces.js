@@ -387,12 +387,12 @@ export function floorPiece(room, id) {
                 x -= 1
             }
             room.players[i].currentPiece += 1
-            if (room.Pieces[room.players[i].currentPiece + 1]) {
+            if (room.Pieces[room.players[i].currentPiece + 1] && room.Pieces[room.players[i].currentPiece]) {
                 let new_pices = room.Pieces[room.players[i].currentPiece].piece
                 room = setNewPieceInGrid(room, i, new_pices)
                 room = creatSpeactre(room)
             }
-            else {
+            else if (room.Pieces[room.players[i].currentPiece]) {
                 room.Pieces.push(new pieces())
                 let new_pices = room.Pieces[room.players[i].currentPiece].piece
                 room = setNewPieceInGrid(room, i, new_pices)

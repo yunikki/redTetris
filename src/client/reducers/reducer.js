@@ -5,6 +5,7 @@ import React from 'react'
 import ReactDOM from 'react-dom';
 import App from '../containers/app.js';
 import { dataBoucle } from '../actions/server'
+import { store } from '../index'
 
 function reducer(state = initialState, action) {
     console.log(action.type)
@@ -50,8 +51,7 @@ function reducer(state = initialState, action) {
             return {
                 ...state,
                 spec: false,
-                location: state.master || state.room.priv ? state.location : "Lobby",
-                //loose: false,
+                location: state.room.priv ? state.location : state.spec ? "Lobby" : state.location,
                 room: action.room
             }
         case 'CHANGE_INPUT_NAME':
@@ -84,8 +84,13 @@ function reducer(state = initialState, action) {
                 room: action.room
             }
         case 'GAME_START_':
+            console.log('test')
+            let inter = setInterval(() => {
+                store.dispatch(dataBoucle())
+            }, state.room.rules[0] ? 500 : 1000);
             return {
                 ...state,
+                inter: inter,
                 location: 'game',
                 loose: false,
                 spec: false,
@@ -114,12 +119,27 @@ export function getPlayer(room, state) {
 function getPieceWithRoom(room, state) {
     for (let i in room.players) {
         if (room.players[i].socketID == state.socketID && !state.spec) {
+            if (!room.Pieces[room.players[i].currentPiece + 1])
+                return ([
+                    "....",
+                    "....",
+                    "....",
+                    "...."
+                ])
+
             return (room.Pieces[room.players[i].currentPiece + 1].piece)
         }
     }
 
     for (let i in room.players) {
         if (room.players[i].gameMaster == 1 && state.spec) {
+            if (!room.Pieces[room.players[i].currentPiece + 1])
+                return ([
+                    "....",
+                    "....",
+                    "....",
+                    "...."
+                ])
             return (room.Pieces[room.players[i].currentPiece + 1].piece)
         }
     }
