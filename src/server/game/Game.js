@@ -12,7 +12,8 @@ export class Game {
             true, //speedrun:
             false, //juniorBoard:
             true, //scoremode:
-            false //bubbleTiles:
+            false, //bubbleTiles:
+            false //konami
         ];
         this.players.push(player)
         this.status = 'waiting'

@@ -1,41 +1,41 @@
 import React from 'react'
 
-function chooseColor(c) {
+function chooseColor(c, r) {
     switch (c) {
         case "PC":
-            return ('rgb(232, 211, 49)');
+            return (r ? 'url("./assets/images/1.jpg")' : 'rgb(232, 211, 49)');
         case "PB":
-            return ('rgb(58, 234, 240)');
+            return (r ? 'url("./assets/images/2.jpg")' : 'rgb(58, 234, 240)');
         case "PT":
-            return ('rgb(188, 34, 227)');
+            return (r ? 'url("./assets/images/3.jpg")' : 'rgb(188, 34, 227)');
         case "PL":
-            return ('rgb(16, 112, 201)');
+            return (r ? 'url("./assets/images/4.jpg")' : 'rgb(16, 112, 201)');
         case "Pl":
-            return ('rgb(240, 167, 41)');
+            return (r ? 'url("./assets/images/5.jpg")' : 'rgb(240, 167, 41)');
         case "PZ":
-            return ('rgb(40, 235, 79)');
+            return (r ? 'url("./assets/images/6.jpg")' : 'rgb(40, 235, 79)');
         case "Pz":
-            return ('rgb(204, 8, 18)');
+            return (r ? 'url("./assets/images/7.jpg")' : 'rgb(204, 8, 18)');
         case "C":
-            return ('rgb(232, 211, 49)');
+            return (r ? 'url("./assets/images/1.jpg")' : 'rgb(232, 211, 49)');
         case "B":
-            return ('rgb(58, 234, 240)');
+            return (r ? 'url("./assets/images/2.jpg")' : 'rgb(58, 234, 240)');
         case "T":
-            return ('rgb(188, 34, 227)');
+            return (r ? 'url("./assets/images/3.jpg")' : 'rgb(188, 34, 227)');
         case "L":
-            return ('rgb(16, 112, 201)');
+            return (r ? 'url("./assets/images/4.jpg")' : 'rgb(16, 112, 201)');
         case "l":
-            return ('rgb(240, 167, 41)');
+            return (r ? 'url("./assets/images/5.jpg")' : 'rgb(240, 167, 41)');
         case "Z":
-            return ('rgb(40, 235, 79)');
+            return (r ? 'url("./assets/images/6.jpg")' : 'rgb(40, 235, 79)');
         case "z":
-            return ('rgb(204, 8, 18)');
+            return (r ? 'url("./assets/images/7.jpg")' : 'rgb(204, 8, 18)');
 
 
         case "S":
-            return ('rgb(48, 47, 51)');
+            return (r ? 'url("./assets/images/8.jpg")' : 'rgb(48, 47, 51)');
         case "b":
-            return ('#FFFFFF');
+            return (r ? 'url("./assets/images/mpinson.jpg")' : '#000000');
         default:
             return ('#505050');
     }
@@ -52,7 +52,7 @@ function Makebord({ state }) {
         while (y < compar2) {
             if (state.grid) {
                 container.push(<div className={state.room.rules[3] ? "caseBoardBuble" : "caseBord"
-                } key={key} col={x} row={y} style={{ backgroundColor: chooseColor(state.grid[x][y]) }}></div >)
+                } key={key} col={x} row={y} style={{ background: chooseColor(state.grid[x][y], state.room.rules[4]) }}></div >)
             }
             else
                 container.push(<div className={state.room.rules[3] ? "caseBoardBuble" : "caseBord"

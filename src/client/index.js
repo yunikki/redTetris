@@ -24,6 +24,7 @@ const initialState = {
     master: false,
     socketID: "",
     searchResult: {},
+    konami: false
 }
 
 socket.on('connect', function () {

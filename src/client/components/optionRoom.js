@@ -28,8 +28,17 @@ export function OptionRoom({ state, dispatch, room }) {
                 </div>
             )
         }
+        if (state.konami) {
+            option.push(
+                <div className="container_option" key={4}>
+                    <div className="name_option">???</div>
+                    <input className="check_option" type="checkbox" option={4} onChange={(e) => test(state, e, dispatch, state.room.name)} defaultChecked={state.room.rules[4]}></input>
+                </div>
+            )
+        }
     }
     else {
+        NameOption.push('???')
         for (var i in NameOption) {
             if (state.room.rules[i])
                 option.push(

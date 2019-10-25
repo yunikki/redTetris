@@ -12,7 +12,8 @@ var Game = /** @class */ (function () {
             true,
             false,
             true,
-            false //bubbleTiles:
+            false,
+            false //konami
         ];
         this.players.push(player);
         this.status = 'waiting';

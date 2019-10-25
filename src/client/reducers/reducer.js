@@ -37,7 +37,7 @@ function reducer(state = initialState, action) {
         case 'searchResult':
             return { ...state, searchResult: { ...action.results } }
         case 'chargeHome':
-            return { ...state, location: "Home", runRoom: false, inputNameRoom: "", inputName: "" }
+            return { ...state, location: "Home", runRoom: false, inputNameRoom: "", inputName: "", konami: false }
         case 'chargeSolo':
             return { ...state, location: "game", piece: undefined }
         case 'CHARGE_LOBBY':
@@ -78,6 +78,7 @@ function reducer(state = initialState, action) {
             }
             return {
                 ...state,
+                konami: state.master || action.room.rules[4],
                 loose: player.loose,
                 piece: getPieceWithRoom(action.room, state),
                 grid: getGridWithRoom(action.room, state),
@@ -97,6 +98,11 @@ function reducer(state = initialState, action) {
                 piece: getPieceWithRoom(action.room, state),
                 grid: getGridWithRoom(action.room, state),
                 room: action.room
+            }
+        case 'KONAMI':
+            return {
+                ...state,
+                konami: true
             }
         case 'SET_INTER':
             return {
