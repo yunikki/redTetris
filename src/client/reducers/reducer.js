@@ -2,8 +2,6 @@ import { dataBoucle } from '../actions/server'
 import { store } from '../middleware/storeStateMiddleWare'
 import { CHANGE_HOME, CHANGE_SOLO, CHANGE_INPUT_NAME, CHANGE_INPUT_NAME_ROOM, CHARGE_LOBBY, SAVE_SEARCH, NOT_MASTER, DO_MASTER, SET_INTER, KONAMI } from "../actions"
 
-
-
 function reducer(state = initialState, action) {
     console.log(action.type)
     switch (action.type) {

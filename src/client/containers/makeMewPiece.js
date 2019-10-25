@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import { object } from 'prop-types';
 
 function MakeNewPiece({ piece }) {
     var container = []
@@ -26,10 +25,7 @@ function MakeNewPiece({ piece }) {
         x++;
     }
     return (container)
-
 }
-
-
 
 const mapStateToProps = (state) => {
     return ({

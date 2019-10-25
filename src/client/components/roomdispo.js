@@ -1,9 +1,5 @@
 import React from 'react'
-import { connect } from 'react-redux';
 import { FormatLine } from './lienroomdispo'
-
-function oui() {
-}
 
 export function RoomDispo({ state, dispatch }) {
     if (state.inputName === "")
@@ -20,7 +16,6 @@ export function RoomDispo({ state, dispatch }) {
                     on a pas trouver de room deso !
                 </div>
             </div>
-
         )
     return (
         <div id="list-room">

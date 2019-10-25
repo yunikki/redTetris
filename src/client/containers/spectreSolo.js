@@ -18,11 +18,6 @@ function SpectreSolo_(grid, player, nb, state) {
         }
         x++;
     }
-
-
-
-
-
     return (
         <div id="bord_display" key={nb}>
             <div id="spectre-border-container">
@@ -52,7 +47,6 @@ function getNameMaster(room) {
 }
 
 function SpectreSolo({ state }) {
-
     if (state.spec == true) {
         let name = getNameMaster(state.room)
         var container = []

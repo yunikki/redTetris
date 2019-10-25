@@ -2,7 +2,7 @@ import createSocketIoMiddleware from 'redux-socket.io';
 import io from 'socket.io-client';
 import { createStore, applyMiddleware } from 'redux';
 import { createLogger } from 'redux-logger';
-import reducer from '../reducers'
+import reducer from '../reducers/reducer'
 import thunk from 'redux-thunk';
 
 let socket = io('http://localhost:3004');
@@ -23,7 +23,6 @@ socket.on('connect', function () {
 })
 
 let socketIoMiddleware = createSocketIoMiddleware(socket, "server/");
-// var store = applyMiddleware(socketIoMiddleware)(createStore)(reducer);
 
 export const store = createStore(
     reducer.reducer,

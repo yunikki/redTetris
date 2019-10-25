@@ -1,18 +1,13 @@
 import React from 'react'
-import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } from "react-router-dom";
-import { connect } from 'react-redux';
 import { dataChangeParamRoom } from '../actions/server'
 
 function test(state, e, dispatch, name) {
     dispatch(dataChangeParamRoom(e.target.checked, e.target.getAttribute('option'), name))
 }
 export function OptionRoom({ state, dispatch, room }) {
-    let run = false
-    if (!room || room.status == "runing")
-        run = true
-
     var NameOption = [];
     var option = [];
+
     if (!state.room || !state.room.rules)
         return (<div></div>)
     NameOption.push('speedrun')

@@ -5,20 +5,10 @@ import Solo from './solo'
 import Lobby from './lobby'
 import { connect } from 'react-redux';
 
-
-function Comp(props) {
-    const { match, location } = props;
-    const re = location.hash.match(/#(.*)\[(.*)\]/)
-    return <Home />
-
-}
-
-const MyComp = withRouter(Comp)
-
 function App({ state }) {
     console.log('state', state.location)
     if (state.location == "Home") {
-        return <Router><MyComp /></Router>
+        return <Home />
     }
     else if (state.location == "game") {
         return <Solo />
@@ -30,7 +20,7 @@ function App({ state }) {
             <Switch>
 
                 <Route path="/">
-                    <MyComp />
+                    <Home />
                 </Route>
             </Switch>
         </Router>
