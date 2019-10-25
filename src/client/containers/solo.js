@@ -9,7 +9,7 @@ import MakeNewPiece from './makeMewPiece'
 import { connect } from 'react-redux';
 import { func } from 'prop-types';
 import { getPlayer } from '../reducers/reducer'
-import { store } from '../index'
+import { store } from '../middleware/storeStateMiddleWare'
 
 function getGoodRoom(room, state) {
     for (let i in room) {

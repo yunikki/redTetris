@@ -1,4 +1,4 @@
-import { store } from '../index'
+import { store } from '../middleware/storeStateMiddleWare'
 
 export const SERVEUR_PIECESSOLO = 'server/piecesSolo'
 export const SERVEUR_CREAT_ROOM = 'server/creatRoom'
@@ -12,7 +12,6 @@ export const SERVER_KEY_RIGHT = 'server/keyRight'
 export const CHANGE_PARAM_ROOM = 'server/changeParamRoom'
 export const SERVER_KEY_SPACE = 'server/keySpace'
 export const SERVER_BOUCLE = "server/boucle"
-export const KONAMI = "KONAMI"
 
 export const dataPiecesSolo = () => {
     return {
