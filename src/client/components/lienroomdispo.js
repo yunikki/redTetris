@@ -1,8 +1,7 @@
 import React from 'react'
-import { dataChargeLobby, dataNotMaster } from '../actions'
+import { dataChargeLobby, dataNotMaster, generique_dispatch_no_param } from '../actions'
 import { dataCreateRoom_bis } from '../actions/server'
 import { BrowserRouter as Router, Link } from "react-router-dom";
-import { generique_dispatch_no_param } from "./action"
 
 
 function join(state, dispatch, e) {

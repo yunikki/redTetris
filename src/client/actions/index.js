@@ -1,6 +1,3 @@
-export const ALERT_POP = 'ALERT_POP'
-export const NEXT_PIECE = 'NEXT_PIECE'
-export const UPDATE_INPUT = 'UPDATE_INPUT'
 export const CHANGE_HOME = 'chargeHome'
 export const CHANGE_SOLO = 'chargeSolo'
 export const CHANGE_INPUT_NAME = 'CHANGE_INPUT_NAME'
@@ -10,6 +7,7 @@ export const SAVE_SEARCH = 'SAVE_SEARCH'
 export const NOT_MASTER = 'NOT_MASTER'
 export const DO_MASTER = 'DO_MASTER'
 export const SET_INTER = 'SET_INTER'
+export const KONAMI = "KONAMI"
 
 export const dataChangeHome = () => {
     return {
@@ -66,4 +64,14 @@ export const dataLoadInter = (inter) => {
         type: SET_INTER,
         data: inter
     }
+}
+
+export const data_konami = () => {
+    return {
+        type: KONAMI,
+    }
+}
+
+export function generique_dispatch_no_param(dispatch, f, e) {
+    return () => { dispatch(f(e)) }
 }

@@ -123,9 +123,3 @@ export const dataBoucle = () => {
         id: state.socketID
     }
 }
-
-export const data_konami = () => {
-    return {
-        type: KONAMI,
-    }
-}

@@ -2,9 +2,9 @@ import React from 'react'
 import SpectreSolo from './spectreSolo'
 import Makebord from '../components/makebord'
 import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } from "react-router-dom";
-import { generique_dispatch_no_param, chargePageHome, chargeLobby } from "../components/action"
 import { removePlayerFromRoom, dataBoucle, dataPiecesSolo } from "../actions/server"
-import { dataChangeHome, dataLoadInter, dataChargeLobby } from "../actions/"
+import { dataChangeHome, dataLoadInter, dataChargeLobby, generique_dispatch_no_param } from "../actions/"
+
 import MakeNewPiece from './makeMewPiece'
 import { connect } from 'react-redux';
 import { func } from 'prop-types';

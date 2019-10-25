@@ -1,12 +1,9 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } from "react-router-dom";
-import reducer from '../reducers'
 import { RoomDispo } from '../components/roomdispo'
 import { connect } from 'react-redux';
-import { chargePageSolo, inputYourName, inputYourNameRoom, chargeLobby, searchingRooms, saveSearch, strRandom } from '../components/action'
-import { dataChargeLobby, dataChangeInputName, dataTMaster, dataChangeInputNameRoom, saveResearch } from '../actions'
+import { dataChargeLobby, dataChangeInputName, dataTMaster, dataChangeInputNameRoom, saveResearch, generique_dispatch_no_param } from '../actions'
 import { dataCreateRoom, getRoomInfos, dataCreateRoomSolo, startGame } from '../actions/server'
-import { generique_dispatch_no_param } from "../components/action"
 
 function notChargeLobby() {
 }
@@ -31,12 +28,9 @@ function Home({ pageSolo, dispatch, inputYourNameRoom, state, chargeLobby, start
                         <br></br>
                         <Link id="button-start-room" className="btn" to={!state.runRoom ? "" : "/#" + state.inputNameRoom + '[' + state.inputName + ']'} onClick={state.runRoom ? () => chargeLobby(state) : notChargeLobby} disabled={!state.runRoom}>Create Room</Link>
                     </div>
-
-
                 </div>
                 <h3>Join Game!</h3>
                 <input className="input-creat" value={state.inputName} id="search-party" type="text" placeholder="entre un nom avent d aller dans une room" onChange={(e) => startSearch(e)} />
-
                 <div >
                     <RoomDispo state={state} dispatch={dispatch} />
                 </div>

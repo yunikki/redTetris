@@ -1,4 +1,5 @@
-import { data_konami, DataKeyDown, DataKeyLeft, DataKeyRight, DataKeySpace, DataKeyUp } from "./server"
+import { DataKeyDown, DataKeyLeft, DataKeyRight, DataKeySpace, DataKeyUp } from "./server"
+import { data_konami } from "./index"
 
 var tab_konami = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 

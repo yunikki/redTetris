@@ -1,11 +1,9 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route, Link, withRouter, HashRouter } from "react-router-dom";
 import { connect } from 'react-redux';
-import { chargePageSolo, chargePageHome } from '../components/action'
 import { OptionRoom, NameEnnemy } from '../components/optionRoom'
 import { removePlayerFromRoom, startGame } from '../actions/server'
-import { generique_dispatch_no_param } from "../components/action"
-import { dataChangeHome, dataChangeSolo, dataChangeInputName, dataChangeInputNameRoom, dataChargeLobby, saveResearch } from '../actions'
+import { dataChangeHome, dataChangeSolo, generique_dispatch_no_param } from '../actions'
 
 
 function getGoodRoom(room, state) {

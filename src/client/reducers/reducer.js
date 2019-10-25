@@ -1,11 +1,8 @@
-import { createStore, applyMiddleware } from 'redux';
-import createSocketIoMiddleware from 'redux-socket.io';
-import io from 'socket.io-client';
-import React from 'react'
-import ReactDOM from 'react-dom';
-import App from '../containers/app.js';
 import { dataBoucle } from '../actions/server'
 import { store } from '../index'
+import { CHANGE_HOME, CHANGE_SOLO, CHANGE_INPUT_NAME, CHANGE_INPUT_NAME_ROOM, CHARGE_LOBBY, SAVE_SEARCH, NOT_MASTER, DO_MASTER, SET_INTER, KONAMI } from "../actions"
+
+
 
 function reducer(state = initialState, action) {
     console.log(action.type)
@@ -36,15 +33,15 @@ function reducer(state = initialState, action) {
             };
         case 'searchResult':
             return { ...state, searchResult: { ...action.results } }
-        case 'chargeHome':
+        case CHANGE_HOME:
             return { ...state, location: "Home", runRoom: false, inputNameRoom: "", inputName: "", konami: false }
-        case 'chargeSolo':
+        case CHANGE_SOLO:
             return { ...state, location: "game", piece: undefined }
-        case 'CHARGE_LOBBY':
+        case CHARGE_LOBBY:
             return { ...state, location: "Lobby" }
-        case 'NOT_MASTER':
+        case NOT_MASTER:
             return { ...state, master: false }
-        case 'DO_MASTER':
+        case DO_MASTER:
             return { ...state, master: true }
         case 'END_GAME':
             console.log("ENDGAME ------------------------")
@@ -54,19 +51,19 @@ function reducer(state = initialState, action) {
                 location: state.room.priv ? state.location : state.spec ? "Lobby" : state.location,
                 room: action.room
             }
-        case 'CHANGE_INPUT_NAME':
+        case CHANGE_INPUT_NAME:
             return {
                 ...state,
                 inputName: action.data,
                 runRoom: action.data != "" && state.inputNameRoom != "",
             }
-        case 'CHANGE_INPUT_NAME_ROOM':
+        case CHANGE_INPUT_NAME_ROOM:
             return {
                 ...state,
                 inputNameRoom: action.data,
                 runRoom: action.data != "" && state.inputName != ""
             }
-        case 'SAVE_SEARCH':
+        case SAVE_SEARCH:
             return {
                 ...state,
                 nameSearch: action.data
@@ -99,12 +96,12 @@ function reducer(state = initialState, action) {
                 grid: getGridWithRoom(action.room, state),
                 room: action.room
             }
-        case 'KONAMI':
+        case KONAMI:
             return {
                 ...state,
                 konami: true
             }
-        case 'SET_INTER':
+        case SET_INTER:
             return {
                 ...state,
                 inter: action.data
