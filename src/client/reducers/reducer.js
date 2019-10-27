@@ -12,8 +12,9 @@ function reducer(state = initialState, action) {
         case 'joinRoom':
             let v = false
             console.log("JOINROOM ------------------------")
+            console.log(state.location)
             if (action.room)
-                v = action.room.status == "runing"
+                v = action.room.status == "runing" && state.location == "Lobby"
             return {
                 ...state,
                 room: { ...action.room },
@@ -42,7 +43,7 @@ function reducer(state = initialState, action) {
         case DO_MASTER:
             return { ...state, master: true }
         case 'END_GAME':
-            console.log("ENDGAME ------------------------")
+            console.log("ENDGAME ------------------------", state.room.priv, state.spec)
             return {
                 ...state,
                 spec: false,
