@@ -6,7 +6,7 @@ function floorPiece(room, id) {
     clearInterval(room.stop);
     for (var i in room.players) {
         if (room.players[i].loose)
-            continue;
+            return room;
         if (room.players[i].socketID == id) {
             while (lib_1.okForFall(room.players[i].grid, room)) {
                 room = lib_1.falling_piece(room, i);

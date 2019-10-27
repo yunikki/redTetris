@@ -71,10 +71,14 @@ function reducer(state = initialState, action) {
             if (player.loose) {
                 clearInterval(state.inter)
             }
+            let t = getLooseWithRoom(action.room, state)
+            if (state.loose && state.location == "game")
+                t = true
+
             return {
                 ...state,
                 konami: (state.master && state.konami) || action.room.rules[4],
-                loose: player.loose,
+                loose: t,
                 piece: getPieceWithRoom(action.room, state),
                 grid: getGridWithRoom(action.room, state),
                 room: action.room
@@ -156,6 +160,20 @@ function getGridWithRoom(room, state) {
     for (let i in room.players) {
         if (room.players[i].gameMaster == 1 && state.spec) {
             return (room.players[i].grid)
+        }
+    }
+}
+
+function getLooseWithRoom(room, state) {
+    for (let i in room.players) {
+        if (room.players[i].socketID == state.socketID && !state.spec) {
+            return (room.players[i].loose)
+        }
+    }
+
+    for (let i in room.players) {
+        if (room.players[i].gameMaster == 1 && state.spec) {
+            return (room.players[i].loose)
         }
     }
 }
