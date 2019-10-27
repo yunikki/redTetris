@@ -61,7 +61,7 @@ const initEngine = io => {
             console.log(action.type)
             if (action.type === 'server/creatRoom') {
                 rooms_array = joinGame(action.roomName, action.playerName, action.socketID, rooms_array, action.priv);
-                let room = getGame(action.playerName, rooms_array)
+                let room = getGame(action.socketID, rooms_array)
                 if (!room)
                     return (false)
                 socket.join(room.name)

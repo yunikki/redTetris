@@ -331,7 +331,7 @@ function keyUp(room, socketID) {
     for (var i in room.players) {
         if (room.players[i].socketID == socketID) {
             grid = room.players[i].grid;
-            if (room.players[i].loose)
+            if (room.players[i].loose || room.players[i].spec)
                 return room;
             break;
         }

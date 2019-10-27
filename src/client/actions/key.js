@@ -38,13 +38,13 @@ export function keyTetris(e, dispatch, state) {
         tab_konami = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     if (state.location == "game" && (e.key == 'w' || e.key == 'ArrowUp'))
-        dispatch(DataKeyUp(state.inputName))
+        dispatch(DataKeyUp(state.socketID))
     else if (state.location == "game" && (e.key == 's' || e.key == 'ArrowDown'))
-        dispatch(DataKeyDown(state.inputName))
+        dispatch(DataKeyDown(state.socketID))
     else if (state.location == "game" && (e.key == 'a' || e.key == 'ArrowLeft'))
-        dispatch(DataKeyLeft(state.inputName))
+        dispatch(DataKeyLeft(state.socketID))
     else if (state.location == "game" && (e.key == 'd' || e.key == 'ArrowRight'))
-        dispatch(DataKeyRight(state.inputName))
+        dispatch(DataKeyRight(state.socketID))
     else if (state.location == "game" && (e.key == ' '))
-        dispatch(DataKeySpace(state.inputName))
+        dispatch(DataKeySpace(state.socketID))
 }

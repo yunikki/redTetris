@@ -54,7 +54,7 @@ export function NameEnnemy({ state }) {
     var Name = state.room.players
     var you = true
     for (var i in Name) {
-        if (you && Name[i].name == state.inputName) {
+        if (you && Name[i].socketID == state.socketID) {
             you = false
             continue
         }

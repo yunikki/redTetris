@@ -37,25 +37,25 @@ function nbSpec(room) {
     return nb
 }
 
-function getNameMaster(room) {
+function getIDMaster(room) {
     let nb = 0
     for (let i in room.players) {
         if (room.players[i].gameMaster == 1)
-            return (room.players[i].name)
+            return (room.players[i].socketID)
     }
     return nb
 }
 
 function SpectreSolo({ state }) {
     if (state.spec == true) {
-        let name = getNameMaster(state.room)
+        let socketID = getIDMaster(state.room)
         var container = []
         let key = 0
         if (!state.room || !state.room.players)
             return (<div></div>)
         var nb = Math.abs(state.room.players.length - nbSpec(state.room))
         while (nb) {
-            if (state.room.players[nb - 1].name != name && state.room.players[nb - 1].spec == false)
+            if (state.room.players[nb - 1].socketID != socketID && state.room.players[nb - 1].spec == false)
                 container.push(SpectreSolo_(state.room.players[nb - 1].grid, state.room.players[nb - 1], nb, state))
             nb -= 1
             key += 1
@@ -73,7 +73,7 @@ function SpectreSolo({ state }) {
             return (<div></div>)
         var nb = Math.abs(state.room.players.length - nbSpec(state.room))
         while (nb) {
-            if (state.room.players[nb - 1].name != state.inputName && state.room.players[nb - 1].spec == false)
+            if (state.room.players[nb - 1].socketID != state.socketID && state.room.players[nb - 1].spec == false)
                 container.push(SpectreSolo_(state.room.players[nb - 1].grid, state.room.players[nb - 1], nb, state))
             nb -= 1
             key += 1

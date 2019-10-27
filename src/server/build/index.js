@@ -59,7 +59,7 @@ var initEngine = function (io) {
             console.log(action.type);
             if (action.type === 'server/creatRoom') {
                 rooms_array = Game_2.joinGame(action.roomName, action.playerName, action.socketID, rooms_array, action.priv);
-                var room = Game_2.getGame(action.playerName, rooms_array);
+                var room = Game_2.getGame(action.socketID, rooms_array);
                 if (!room)
                     return (false);
                 socket.join(room.name);

@@ -23,7 +23,7 @@ var Game = /** @class */ (function () {
     };
     Game.prototype.isPlayerInGame = function (playerName) {
         for (var i = 0; i < this.players.length; i++) {
-            if (this.players[i].name == playerName) {
+            if (this.players[i].socketID == playerName) {
                 return 1;
             }
         }
@@ -68,7 +68,7 @@ var Game = /** @class */ (function () {
         }
         else {
             for (var j = 0; j < this.players.length; j++) {
-                if (this.players[j].name == playerName) {
+                if (this.players[j].socketID == playerName) {
                     if (this.players[j].gameMaster == 1) {
                         master = true;
                     }

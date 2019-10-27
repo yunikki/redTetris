@@ -68,14 +68,14 @@ export const getRoomInfos = () => {
 export const removePlayerFromRoom = (state) => {
     return {
         type: REMOVE_PLAYER_FROM_ROOM,
-        playerName: state.inputName
+        playerName: state.socketID
     }
 }
 
 export const startGame = (state) => {
     return {
         type: GAME_START,
-        playerName: state.inputName
+        playerName: state.socketID
     }
 }
 
@@ -118,7 +118,7 @@ export const dataBoucle = () => {
     let state = store.getState()
     return {
         type: SERVER_BOUCLE,
-        name: state.inputName,
+        name: state.socketID,
         id: state.socketID
     }
 }
