@@ -2,17 +2,22 @@ import React from 'react'
 
 function SpectreSolo_(grid, player, nb, state) {
     var container = []
+    let save = []
     var key = 1
     var x = 0;
 
     while (x < 20) {
         const y = 0;
         while (y < 10) {
-            if (grid[x][y] == "." || grid[x][y] == "S" || grid[x][y][0] == "P") {
+            if ((grid[x][y] == "." || grid[x][y] == "S" || grid[x][y][0] == "P") && save.indexOf(y) == -1) {
+
                 container.push(<div className="case-spectre-solo" key={key} col={x} row={y}>{grid[x][y]}</div>)
             }
-            else
+            else {
+                console.log("Y", save)
+                save.push(y)
                 container.push(<div className="case-spectre-solo" key={key} col={x} row={y} style={{ backgroundColor: "red" }}></div>)
+            }
             y++;
             key++;
         }

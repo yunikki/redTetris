@@ -5,8 +5,8 @@ import { createLogger } from 'redux-logger';
 import reducer from '../reducers/reducer'
 import thunk from 'redux-thunk';
 
+//let socket = io('http://e1r12p5.42.fr:3004');
 let socket = io('http://localhost:3004');
-
 const initialState = {
     inputName: "",
     inputNameRoom: "",
