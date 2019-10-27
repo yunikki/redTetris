@@ -125,7 +125,7 @@ export function getPlayer(room, state) {
 function getPieceWithRoom(room, state) {
     for (let i in room.players) {
         if (room.players[i].socketID == state.socketID && !state.spec) {
-            if (!room.Pieces[room.players[i].currentPiece + 1])
+            if (!room.Pieces[room.players[i].currentPiece + 1] || room.players[i].loose)
                 return ([
                     "....",
                     "....",
@@ -139,7 +139,7 @@ function getPieceWithRoom(room, state) {
 
     for (let i in room.players) {
         if (room.players[i].gameMaster == 1 && state.spec) {
-            if (!room.Pieces[room.players[i].currentPiece + 1])
+            if (!room.Pieces[room.players[i].currentPiece + 1] || room.players[i].loose)
                 return ([
                     "....",
                     "....",

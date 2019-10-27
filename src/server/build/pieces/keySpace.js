@@ -5,9 +5,9 @@ var lib_1 = require("./lib");
 function floorPiece(room, id) {
     clearInterval(room.stop);
     for (var i in room.players) {
-        if (room.players[i].loose)
-            return room;
         if (room.players[i].socketID == id) {
+            if (room.players[i].loose)
+                return room;
             while (lib_1.okForFall(room.players[i].grid, room)) {
                 room = lib_1.falling_piece(room, i);
             }

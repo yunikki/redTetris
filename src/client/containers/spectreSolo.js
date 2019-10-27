@@ -14,7 +14,6 @@ function SpectreSolo_(grid, player, nb, state) {
                 container.push(<div className="case-spectre-solo" key={key} col={x} row={y}>{grid[x][y]}</div>)
             }
             else {
-                console.log("Y", save)
                 save.push(y)
                 container.push(<div className="case-spectre-solo" key={key} col={x} row={y} style={{ backgroundColor: "red" }}></div>)
             }
