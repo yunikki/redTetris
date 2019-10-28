@@ -43,6 +43,7 @@ let rooms_array = [];
 const initEngine = io => {
 
     io.on('connection', function (socket) {
+        socket.emit('action', { type: 'GET_SOCKET', socketID: socket.id })
         function key(f, action) {
             let room = getGame(action.name, rooms_array);
             if (!room)
@@ -66,6 +67,18 @@ const initEngine = io => {
                     return (false)
                 socket.join(room.name)
                 socket.emit('action', { type: 'joinRoom', room: room, master: 2 })
+                socket.broadcast.emit('action', { type: 'joinRoom_', room: room, master: 2 })
+                socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
+                socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
+            }
+            if (action.type === 'server/creatRoomSharp') {
+                console.log(action)
+                rooms_array = joinGame(action.roomName, action.playerName, socket.id, rooms_array, action.priv);
+                let room = getGame(socket.id, rooms_array)
+                if (!room)
+                    return (false)
+                socket.join(room.name)
+                socket.emit('action', { type: 'joinRoomSharp', room: room, master: 2, id: socket.id })
                 socket.broadcast.emit('action', { type: 'joinRoom_', room: room, master: 2 })
                 socket.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })
                 socket.broadcast.emit('action', { type: 'searchResult', results: getSearchResult(rooms_array) })

@@ -8,6 +8,7 @@ import thunk from 'redux-thunk';
 //let socket = io('http://e1r12p5.42.fr:3004');
 let socket = io('http://localhost:3004');
 const initialState = {
+    sharp: true,
     inputName: "",
     inputNameRoom: "",
     runRoom: false,

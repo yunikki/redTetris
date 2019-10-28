@@ -5,24 +5,38 @@ import { CHANGE_HOME, CHANGE_SOLO, CHANGE_INPUT_NAME, CHANGE_INPUT_NAME_ROOM, CH
 function reducer(state = initialState, action) {
     console.log(action.type)
     switch (action.type) {
-        case 'pong':
-            return Object.assign({}, { message: "oui" });
+        case 'GET_SOCKET':
+            return { ...state, socketID: action.socketID };
         case 'newPiece':
             return { ...state, piece: { ...action.piece } };
         case 'joinRoom':
             let v = false
-            console.log("JOINROOM ------------------------")
-            console.log(state.location)
             if (action.room)
                 v = action.room.status == "runing" && state.location == "Lobby"
             return {
                 ...state,
+                sharp: false,
                 room: { ...action.room },
                 spec: v,
                 location: v ? "game" : state.location,
                 piece: v ? getPieceWithRoom(action.room, state) : state.piece,
                 grid: v ? getGridWithRoom(action.room, state) : state.grid,
                 master: action.master == 1 ? true : action.master == 2 ? state.master : false
+            };
+        case 'joinRoomSharp':
+            v = false
+            if (action.room)
+                v = action.room.status == "runing"
+            return {
+                ...state,
+                sharp: false,
+                room: { ...action.room },
+                spec: v,
+                socketID: action.id,
+                location: v ? "game" : "Lobby",
+                piece: v ? getPieceWithRoom(action.room, state) : state.piece,
+                grid: v ? getGridWithRoom(action.room, state) : state.grid,
+                master: v ? false : getIsMaster(action.room, state)
             };
         case 'joinRoom_':
             return {
@@ -31,13 +45,13 @@ function reducer(state = initialState, action) {
                 master: action.master == 1 ? true : action.master == 2 ? state.master : false
             };
         case 'searchResult':
-            return { ...state, searchResult: { ...action.results } }
+            return { ...state, sharp: false, searchResult: { ...action.results } }
         case CHANGE_HOME:
             return { ...state, location: "Home", runRoom: false, inputNameRoom: "", inputName: "", konami: false }
         case CHANGE_SOLO:
-            return { ...state, location: "game", piece: undefined }
+            return { ...state, sharp: false, location: "game", piece: undefined }
         case CHARGE_LOBBY:
-            return { ...state, location: "Lobby" }
+            return { ...state, sharp: false, location: "Lobby" }
         case NOT_MASTER:
             return { ...state, master: false }
         case DO_MASTER:
@@ -53,6 +67,7 @@ function reducer(state = initialState, action) {
         case CHANGE_INPUT_NAME:
             return {
                 ...state,
+                sharp: false,
                 inputName: action.data,
                 runRoom: action.data != "" && state.inputNameRoom != "",
             }
@@ -163,6 +178,18 @@ function getGridWithRoom(room, state) {
             return (room.players[i].grid)
         }
     }
+}
+
+function getIsMaster(room, state) {
+    for (let i in room.players) {
+        if (room.players[i].socketID == state.socketID) {
+            if (room.players[i].gameMaster == 1)
+                return (true)
+            else
+                return false
+        }
+    }
+    return false
 }
 
 function getLooseWithRoom(room, state) {
