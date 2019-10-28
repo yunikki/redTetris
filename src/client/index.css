@@ -221,6 +221,14 @@ body {
     flex-wrap: wrap;
 }
 
+#spectre-border-container-mini {
+    background-color: grey;
+    width: 179px;
+    margin: 50px 50px 7px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .wrapper-carrou {
     width: fit-content;
     display: flex;

@@ -6,9 +6,11 @@ function SpectreSolo_(grid, player, nb, state) {
     var key = 1
     var x = 0;
 
-    while (x < 20) {
+    let compar1 = state.room.rules[1] ? 12 : 20
+    while (x < compar1) {
         const y = 0;
-        while (y < 10) {
+        let compar2 = state.room.rules[1] ? 8 : 10
+        while (y < compar2) {
             if ((grid[x][y] == "." || grid[x][y] == "S" || grid[x][y][0] == "P") && save.indexOf(y) == -1) {
 
                 container.push(<div className="case-spectre-solo" key={key} col={x} row={y}>{grid[x][y]}</div>)
@@ -17,14 +19,14 @@ function SpectreSolo_(grid, player, nb, state) {
                 save.push(y)
                 container.push(<div className="case-spectre-solo" key={key} col={x} row={y} style={{ backgroundColor: "red" }}></div>)
             }
-            y++;
-            key++;
+            y += 1;
+            key += 1;
         }
-        x++;
+        x += 1;
     }
     return (
         <div id="bord_display" key={nb}>
-            <div id="spectre-border-container">
+            <div id={state.room.rules[1] ? "spectre-border-container-mini" : "spectre-border-container"}>
                 {container}
             </div>
             {state.room.rules[2] ? <div>{player.name + " : " + player.score}</div> : <div>{player.name}</div>}
