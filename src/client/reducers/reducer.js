@@ -21,7 +21,7 @@ function reducer(state = initialState, action) {
                 location: v ? "game" : state.location,
                 piece: v ? getPieceWithRoom(action.room, state) : state.piece,
                 grid: v ? getGridWithRoom(action.room, state) : state.grid,
-                master: action.master == 1 ? true : action.master == 2 ? state.master : false
+                master: v ? false : getIsMaster(action.room, state)
             };
         case 'joinRoomSharp':
             v = false

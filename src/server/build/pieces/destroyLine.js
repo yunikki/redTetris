@@ -48,8 +48,8 @@ function rmPieceOfGrid(grid) {
     return grid;
 }
 function addLineForAll(addLine, room, id) {
-    var s = addLine;
     for (var i in room.players) {
+        var s = addLine;
         if (room.players[i].socketID != id) {
             var save = getPosePiece(room.players[i].grid);
             var type = getTypePiece(room.players[i].grid);
@@ -68,7 +68,6 @@ function addLineForAll(addLine, room, id) {
                     room.players[i].loose = true;
                     break;
                 }
-                console.log(Math.abs(x - save[0][0]), save[0][1], room.players[i].grid);
                 if (room.players[i].grid[Math.abs(x - save[0][0])][save[0][1]] == "." &&
                     room.players[i].grid[Math.abs(x - save[1][0])][save[1][1]] == "." &&
                     room.players[i].grid[Math.abs(x - save[2][0])][save[2][1]] == "." &&

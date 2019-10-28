@@ -18,10 +18,10 @@ function App({ state, dispatch }) {
         if (state.sharp && window.location.hash && checkUrl(window.location.hash)) {
             console.log(window.location)
             let tab = window.location.hash.match(/([A-Za-z0-9])\w+/g)
-            dispatch(dataChangeInputName(tab[0]))
-            dispatch(dataChangeInputNameRoom(tab[1]))
-            state.inputName = tab[0]
-            state.inputNameRoom = tab[1]
+            dispatch(dataChangeInputName(tab[1]))
+            dispatch(dataChangeInputNameRoom(tab[0]))
+            state.inputName = tab[1]
+            state.inputNameRoom = tab[0]
             console.log(state)
             dispatch(dataCreateRoomSharp(state))
 

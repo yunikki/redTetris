@@ -19,7 +19,6 @@ function Home({ pageSolo, dispatch, inputYourNameRoom, state, chargeLobby, start
                     <div id="container-selec-quick">
                         <p>Fast Game</p>
                         <Link id="button-2player" className="btn" to="/solo" onClick={() => pageSolo(state)}>One Player</Link>
-                        <Link id="button-1player" className="btn" to="/solo" onClick={() => pageSolo(state)}>Two Players</Link>
                     </div>
                     <div id="creat-party">
                         <p>Create Game</p>
