@@ -6,7 +6,6 @@ import Lobby from './lobby'
 import { connect } from 'react-redux';
 
 function App({ state }) {
-    console.log('state', state.location)
     if (state.location == "Home") {
         return <Home />
     }

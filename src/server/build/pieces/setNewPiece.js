@@ -63,7 +63,7 @@ function setNewPieceInGrid(room, i, piece) {
         var l_grid = 3;
         var l_piece = 0;
         while (l_piece < 4) {
-            if (room.players[i].grid[l][l_grid] != ".") {
+            if (room.players[i].grid[l][l_grid] != "." && room.players[i].grid[l][l_grid] != "S" && room.players[i].grid[l][l_grid][0] != "P") {
                 room.players[i].loose = true;
                 if (allLoose(room))
                     room.status = "waiting";
