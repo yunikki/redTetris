@@ -325,6 +325,7 @@ function getPos(grid, max_x, max_y) {
         }
         x += 1;
     }
+    return undefined;
 }
 function keyUp(room, socketID) {
     var grid = room.players[0].grid;
@@ -339,6 +340,8 @@ function keyUp(room, socketID) {
     var max_x = room.rules[1] ? 12 : 20;
     var max_y = room.rules[1] ? 8 : 10;
     var coor = getPos(grid, max_x, max_y);
+    if (coor == undefined)
+        return room;
     var x = coor[0];
     var y = coor[1];
     switch (grid[x][y][1]) {

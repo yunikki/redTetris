@@ -336,6 +336,7 @@ function getPos(grid, max_x, max_y) {
         }
         x += 1
     }
+    return undefined
 }
 
 export function keyUp(room, socketID) {
@@ -351,6 +352,8 @@ export function keyUp(room, socketID) {
     let max_x = room.rules[1] ? 12 : 20
     let max_y = room.rules[1] ? 8 : 10
     let coor = getPos(grid, max_x, max_y);
+    if (coor == undefined)
+        return room
     let x = coor[0];
     let y = coor[1];
     switch (grid[x][y][1]) {
