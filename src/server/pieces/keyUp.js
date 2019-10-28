@@ -2,7 +2,7 @@ import { creatSpeactre } from "./creatSpectre"
 
 function getBarShape(grid, x, y, max_x, max_y) {
     let local_pos
-    if ((x > 0 && grid[x - 1][y][0] == 'P') || x < max_x && grid[x + 1][y][0] == 'P')
+    if ((x > 0 && grid[x - 1][y][0] == 'P') || x < max_x - 1 && grid[x + 1][y][0] == 'P')
         local_pos = ['#...', '#...', '#...', '#...', [x + 2, y]];
     else
         local_pos = ['####', '....', '....', '....', [x, y + 1]];
