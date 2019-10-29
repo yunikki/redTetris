@@ -1,6 +1,7 @@
 import { pieces } from "../pieces/classPieces"
 import { setNewPieceInGrid } from "./setNewPiece"
 import { creatSpeactre } from "./creatSpectre"
+import {clearRotatingPiece} from './keyUp'
 
 export function falling_piece(room, i) {
     let x = room.rules[1] ? 11 : 19
@@ -20,6 +21,7 @@ export function falling_piece(room, i) {
 
 
 export function end_fall(room, i) {
+    console.log("END FALL")
     room.players[i].hit = false
     let x = room.rules[1] ? 11 : 19
     while (x >= 0) {
@@ -43,6 +45,7 @@ export function end_fall(room, i) {
         room = setNewPieceInGrid(room, i, new_pices)
         room = creatSpeactre(room)
     }
+    clearRotatingPiece(room.players[i].socketID)
     return (room)
 }
 

@@ -1,12 +1,32 @@
 import { creatSpeactre } from "./creatSpectre"
 
-function getBarShape(grid, x, y, max_x, max_y) {
-    let local_pos
-    if ((x > 0 && grid[x - 1][y][0] == 'P') || x < max_x - 1 && grid[x + 1][y][0] == 'P')
-        local_pos = ['#...', '#...', '#...', '#...', [x + 2, y]];
-    else
-        local_pos = ['####', '....', '....', '....', [x, y + 1]];
-    return local_pos
+let rotating_piece = [];
+
+export function clearRotatingPiece(socketID) {
+    //if (rotating_piece[socketID]){
+    console.log("Piece cleared :", rotating_piece[socketID])
+    rotating_piece[socketID] = undefined;
+    console.log("After clear :", rotating_piece[socketID])
+    //}
+}
+
+function getBarShape(grid, x, y, max_x, max_y, socketID) {
+    if (rotating_piece[socketID] == undefined) {
+        if ((x > 0 && grid[x - 1][y][0] == 'P') || x < max_x - 1 && grid[x + 1][y][0] == 'P')
+            rotating_piece[socketID] = ['..#.', '..#.', '..#.', '..#.', [x, y - 2]];
+        else
+            rotating_piece[socketID] = ['....', '####', '....', '....', [x - 1, y]];
+    }
+    else {
+        if (rotating_piece[socketID][1] == "####")
+            rotating_piece[socketID][4] = [x - 1, y]
+        else if (rotating_piece[socketID][0] == "..#.")
+            rotating_piece[socketID][4] = [x, y - 2]
+        else if (rotating_piece[socketID][0] == ".#..")
+            rotating_piece[socketID][4] = [x, y - 1]
+        else
+            rotating_piece[socketID][4] = [x - 2, y]
+    }
 }
 
 function getTShape(grid, x, y, max_x, max_y) {
@@ -58,24 +78,6 @@ function getlShape(grid, x, y, max_x, max_y) {
         else
             local_pos = ['#...', '###.', '....', '....', [x + 1, y + 1]]
     }
-    return local_pos
-}
-
-function getZShape(grid, x, y, max_x, max_y) {
-    let local_pos
-    if (y < max_y - 1 && grid[x][y + 1][0] == 'P')
-        local_pos = ['##..', '.##.', '....', '....', [x + 1, y + 1]]
-    else
-        local_pos = ['.#..', '##..', '#...', '....', [x + 1, y - 1]]
-    return local_pos
-}
-
-function getzShape(grid, x, y, max_x, max_y) {
-    let local_pos
-    if (y < max_y - 1 && grid[x][y + 1][0] == 'P')
-        local_pos = ['.##.', '##..', '....', '....', [x + 1, y]]
-    else
-        local_pos = ['#...', '##..', '.#..', '....', [x + 1, y + 1]]
     return local_pos
 }
 
@@ -239,91 +241,6 @@ function l_rotate(grid, l_info, max_x, max_y) {
     }
 }
 
-function Z_rotate(grid, Z_info, max_x, max_y) {
-    let rot_x = Z_info[4][0]
-    let rot_y = Z_info[4][1]
-    if (Z_info[0] == '##..' && Z_info[1] == ".##.") {
-        if (rot_x < max_x - 1) {
-            if ((grid[rot_x + 1][rot_y] == '.' || grid[rot_x + 1][rot_y] == 'S')
-                && (grid[rot_x - 1][rot_y + 1] == '.' || grid[rot_x - 1][rot_y + 1] == 'S')) {
-                grid[rot_x + 1][rot_y] = 'PZ'
-                grid[rot_x - 1][rot_y + 1] = 'PZ'
-                grid[rot_x - 1][rot_y] = '.'
-                grid[rot_x - 1][rot_y - 1] = '.'
-            }
-        }
-    }
-    else {
-        if (rot_y > 0) {
-            if ((grid[rot_x - 1][rot_y] == '.' || grid[rot_x - 1][rot_y] == 'S')
-                && (grid[rot_x - 1][rot_y - 1] == '.' || grid[rot_x - 1][rot_y - 1] == 'S')) {
-                grid[rot_x - 1][rot_y] = 'PZ'
-                grid[rot_x - 1][rot_y - 1] = 'PZ'
-                grid[rot_x + 1][rot_y] = '.'
-                grid[rot_x - 1][rot_y + 1] = '.'
-            }
-        }
-    }
-}
-
-function z_rotate(grid, z_info, max_x, max_y) {
-    let rot_x = z_info[4][0]
-    let rot_y = z_info[4][1]
-    if (z_info[0] == '.##.' && z_info[1] == '##..') {
-        if (rot_x < max_x - 1) {
-            if ((grid[rot_x - 1][rot_y - 1] == '.' || grid[rot_x - 1][rot_y - 1] == 'S')
-                && (grid[rot_x + 1][rot_y] == '.' || grid[rot_x + 1][rot_y] == 'S')) {
-                grid[rot_x - 1][rot_y - 1] = 'Pz'
-                grid[rot_x + 1][rot_y] = 'Pz'
-                grid[rot_x - 1][rot_y] = '.'
-                grid[rot_x - 1][rot_y + 1] = '.'
-            }
-        }
-    }
-    else {
-        if ((grid[rot_x - 1][rot_y] == '.' || grid[rot_x - 1][rot_y] == 'S')
-            && (grid[rot_x - 1][rot_y + 1] == '.' || grid[rot_x - 1][rot_y + 1] == 'S')) {
-            grid[rot_x - 1][rot_y] = 'Pz'
-            grid[rot_x - 1][rot_y + 1] = 'Pz'
-            grid[rot_x - 1][rot_y - 1] = '.'
-            grid[rot_x + 1][rot_y] = '.'
-        }
-    }
-}
-
-function B_rotate(grid, B_info, max_x, max_y) {
-    let rot_x = B_info[4][0]
-    let rot_y = B_info[4][1]
-    if (B_info[0] == '####') {
-        if (rot_x > 1 && rot_x < max_x - 1) {
-            if ((grid[rot_x + 1][rot_y] == '.' || grid[rot_x + 1][rot_y] == '.')
-                && (grid[rot_x - 1][rot_y] == '.' || grid[rot_x - 1][rot_y] == '.')
-                && (grid[rot_x - 2][rot_y] == '.' || grid[rot_x - 2][rot_y] == '.')) {
-                grid[rot_x + 1][rot_y] = 'PB'
-                grid[rot_x - 1][rot_y] = 'PB'
-                grid[rot_x - 2][rot_y] = 'PB'
-                grid[rot_x][rot_y - 1] = '.'
-                grid[rot_x][rot_y + 1] = '.'
-                grid[rot_x][rot_y + 2] = '.'
-            }
-        }
-    }
-    else {
-        if (rot_y > 0 && rot_y < max_y - 1) {
-            if ((grid[rot_x][rot_y - 1] == '.' || grid[rot_x][rot_y - 1] == 'S')
-                && (grid[rot_x][rot_y + 1] == '.' || grid[rot_x][rot_y + 1] == 'S')
-                && (grid[rot_x][rot_y + 2] == '.' || grid[rot_x][rot_y + 2] == '.')) {
-                grid[rot_x + 1][rot_y] = '.'
-                grid[rot_x - 1][rot_y] = '.'
-                grid[rot_x - 2][rot_y] = '.'
-                grid[rot_x][rot_y - 1] = 'PB'
-                grid[rot_x][rot_y + 1] = 'PB'
-                grid[rot_x][rot_y + 2] = 'PB'
-            }
-        }
-    }
-}
-
 function getPos(grid, max_x, max_y) {
     let x = 0;
     let y = 0;
@@ -337,6 +254,253 @@ function getPos(grid, max_x, max_y) {
         x += 1
     }
     return undefined
+}
+
+function B_rotate(grid, max_x, max_y, socketID) {
+    let rot_x = rotating_piece[socketID][4][0]
+    let rot_y = rotating_piece[socketID][4][1]
+    if (rotating_piece[socketID][1] == '####') {
+        if (rot_x > 0 && rot_x < max_x - 3) {
+            if ((grid[rot_x][rot_y + 2] == '.' || grid[rot_x][rot_y + 2] == 'S')
+                && (grid[rot_x + 2][rot_y + 2] == '.' || grid[rot_x + 2][rot_y + 2] == 'S')
+                && (grid[rot_x + 3][rot_y + 2] == '.' || grid[rot_x + 3][rot_y + 2] == 'S')) {
+                grid[rot_x][rot_y + 2] = 'PB'
+                grid[rot_x + 2][rot_y + 2] = 'PB'
+                grid[rot_x + 3][rot_y + 2] = 'PB'
+                grid[rot_x + 1][rot_y] = '.'
+                grid[rot_x + 1][rot_y + 1] = '.'
+                grid[rot_x + 1][rot_y + 3] = '.'
+                rotating_piece[socketID][0] = "..#."
+                rotating_piece[socketID][1] = "..#."
+                rotating_piece[socketID][2] = "..#."
+                rotating_piece[socketID][3] = "..#."
+            }
+        }
+    }
+    else if (rotating_piece[socketID][0] == '..#.') {
+        if (rot_y > 0 && rot_y < max_y - 3) {
+            if ((grid[rot_x + 2][rot_y + 3] == '.' || grid[rot_x + 2][rot_y + 3] == 'S')
+                && (grid[rot_x + 2][rot_y + 1] == '.' || grid[rot_x + 2][rot_y + 1] == 'S')
+                && (grid[rot_x + 2][rot_y] == '.' || grid[rot_x + 2][rot_y] == 'S')) {
+                grid[rot_x][rot_y + 2] = '.'
+                grid[rot_x + 1][rot_y + 2] = '.'
+                grid[rot_x + 3][rot_y + 2] = '.'
+                grid[rot_x + 2][rot_y + 3] = 'PB'
+                grid[rot_x + 2][rot_y + 1] = 'PB'
+                grid[rot_x + 2][rot_y] = 'PB'
+                rotating_piece[socketID][0] = "...."
+                rotating_piece[socketID][1] = "...."
+                rotating_piece[socketID][2] = "####"
+                rotating_piece[socketID][3] = "...."
+            }
+        }
+    }
+    else if (rotating_piece[socketID][2] == '####') {
+        if (rot_x > 0 && rot_x < max_x - 3) {
+            if ((grid[rot_x][rot_y + 1] == '.' || grid[rot_x][rot_y + 1] == 'S')
+                && (grid[rot_x + 1][rot_y + 1] == '.' || grid[rot_x + 1][rot_y + 1] == 'S')
+                && (grid[rot_x + 3][rot_y + 1] == '.' || grid[rot_x + 3][rot_y + 1] == 'S')) {
+                grid[rot_x][rot_y + 1] = 'PB'
+                grid[rot_x + 1][rot_y + 1] = 'PB'
+                grid[rot_x + 3][rot_y + 1] = 'PB'
+                grid[rot_x + 2][rot_y] = '.'
+                grid[rot_x + 2][rot_y + 2] = '.'
+                grid[rot_x + 2][rot_y + 3] = '.'
+                rotating_piece[socketID][0] = ".#.."
+                rotating_piece[socketID][1] = ".#.."
+                rotating_piece[socketID][2] = ".#.."
+                rotating_piece[socketID][3] = ".#.."
+            }
+        }
+    }
+    else {
+        if (rot_y > 0 && rot_y < max_y - 3) {
+            if ((grid[rot_x + 1][rot_y + 3] == '.' || grid[rot_x + 1][rot_y + 3] == 'S')
+                && (grid[rot_x + 1][rot_y + 2] == '.' || grid[rot_x + 1][rot_y + 2] == 'S')
+                && (grid[rot_x + 1][rot_y] == '.' || grid[rot_x + 1][rot_y] == 'S')) {
+                grid[rot_x][rot_y + 1] = '.'
+                grid[rot_x + 2][rot_y + 1] = '.'
+                grid[rot_x + 3][rot_y + 1] = '.'
+                grid[rot_x + 1][rot_y + 3] = 'PB'
+                grid[rot_x + 1][rot_y + 2] = 'PB'
+                grid[rot_x + 1][rot_y] = 'PB'
+                rotating_piece[socketID][0] = "...."
+                rotating_piece[socketID][1] = "####"
+                rotating_piece[socketID][2] = "...."
+                rotating_piece[socketID][3] = "...."
+            }
+        }
+    }
+    return grid
+}
+
+function getZShape(grid, x, y, max_x, max_y, socketID) {
+    if (rotating_piece[socketID] == undefined) {
+        if (y < max_y - 1 && grid[x][y + 1][0] == 'P')
+            rotating_piece[socketID] = ['##..', '.##.', '....', '....', [x, y]];
+        else
+            rotating_piece[socketID] = ['.#..', '##..', '#...', '....', [x, y - 1]];
+    }
+    else {
+        if (rotating_piece[socketID][0] == "##..")
+            rotating_piece[socketID][4] = [x, y]
+        else if (rotating_piece[socketID][0] == ".#..")
+            rotating_piece[socketID][4] = [x, y - 1]
+        else if (rotating_piece[socketID][0] == "....")
+            rotating_piece[socketID][4] = [x - 1, y]
+        else
+            rotating_piece[socketID][4] = [x, y - 2]
+    }
+}
+
+function Z_rotate(grid, max_x, max_y, socketID) {
+    let rot_x = rotating_piece[socketID][4][0]
+    let rot_y = rotating_piece[socketID][4][1]
+    if (rotating_piece[socketID][0] == '##..') {
+        if (rot_x < max_x - 1) {
+            if ((grid[rot_x][rot_y + 2] == '.' || grid[rot_x][rot_y + 2] == 'S')
+                && (grid[rot_x + 2][rot_y + 1] == '.' || grid[rot_x + 2][rot_y + 1] == 'S')) {
+                grid[rot_x + 2][rot_y + 1] = 'PZ'
+                grid[rot_x][rot_y + 2] = 'PZ'
+                grid[rot_x][rot_y] = '.'
+                grid[rot_x][rot_y + 1] = '.'
+                rotating_piece[socketID][0] = "..#."
+                rotating_piece[socketID][1] = ".##."
+                rotating_piece[socketID][2] = ".#.."
+                rotating_piece[socketID][3] = "...."
+            }
+        }
+    }
+    else if (rotating_piece[socketID][0] == "..#.") {
+        if (rot_y > 0) {
+            if ((grid[rot_x + 1][rot_y] == '.' || grid[rot_x + 1][rot_y] == 'S')
+                && (grid[rot_x + 2][rot_y + 2] == '.' || grid[rot_x + 2][rot_y + 2] == 'S')) {
+                grid[rot_x + 1][rot_y] = 'PZ'
+                grid[rot_x + 2][rot_y + 2] = 'PZ'
+                grid[rot_x][rot_y + 2] = '.'
+                grid[rot_x + 1][rot_y + 2] = '.'
+                rotating_piece[socketID][0] = "...."
+                rotating_piece[socketID][1] = "##.."
+                rotating_piece[socketID][2] = ".##."
+                rotating_piece[socketID][3] = "...."
+            }
+        }
+    }
+    else if (rotating_piece[socketID][0] == "....") {
+        if (rot_x > 0) {
+            if ((grid[rot_x][rot_y + 1] == '.' || grid[rot_x][rot_y + 1] == 'S')
+                && (grid[rot_x + 2][rot_y] == '.' || grid[rot_x + 2][rot_y] == 'S')) {
+                grid[rot_x + 2][rot_y] = 'PZ'
+                grid[rot_x][rot_y + 1] = 'PZ'
+                grid[rot_x + 2][rot_y + 1] = '.'
+                grid[rot_x + 2][rot_y + 2] = '.'
+                rotating_piece[socketID][0] = ".#.."
+                rotating_piece[socketID][1] = "##.."
+                rotating_piece[socketID][2] = "#..."
+                rotating_piece[socketID][3] = "...."
+            }
+        }
+    }
+    else {
+        if (rot_y < max_y - 1) {
+            if ((grid[rot_x][rot_y] == '.' || grid[rot_x][rot_y] == 'S')
+                && (grid[rot_x + 1][rot_y + 2] == '.' || grid[rot_x + 1][rot_y + 2] == 'S')) {
+                grid[rot_x][rot_y] = 'PZ'
+                grid[rot_x + 1][rot_y + 2] = 'PZ'
+                grid[rot_x + 1][rot_y] = '.'
+                grid[rot_x + 2][rot_y] = '.'
+                rotating_piece[socketID][0] = "##.."
+                rotating_piece[socketID][1] = ".##."
+                rotating_piece[socketID][2] = "...."
+                rotating_piece[socketID][3] = "...."
+            }
+        }
+    }
+}
+
+
+function getzShape(grid, x, y, max_x, max_y, socketID) {
+    if (rotating_piece[socketID] == undefined) {
+        if (y < max_y - 1 && grid[x][y + 1][0] == 'P')
+            rotating_piece[socketID] = ['.##.', '##..', '....', '....', [x, y - 1]]
+        else
+            rotating_piece[socketID] = ['#...', '##..', '.#..', '....', [x, y]]
+    }
+    else {
+        if (rotating_piece[socketID][0] == ".##.")
+            rotating_piece[socketID][4] = [x, y - 1]
+        else if (rotating_piece[socketID][0] == ".#..")
+            rotating_piece[socketID][4] = [x, y - 1]
+        else if (rotating_piece[socketID][0] == "....")
+            rotating_piece[socketID][4] = [x - 1, y - 1]
+        else
+            rotating_piece[socketID][4] = [x, y]
+    }
+}
+
+function z_rotate(grid, max_x, max_y, socketID) {
+    let rot_x = rotating_piece[socketID][4][0]
+    let rot_y = rotating_piece[socketID][4][1]
+    if (rotating_piece[socketID][0] == '.##.') {
+        if (rot_x < max_x - 1) {
+            if ((grid[rot_x + 1][rot_y + 2] == '.' || grid[rot_x + 1][rot_y + 2] == 'S')
+                && (grid[rot_x + 2][rot_y + 2] == '.' || grid[rot_x + 2][rot_y + 2] == 'S')) {
+                grid[rot_x + 1][rot_y + 2] = 'Pz'
+                grid[rot_x + 2][rot_y + 2] = 'Pz'
+                grid[rot_x + 1][rot_y] = '.'
+                grid[rot_x][rot_y + 2] = '.'
+                rotating_piece[socketID][0] = ".#.."
+                rotating_piece[socketID][1] = ".##."
+                rotating_piece[socketID][2] = "..#."
+                rotating_piece[socketID][3] = "...."
+            }
+        }
+    }
+    else if (rotating_piece[socketID][0] == ".#..") {
+        if (rot_y > 0) {
+            if ((grid[rot_x + 2][rot_y] == '.' || grid[rot_x + 2][rot_y] == 'S')
+                && (grid[rot_x + 2][rot_y + 1] == '.' || grid[rot_x + 2][rot_y + 1] == 'S')) {
+                grid[rot_x + 2][rot_y] = 'Pz'
+                grid[rot_x + 2][rot_y + 1] = 'Pz'
+                grid[rot_x][rot_y + 1] = '.'
+                grid[rot_x + 2][rot_y + 2] = '.'
+                rotating_piece[socketID][0] = "...."
+                rotating_piece[socketID][1] = ".##."
+                rotating_piece[socketID][2] = "##.."
+                rotating_piece[socketID][3] = "...."
+            }
+        }
+    }
+    else if (rotating_piece[socketID][0] == '....') {
+        if (rot_x > 0) {
+            if ((grid[rot_x][rot_y] == '.' || grid[rot_x][rot_y] == 'S')
+                && (grid[rot_x + 1][rot_y] == '.' || grid[rot_x + 1][rot_y] == 'S')) {
+                grid[rot_x][rot_y] = 'Pz'
+                grid[rot_x + 1][rot_y] = 'Pz'
+                grid[rot_x + 2][rot_y] = '.'
+                grid[rot_x + 1][rot_y + 2] = '.'
+                rotating_piece[socketID][0] = "#..."
+                rotating_piece[socketID][1] = "##.."
+                rotating_piece[socketID][2] = ".#.."
+                rotating_piece[socketID][3] = "...."
+            }
+        }
+    }
+    else {
+        if (rot_y < max_y - 1){
+            if ((grid[rot_x][rot_y + 1] == '.' || grid[rot_x][rot_y + 1] == 'S')
+                && (grid[rot_x][rot_y + 2] == '.' || grid[rot_x][rot_y + 2] == 'S')) {
+                grid[rot_x][rot_y + 2] = 'Pz'
+                grid[rot_x][rot_y + 1] = 'Pz'
+                grid[rot_x][rot_y] = '.'
+                grid[rot_x + 2][rot_y + 1] = '.'
+                rotating_piece[socketID][0] = ".##."
+                rotating_piece[socketID][1] = "##.."
+                rotating_piece[socketID][2] = "...."
+                rotating_piece[socketID][3] = "...."
+            }
+        }
+    }
 }
 
 export function keyUp(room, socketID) {
@@ -360,8 +524,8 @@ export function keyUp(room, socketID) {
         case 'C': //carré
             break;
         case 'B': //Barre
-            let B_info = getBarShape(grid, x, y, max_x, max_y);
-            B_rotate(grid, B_info, max_x, max_y)
+            getBarShape(grid, x, y, max_x, max_y, socketID)
+            grid = B_rotate(grid, max_x, max_y, socketID)
             break;
         case 'T'://Forme de T ->DONE
             let t_info = getTShape(grid, x, y, max_x, max_y);
@@ -376,12 +540,12 @@ export function keyUp(room, socketID) {
             l_rotate(grid, l_info, max_x, max_y)
             break;
         case 'Z': //Z vers la droite -> DONE
-            let Z_info = getZShape(grid, x, y, max_x, max_y)
-            Z_rotate(grid, Z_info, max_x, max_y)
+            getZShape(grid, x, y, max_x, max_y, socketID)
+            Z_rotate(grid, max_x, max_y, socketID)
             break;
         case 'z': // Z vers la gauche -> DONE
-            let z_info = getzShape(grid, x, y, max_x, max_y)
-            z_rotate(grid, z_info, max_x, max_y)
+            getzShape(grid, x, y, max_x, max_y, socketID)
+            z_rotate(grid, max_x, max_y, socketID)
             break
         default:
             console.log("Error, piece not found")

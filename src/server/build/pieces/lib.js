@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var classPieces_1 = require("../pieces/classPieces");
 var setNewPiece_1 = require("./setNewPiece");
 var creatSpectre_1 = require("./creatSpectre");
+var keyUp_1 = require("./keyUp");
 function falling_piece(room, i) {
     var x = room.rules[1] ? 11 : 19;
     while (x >= 0) {
@@ -20,6 +21,7 @@ function falling_piece(room, i) {
 }
 exports.falling_piece = falling_piece;
 function end_fall(room, i) {
+    console.log("END FALL");
     room.players[i].hit = false;
     var x = room.rules[1] ? 11 : 19;
     while (x >= 0) {
@@ -43,6 +45,7 @@ function end_fall(room, i) {
         room = setNewPiece_1.setNewPieceInGrid(room, i, new_pices);
         room = creatSpectre_1.creatSpeactre(room);
     }
+    keyUp_1.clearRotatingPiece(room.players[i].socketID);
     return (room);
 }
 exports.end_fall = end_fall;

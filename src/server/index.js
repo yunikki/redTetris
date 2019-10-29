@@ -44,7 +44,7 @@ const initEngine = io => {
 
     io.on('connection', function (socket) {
         socket.emit('action', { type: 'GET_SOCKET', socketID: socket.id })
-        function key(f, action) {
+        function key(f, action) { //C'est propre ça ????
             let room = getGame(action.name, rooms_array);
             if (!room)
                 return (false)
@@ -112,7 +112,6 @@ const initEngine = io => {
                 if (!room)
                     return (false)
                 let socketRoom = getGameWithNameRoom(room.name, rooms_array)
-                let new_room = []
                 socketRoom.Pieces.push(new pieces())
                 socketRoom.Pieces.push(new pieces())
                 if (!socketRoom)

@@ -110,7 +110,6 @@ var initEngine = function (io) {
                 if (!room)
                     return (false);
                 var socketRoom = Game_2.getGameWithNameRoom(room.name, rooms_array);
-                var new_room = [];
                 socketRoom.Pieces.push(new classPieces_1.pieces());
                 socketRoom.Pieces.push(new classPieces_1.pieces());
                 if (!socketRoom)
